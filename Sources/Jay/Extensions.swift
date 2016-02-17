@@ -71,3 +71,20 @@ extension CollectionType where Generator.Element == CChar {
     }
 }
 
+extension JsonValue: Equatable { }
+func ==(lhs: JsonValue, rhs: JsonValue) -> Bool {
+    switch (lhs, rhs) {
+    case (.Null, .Null): return true
+    case (.Boolean(let l), .Boolean(let r)): return l == r
+    case (.String(let l), .String(let r)): return l == r
+    case (.Array(let l), .Array(let r)): return l == r
+    case (.Object(let l), .Object(let r)): return l == r
+    case (.Number(let l), .Number(let r)):
+        switch (l, r) {
+        case (.JsonInt(let ll), .JsonInt(let rr)): return ll == rr
+        case (.JsonDbl(let ll), .JsonDbl(let rr)): return ll == rr
+        default: return false
+        }
+    default: return false
+    }
+}

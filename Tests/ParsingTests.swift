@@ -71,6 +71,47 @@ class ParsingTests: XCTestCase {
         XCTAssertNil(ret)
     }
 
+    func testArray_NullsAndBooleans_Normal_MuchWhitespace() {
+        
+        let reader = ByteReader(content: " \t[\n  null ,true, \nfalse\r\n]\n  ")
+        let ret = try! Parser().parseArray(withReader: reader)
+        let exp: JsonArray = [
+            JsonValue.Null,
+            JsonValue.Boolean(JsonBoolean.True),
+            JsonValue.Boolean(JsonBoolean.False)
+        ]
+        ensureArray(ret.0, exp: exp)
+        XCTAssert(ret.1.curr() == "\n".cchar())
+    }
+    
+    func testArray_NullsAndBooleans_Bad_MissingEnd() {
+        
+        let reader = ByteReader(content: " \t[\n  null ,true, \nfalse\r\n\n  ")
+        let ret = try? Parser().parseArray(withReader: reader)
+        XCTAssertNil(ret)
+    }
+    
+    func testArray_NullsAndBooleans_Bad_MissingComma() {
+        
+        let reader = ByteReader(content: " \t[\n  null true, \nfalse\r\n]\n  ")
+        let ret = try? Parser().parseArray(withReader: reader)
+        XCTAssertNil(ret)
+    }
+    
+    func testArray_NullsAndBooleans_Bad_ExtraComma() {
+        
+        let reader = ByteReader(content: " \t[\n  null , , true, \nfalse\r\n]\n  ")
+        let ret = try? Parser().parseArray(withReader: reader)
+        XCTAssertNil(ret)
+    }
+
+    func testArray_NullsAndBooleans_Bad_TrailingComma() {
+        
+        let reader = ByteReader(content: " \t[\n  null ,true, \nfalse\r\n, ]\n  ")
+        let ret = try? Parser().parseArray(withReader: reader)
+        XCTAssertNil(ret)
+    }
+
 
     
 }

@@ -8,23 +8,24 @@
 
 import XCTest
 
-func ensureJsonValue(val: Any) -> JsonValue {
-    guard let out = val as? JsonValue else { XCTFail(); return JsonValue.Null }
-    return out
-}
-
-func ensureNull(val: Any) {
-    switch ensureJsonValue(val) {
+func ensureNull(val: JsonValue) {
+    switch val {
     case .Null: return
     default: XCTFail()
     }
 }
 
-func ensureBool(val: Any, exp: JsonBoolean) {
-    switch ensureJsonValue(val) {
+func ensureBool(val: JsonValue, exp: JsonBoolean) {
+    switch val {
     case .Boolean(exp): return
     default: XCTFail()
     }
 }
 
+func ensureArray(val: JsonValue, exp: JsonArray) {
+    switch val {
+    case .Array(let exp): return
+    default: XCTFail()
+    }
+}
 
