@@ -9,23 +9,18 @@
 import XCTest
 
 func ensureNull(val: JsonValue) {
-    switch val {
-    case .Null: return
-    default: XCTFail()
-    }
+    XCTAssertEqual(val, JsonValue.Null)
 }
 
 func ensureBool(val: JsonValue, exp: JsonBoolean) {
-    switch val {
-    case .Boolean(exp): return
-    default: XCTFail()
-    }
+    XCTAssertEqual(val, JsonValue.Boolean(exp))
 }
 
 func ensureArray(val: JsonValue, exp: JsonArray) {
-    switch val {
-    case .Array(let exp): return
-    default: XCTFail()
-    }
+    XCTAssertEqual(val, JsonValue.Array(exp))
+}
+
+func ensureNumber(val: JsonValue, exp: JsonNumber) {
+    XCTAssertEqual(val, JsonValue.Number(exp))
 }
 
