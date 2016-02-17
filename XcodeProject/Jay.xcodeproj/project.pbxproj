@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3AF442E11C7504D1009A8EA7 /* ReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF442E01C7504D1009A8EA7 /* ReaderTests.swift */; };
+		3AF442E31C750677009A8EA7 /* ByteReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF442E21C750677009A8EA7 /* ByteReader.swift */; };
+		3AF442E41C750681009A8EA7 /* ByteReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF442E21C750677009A8EA7 /* ByteReader.swift */; };
 		3AFC69061C74EE1F00BC8E73 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69011C74EE1F00BC8E73 /* Error.swift */; };
 		3AFC69071C74EE1F00BC8E73 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69021C74EE1F00BC8E73 /* Extensions.swift */; };
 		3AFC69081C74EE1F00BC8E73 /* Jay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69031C74EE1F00BC8E73 /* Jay.swift */; };
@@ -39,6 +42,8 @@
 
 /* Begin PBXFileReference section */
 		3AA85BE01C74821C0024225D /* Jay */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Jay; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AF442E01C7504D1009A8EA7 /* ReaderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReaderTests.swift; path = ../../Tests/ReaderTests.swift; sourceTree = "<group>"; };
+		3AF442E21C750677009A8EA7 /* ByteReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ByteReader.swift; path = ../Sources/Jay/ByteReader.swift; sourceTree = SOURCE_ROOT; };
 		3AFC69011C74EE1F00BC8E73 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = ../Sources/Jay/Error.swift; sourceTree = SOURCE_ROOT; };
 		3AFC69021C74EE1F00BC8E73 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = ../Sources/Jay/Extensions.swift; sourceTree = SOURCE_ROOT; };
 		3AFC69031C74EE1F00BC8E73 /* Jay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Jay.swift; path = ../Sources/Jay/Jay.swift; sourceTree = SOURCE_ROOT; };
@@ -91,6 +96,7 @@
 		3AA85BE21C74821C0024225D /* Jay */ = {
 			isa = PBXGroup;
 			children = (
+				3AF442E21C750677009A8EA7 /* ByteReader.swift */,
 				3AFC69241C74F24200BC8E73 /* Consts.swift */,
 				3AFC69011C74EE1F00BC8E73 /* Error.swift */,
 				3AFC69021C74EE1F00BC8E73 /* Extensions.swift */,
@@ -108,6 +114,7 @@
 				3AFC691C1C74EE6400BC8E73 /* ParsingTests.swift */,
 				3AFC69131C74EE4100BC8E73 /* Info.plist */,
 				3AFC69261C74F5E500BC8E73 /* ConstsTests.swift */,
+				3AF442E01C7504D1009A8EA7 /* ReaderTests.swift */,
 			);
 			path = JayTests;
 			sourceTree = "<group>";
@@ -202,6 +209,7 @@
 			files = (
 				3AFC69091C74EE1F00BC8E73 /* Parser.swift in Sources */,
 				3AFC69061C74EE1F00BC8E73 /* Error.swift in Sources */,
+				3AF442E31C750677009A8EA7 /* ByteReader.swift in Sources */,
 				3AFC690A1C74EE1F00BC8E73 /* Reader.swift in Sources */,
 				3AFC69221C74F16100BC8E73 /* Types.swift in Sources */,
 				3AFC69251C74F24200BC8E73 /* Consts.swift in Sources */,
@@ -216,6 +224,7 @@
 			files = (
 				3AFC691A1C74EE5000BC8E73 /* Parser.swift in Sources */,
 				3AFC69271C74F5E500BC8E73 /* ConstsTests.swift in Sources */,
+				3AF442E11C7504D1009A8EA7 /* ReaderTests.swift in Sources */,
 				3AFC69171C74EE5000BC8E73 /* Error.swift in Sources */,
 				3AFC691D1C74EE6400BC8E73 /* ParsingTests.swift in Sources */,
 				3AFC69231C74F1F200BC8E73 /* Types.swift in Sources */,
@@ -223,6 +232,7 @@
 				3AFC69191C74EE5000BC8E73 /* Jay.swift in Sources */,
 				3AFC69281C74F62900BC8E73 /* Consts.swift in Sources */,
 				3AFC69181C74EE5000BC8E73 /* Extensions.swift in Sources */,
+				3AF442E41C750681009A8EA7 /* ByteReader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +390,7 @@
 				3AFC69161C74EE4100BC8E73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -6,62 +6,47 @@
 //  Copyright © 2016 Honza Dvorsky. All rights reserved.
 //
 
-protocol Reader: class {
-    func read(bytes: Int) throws -> [CChar]
-}
+protocol Reader {
+    
+    // Returns the currently pointed-at char
+    func curr() -> CChar
 
-let BufferCapacity = 512
+    // Moves cursor to the next char
+    mutating func next()
+    
+    // Returns the next character
+    func peek() -> CChar?
+    
+    // Returns `true` if all characters have been read 
+    func isDone() -> Bool
+}
 
 extension Reader {
     
-    /// Reads until 1) we run out of characters or 2) we detect the delimiter
-    /// whichever happens first.
-    func readUntilDelimiter(alreadyRead alreadyRead: [CChar], delimiter: String) throws -> ([CChar], [CChar]?) {
-        
-        var totalBuffer = alreadyRead
-        let delimiterChars = delimiter.cchars()
-        var lastReadCount = BufferCapacity
-        
-        while true {
-            
-            //test whether the incoming chars contain the delimiter
-            let (head, tail) = totalBuffer.splitAround(delimiterChars)
-            
-            //if we have a tail, we found the delimiter in the buffer,
-            //or if there's no more data to read
-            //let's terminate and return the current split
-            if tail != nil || lastReadCount < BufferCapacity {
-                //end of transmission
-                return (head, tail)
+    // Consumes all contiguous whitespace and returns # of consumed chars
+    mutating func consumeWhitespace() -> Int {
+        var counter = 0
+        while !self.isDone() {
+            let char = self.curr()
+            if Const.Whitespace.contains(char) {
+                //consume
+                counter += 1
+                self.next()
+            } else {
+                //non-whitespace, return
+                break
             }
-            
-            //read more characters from the reader
-            let readChars = try self.read(BufferCapacity)
-            lastReadCount = readChars.count
-            
-            //append received chars before delimiter
-            totalBuffer.appendContentsOf(readChars)
         }
+        return counter
+    }
+    
+    // Iterates both readers and checks that characters match until
+    // a) expectedReader runs out of characters -> great! all match
+    // b) self runs out of characters -> bad, no match!
+    // c) we encounter a difference -> bad, no match!
+    mutating func stopAtFirstDifference(expectedReader r: Reader) throws -> Reader {
+        return self
     }
 }
 
-
-class TestReader: Reader {
-    
-    var content: [CChar]
-    
-    init(content: String) {
-        self.content = content.cchars()
-    }
-    
-    func read(bytes: Int) throws -> [CChar] {
-        
-        precondition(bytes > 0)
-        if self.content.isEmpty { throw Error("empty reader") }
-        let toReadCount = min(bytes, self.content.count)
-        let head = Array(self.content.prefix(toReadCount))
-        self.content.removeFirst(toReadCount)
-        return head
-    }
-}
 

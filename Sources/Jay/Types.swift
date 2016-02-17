@@ -39,7 +39,6 @@ enum JsonValue {
     case Null
 }
 
-
 enum JsonPrimitiveType {
     case Number(JsonNumber)
     case String(JsonString)

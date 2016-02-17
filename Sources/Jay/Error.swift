@@ -6,10 +6,10 @@
 //  Copyright © 2016 Honza Dvorsky. All rights reserved.
 //
 
-struct Error: ErrorType {
-    let str: String
-    init(_ str: String) {
-        self.str = str
-    }
+enum Error: ErrorType {
+    case UnexpectedEnd(Reader)
+    case Unimplemented(String)
+    case ParseStringFromCharsFailed([CChar])
+    case UnexpectedCharacter(CChar)
 }
 

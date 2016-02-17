@@ -32,7 +32,7 @@ extension CollectionType where Generator.Element == CChar {
     func string() throws -> String {
         let selfArray = Array(self) + [0]
         guard let string = String.fromCString(selfArray) else {
-            throw Error("can't parse \(self)")
+            throw Error.ParseStringFromCharsFailed(selfArray)
         }
         return string
     }
