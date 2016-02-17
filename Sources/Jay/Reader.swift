@@ -44,8 +44,32 @@ extension Reader {
     // a) expectedReader runs out of characters -> great! all match
     // b) self runs out of characters -> bad, no match!
     // c) we encounter a difference -> bad, no match!
-    mutating func stopAtFirstDifference(expectedReader r: Reader) throws -> Reader {
-        return self
+    mutating func stopAtFirstDifference(o: Reader) throws {
+        
+        var other = o
+        
+        while true {
+            
+            if other.isDone() {
+                //a) all matched, return
+                return
+            }
+            
+            if self.isDone() {
+                //b) no match
+                throw Error.Mismatch(self, other)
+            }
+
+            let charSelf = self.curr()
+            let charOther = other.curr()
+            guard charSelf == charOther else {
+                //c) no match
+                throw Error.Mismatch(self, other)
+            }
+            
+            self.next()
+            other.next()
+        }
     }
 }
 

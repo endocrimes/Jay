@@ -25,6 +25,12 @@ extension String {
             return out
         }
     }
+    
+    func cchar() -> CChar {
+        let chars = self.cchars()
+        precondition(chars.count == 1)
+        return chars.first!
+    }
 }
 
 extension CollectionType where Generator.Element == CChar {

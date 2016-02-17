@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A4F1DBC1C75210200222D4A /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F1DBB1C75210200222D4A /* TestUtils.swift */; };
 		3AF442E11C7504D1009A8EA7 /* ReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF442E01C7504D1009A8EA7 /* ReaderTests.swift */; };
 		3AF442E31C750677009A8EA7 /* ByteReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF442E21C750677009A8EA7 /* ByteReader.swift */; };
 		3AF442E41C750681009A8EA7 /* ByteReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF442E21C750677009A8EA7 /* ByteReader.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A4F1DBB1C75210200222D4A /* TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestUtils.swift; path = ../../Tests/TestUtils.swift; sourceTree = "<group>"; };
 		3AA85BE01C74821C0024225D /* Jay */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Jay; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AF442E01C7504D1009A8EA7 /* ReaderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReaderTests.swift; path = ../../Tests/ReaderTests.swift; sourceTree = "<group>"; };
 		3AF442E21C750677009A8EA7 /* ByteReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ByteReader.swift; path = ../Sources/Jay/ByteReader.swift; sourceTree = SOURCE_ROOT; };
@@ -111,10 +113,11 @@
 		3AFC69101C74EE4100BC8E73 /* JayTests */ = {
 			isa = PBXGroup;
 			children = (
-				3AFC691C1C74EE6400BC8E73 /* ParsingTests.swift */,
 				3AFC69131C74EE4100BC8E73 /* Info.plist */,
 				3AFC69261C74F5E500BC8E73 /* ConstsTests.swift */,
+				3AFC691C1C74EE6400BC8E73 /* ParsingTests.swift */,
 				3AF442E01C7504D1009A8EA7 /* ReaderTests.swift */,
+				3A4F1DBB1C75210200222D4A /* TestUtils.swift */,
 			);
 			path = JayTests;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 				3AFC691D1C74EE6400BC8E73 /* ParsingTests.swift in Sources */,
 				3AFC69231C74F1F200BC8E73 /* Types.swift in Sources */,
 				3AFC691B1C74EE5000BC8E73 /* Reader.swift in Sources */,
+				3A4F1DBC1C75210200222D4A /* TestUtils.swift in Sources */,
 				3AFC69191C74EE5000BC8E73 /* Jay.swift in Sources */,
 				3AFC69281C74F62900BC8E73 /* Consts.swift in Sources */,
 				3AFC69181C74EE5000BC8E73 /* Extensions.swift in Sources */,

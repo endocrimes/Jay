@@ -61,7 +61,7 @@ extension Parser {
         case let x where StartChars.Null.contains(x):
             (val, reader) = try self.parseNull(withReader: reader)
         default:
-            throw Error.UnexpectedCharacter(char)
+            throw Error.UnexpectedCharacter(reader)
         }
         return (val, reader)
     }
@@ -96,18 +96,38 @@ extension Parser {
 
     func parseBoolean(withReader r: Reader) throws -> (Any, Reader) {
         
-        var reader = try self.prepareForReading(withReader: r)
-        throw Error.Unimplemented("Boolean")
-        return ("", reader)
+        func parseTrue(rr: Reader) throws -> (Any, Reader) {
+            var rd = rr
+            //try to read the "true" literal, throw if anything goes wrong
+            try rd.stopAtFirstDifference(ByteReader(content: Const.True))
+            return (JsonValue.Boolean(JsonBoolean.True), rd)
+        }
+        
+        func parseFalse(rr: Reader) throws -> (Any, Reader) {
+            var rd = rr
+            //try to read the "false" literal, throw if anything goes wrong
+            try rd.stopAtFirstDifference(ByteReader(content: Const.False))
+            return (JsonValue.Boolean(JsonBoolean.False), rd)
+        }
+        
+        let reader = try self.prepareForReading(withReader: r)
+        
+        //find whether we're parsing "true" or "false"
+        let char = reader.curr()
+        switch char {
+        case Const.True[0]: return try parseTrue(reader)
+        case Const.False[0]: return try parseFalse(reader)
+        default: throw Error.UnexpectedCharacter(reader)
+        }
     }
 
     func parseNull(withReader r: Reader) throws -> (Any, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
-        var expectedReader = ByteReader(content: Const.Null)
         
-        
-        return ("", reader)
+        //try to read the "null" literal, throw if anything goes wrong
+        try reader.stopAtFirstDifference(ByteReader(content: Const.Null))
+        return (JsonValue.Null, reader)
     }
 }
 

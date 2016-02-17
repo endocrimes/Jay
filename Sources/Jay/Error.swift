@@ -10,6 +10,7 @@ enum Error: ErrorType {
     case UnexpectedEnd(Reader)
     case Unimplemented(String)
     case ParseStringFromCharsFailed([CChar])
-    case UnexpectedCharacter(CChar)
+    case UnexpectedCharacter(Reader)
+    case Mismatch(Reader, Reader)
 }
 
