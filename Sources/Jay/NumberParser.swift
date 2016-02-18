@@ -104,7 +104,7 @@ struct NumberParser: JsonParser {
     private func parseInt(r: Reader) throws -> (Int, Reader) {
         
         var reader = r
-        var digs = [CChar]()
+        var digs = [JChar]()
         
         //take first digit, which can only be 1...9
         var digits = Const.Digits1to9
@@ -158,7 +158,7 @@ struct NumberParser: JsonParser {
         }
         try reader.nextAndCheckNotDone()
         
-        var digs = [CChar]()
+        var digs = [JChar]()
         
         //at least one digit 0...9 must follow
         guard Const.Digits0to9.contains(reader.curr()) else {
@@ -208,7 +208,7 @@ struct NumberParser: JsonParser {
         }
         try reader.nextAndCheckNotDone()
         
-        var digs = [CChar]()
+        var digs = [JChar]()
         
         //at least one digit 1...9 must follow
         guard Const.Digits1to9.contains(reader.curr()) else {

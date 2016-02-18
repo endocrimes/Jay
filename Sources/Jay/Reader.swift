@@ -9,14 +9,14 @@
 protocol Reader {
     
     // Returns the currently pointed-at char
-    func curr() -> CChar
+    func curr() -> JChar
 
     // Moves cursor to the next char
     mutating func next()
     
     // Returns the `next` next characters, if not enough chars, returns
     // less characters.
-    func peek(next: Int) -> [CChar]
+    func peek(next: Int) -> [JChar]
     
     // Returns `true` if all characters have been read 
     func isDone() -> Bool
@@ -24,9 +24,9 @@ protocol Reader {
 
 extension Reader {
     
-    mutating func readNext(next: Int) throws -> [CChar] {
+    mutating func readNext(next: Int) throws -> [JChar] {
         try self.ensureNotDone()
-        var buff = [CChar]()
+        var buff = [JChar]()
         while buff.count < next {
             buff.append(self.curr())
             try self.nextAndCheckNotDone()

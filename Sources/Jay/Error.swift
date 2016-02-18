@@ -9,11 +9,13 @@
 enum Error: ErrorType {
     case UnexpectedEnd(Reader)
     case Unimplemented(String)
-    case ParseStringFromCharsFailed([CChar])
+    case ParseStringFromCharsFailed([JChar])
     case UnexpectedCharacter(Reader)
     case Mismatch(Reader, Reader)
     case NumberParsingFailed(Reader)
     case InvalidUnicodeSpecifier(Reader)
     case InvalidEscape(Reader)
+    case UnescapedControlCharacterInString(Reader)
+    case UnicodeCharacterParsing([JChar], Reader)
 }
 

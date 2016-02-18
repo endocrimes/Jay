@@ -22,6 +22,7 @@ typealias JsonObject = [String: JsonValue]
 //An array is an ordered sequence of zero or more values.
 typealias JsonArray = [JsonValue]
 
+typealias JChar = UTF8.CodeUnit
 
 enum JsonBoolean: JsonString {
     case True = "true"

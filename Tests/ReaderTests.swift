@@ -15,7 +15,7 @@ class ReaderTests: XCTestCase {
         var reader = ByteReader(content: " \n  \t \r  lala ")
         let consumed = reader.consumeWhitespace()
         XCTAssertEqual(consumed, 9)
-        XCTAssert(reader.curr() == "l".cchar())
+        XCTAssert(reader.curr() == "l".char())
     }
     
     func testConsumingWhitespace_NoWhitespace() {
@@ -23,7 +23,7 @@ class ReaderTests: XCTestCase {
         var reader = ByteReader(content: "lala ")
         let consumed = reader.consumeWhitespace()
         XCTAssertEqual(consumed, 0)
-        XCTAssert(reader.curr() == "l".cchar())
+        XCTAssert(reader.curr() == "l".char())
     }
     
     func testConsumingWhitespace_Empty() {
@@ -46,8 +46,8 @@ class ReaderTests: XCTestCase {
             
             XCTAssert(!main.isDone())
             XCTAssert(!other.isDone())
-            XCTAssert(main.curr() == "l".cchar())
-            XCTAssert(other.curr() == "a".cchar())
+            XCTAssert(main.curr() == "l".char())
+            XCTAssert(other.curr() == "a".char())
         } catch {
             XCTFail()
         }
@@ -64,7 +64,7 @@ class ReaderTests: XCTestCase {
         } catch Error.Mismatch(let main, let other) {
             XCTAssert(main.isDone())
             XCTAssert(!other.isDone())
-            XCTAssert(other.curr() == "h".cchar())
+            XCTAssert(other.curr() == "h".char())
         } catch {
             XCTFail()
         }
@@ -90,7 +90,7 @@ class ReaderTests: XCTestCase {
         do {
             try mainReader.stopAtFirstDifference(expectedReader)
             XCTAssert(!mainReader.isDone())
-            XCTAssert(mainReader.curr() == "o".cchar())
+            XCTAssert(mainReader.curr() == "o".char())
         } catch {
             XCTFail()
         }
@@ -100,14 +100,14 @@ class ReaderTests: XCTestCase {
         var mainReader = ByteReader(content: "hello world")
         mainReader.next()
         mainReader.next()
-        XCTAssert(mainReader.peek(5) == "llo w".cchars())
+        XCTAssert(mainReader.peek(5) == "llo w".chars())
     }
     
     func testPeek_LessAvailable() {
         var mainReader = ByteReader(content: "hello world")
         mainReader.next()
         mainReader.next()
-        XCTAssert(mainReader.peek(12) == "llo world".cchars())
+        XCTAssert(mainReader.peek(12) == "llo world".chars())
     }
     
     func testPeek_NoAvailable() {
@@ -122,8 +122,8 @@ class ReaderTests: XCTestCase {
         var mainReader = ByteReader(content: "hello world")
         try! mainReader.readNext(2)
         let next = try! mainReader.readNext(5)
-        XCTAssert(next == "llo w".cchars())
-        XCTAssert(mainReader.curr() == "o".cchar())
+        XCTAssert(next == "llo w".chars())
+        XCTAssert(mainReader.curr() == "o".char())
     }
     
     func testReadNext_LessAvailable() {

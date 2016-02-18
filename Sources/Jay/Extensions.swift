@@ -12,7 +12,7 @@
     import Darwin
 #endif
 
-extension CChar {
+extension JChar {
     func string() throws -> String {
         return try [self].string()
     }
@@ -20,31 +20,34 @@ extension CChar {
 
 extension String {
     
-    func cchars() -> [CChar] {
-        return self.withCString { ptr in
-            let count = Int(strlen(ptr))
-            var idx = 0
-            var out = Array<CChar>(count: count, repeatedValue: 0)
-            while idx < count { out[idx] = ptr[idx]; idx += 1 }
-            return out
-        }
+    func chars() -> [JChar] {
+        let chars = Array<JChar>(self.utf8)
+        return chars
     }
     
-    func cchar() -> CChar {
-        let chars = self.cchars()
+    func char() -> JChar {
+        let chars = self.chars()
         precondition(chars.count == 1)
         return chars.first!
     }
 }
 
-extension CollectionType where Generator.Element == CChar {
+extension CollectionType where Generator.Element == JChar {
     
     func string() throws -> String {
-        let selfArray = Array(self) + [0]
-        guard let string = String.fromCString(selfArray) else {
-            throw Error.ParseStringFromCharsFailed(selfArray)
+        var utf = UTF8()
+        var gen = self.generate()
+        var str = String()
+        while true {
+            switch utf.decode(&gen) {
+            case .EmptyInput: //we're done
+                return str
+            case .Error: //error, can't describe what however
+                throw Error.ParseStringFromCharsFailed(Array(self))
+            case .Result(let unicodeScalar):
+                str.append(unicodeScalar)
+            }
         }
-        return string
     }
 
     /// Splits string around a delimiter, returns the first subarray
@@ -52,7 +55,7 @@ extension CollectionType where Generator.Element == CChar {
     /// as the second, if found (empty array if found at the end).
     /// Otherwise first array contains the original
     /// collection and the second is nil.
-    func splitAround(delimiter: [CChar]) -> ([CChar], [CChar]?) {
+    func splitAround(delimiter: [JChar]) -> ([JChar], [JChar]?) {
         
         let orig = Array(self)
         let end = orig.endIndex
