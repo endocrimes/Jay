@@ -20,6 +20,50 @@
 		3A66EBF71C765B5E00ECEA4D /* NativeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A66EBF51C765B5700ECEA4D /* NativeParser.swift */; };
 		3A916EF81C765CAC00E8D500 /* NativeTypeConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A916EF71C765CAC00E8D500 /* NativeTypeConversions.swift */; };
 		3A916EF91C765CAC00E8D500 /* NativeTypeConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A916EF71C765CAC00E8D500 /* NativeTypeConversions.swift */; };
+		3ABFC5021C76858C00F770D8 /* Jay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69031C74EE1F00BC8E73 /* Jay.swift */; };
+		3ABFC5031C76858C00F770D8 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69211C74F16100BC8E73 /* Types.swift */; };
+		3ABFC5041C76858C00F770D8 /* Consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69241C74F24200BC8E73 /* Consts.swift */; };
+		3ABFC5051C76858C00F770D8 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69011C74EE1F00BC8E73 /* Error.swift */; };
+		3ABFC5061C76858C00F770D8 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69051C74EE1F00BC8E73 /* Reader.swift */; };
+		3ABFC5071C76858C00F770D8 /* ByteReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF442E21C750677009A8EA7 /* ByteReader.swift */; };
+		3ABFC5081C76858C00F770D8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69021C74EE1F00BC8E73 /* Extensions.swift */; };
+		3ABFC5091C76858C00F770D8 /* NativeTypeConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A916EF71C765CAC00E8D500 /* NativeTypeConversions.swift */; };
+		3ABFC50A1C76858C00F770D8 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69041C74EE1F00BC8E73 /* Parser.swift */; };
+		3ABFC50B1C76858C00F770D8 /* NativeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A66EBF51C765B5700ECEA4D /* NativeParser.swift */; };
+		3ABFC50C1C76858C00F770D8 /* RootParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08B71C753A400092B8AF /* RootParser.swift */; };
+		3ABFC50D1C76858C00F770D8 /* ValueParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08AB1C7539C50092B8AF /* ValueParser.swift */; };
+		3ABFC50E1C76858C00F770D8 /* ObjectParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A91C7539C50092B8AF /* ObjectParser.swift */; };
+		3ABFC50F1C76858C00F770D8 /* ArrayParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A51C7539C50092B8AF /* ArrayParser.swift */; };
+		3ABFC5101C76858C00F770D8 /* StringParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08AA1C7539C50092B8AF /* StringParser.swift */; };
+		3ABFC5111C76858C00F770D8 /* NumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A81C7539C50092B8AF /* NumberParser.swift */; };
+		3ABFC5121C76858C00F770D8 /* BooleanParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A61C7539C50092B8AF /* BooleanParser.swift */; };
+		3ABFC5131C76858C00F770D8 /* NullParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A71C7539C50092B8AF /* NullParser.swift */; };
+		3ABFC5141C76859100F770D8 /* ConstsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69261C74F5E500BC8E73 /* ConstsTests.swift */; };
+		3ABFC5151C76859100F770D8 /* ParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC691C1C74EE6400BC8E73 /* ParsingTests.swift */; };
+		3ABFC5161C76859100F770D8 /* ReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF442E01C7504D1009A8EA7 /* ReaderTests.swift */; };
+		3ABFC5171C76859100F770D8 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F1DBB1C75210200222D4A /* TestUtils.swift */; };
+		3ABFC5241C7685E900F770D8 /* ConstsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69261C74F5E500BC8E73 /* ConstsTests.swift */; };
+		3ABFC5251C7685E900F770D8 /* ParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC691C1C74EE6400BC8E73 /* ParsingTests.swift */; };
+		3ABFC5261C7685E900F770D8 /* ReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF442E01C7504D1009A8EA7 /* ReaderTests.swift */; };
+		3ABFC5271C7685E900F770D8 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F1DBB1C75210200222D4A /* TestUtils.swift */; };
+		3ABFC5281C7685F100F770D8 /* Jay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69031C74EE1F00BC8E73 /* Jay.swift */; };
+		3ABFC5291C7685F100F770D8 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69211C74F16100BC8E73 /* Types.swift */; };
+		3ABFC52A1C7685F100F770D8 /* Consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69241C74F24200BC8E73 /* Consts.swift */; };
+		3ABFC52B1C7685F100F770D8 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69011C74EE1F00BC8E73 /* Error.swift */; };
+		3ABFC52C1C7685F100F770D8 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69051C74EE1F00BC8E73 /* Reader.swift */; };
+		3ABFC52D1C7685F100F770D8 /* ByteReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF442E21C750677009A8EA7 /* ByteReader.swift */; };
+		3ABFC52E1C7685F100F770D8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69021C74EE1F00BC8E73 /* Extensions.swift */; };
+		3ABFC52F1C7685F100F770D8 /* NativeTypeConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A916EF71C765CAC00E8D500 /* NativeTypeConversions.swift */; };
+		3ABFC5301C7685F100F770D8 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69041C74EE1F00BC8E73 /* Parser.swift */; };
+		3ABFC5311C7685F100F770D8 /* NativeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A66EBF51C765B5700ECEA4D /* NativeParser.swift */; };
+		3ABFC5321C7685F100F770D8 /* RootParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08B71C753A400092B8AF /* RootParser.swift */; };
+		3ABFC5331C7685F100F770D8 /* ValueParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08AB1C7539C50092B8AF /* ValueParser.swift */; };
+		3ABFC5341C7685F100F770D8 /* ObjectParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A91C7539C50092B8AF /* ObjectParser.swift */; };
+		3ABFC5351C7685F100F770D8 /* ArrayParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A51C7539C50092B8AF /* ArrayParser.swift */; };
+		3ABFC5361C7685F100F770D8 /* StringParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08AA1C7539C50092B8AF /* StringParser.swift */; };
+		3ABFC5371C7685F100F770D8 /* NumberParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A81C7539C50092B8AF /* NumberParser.swift */; };
+		3ABFC5381C7685F100F770D8 /* BooleanParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A61C7539C50092B8AF /* BooleanParser.swift */; };
+		3ABFC5391C7685F100F770D8 /* NullParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A71C7539C50092B8AF /* NullParser.swift */; };
 		3ADB08AC1C7539C50092B8AF /* ArrayParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A51C7539C50092B8AF /* ArrayParser.swift */; };
 		3ADB08AD1C7539C50092B8AF /* BooleanParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A61C7539C50092B8AF /* BooleanParser.swift */; };
 		3ADB08AE1C7539C50092B8AF /* NullParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB08A71C7539C50092B8AF /* NullParser.swift */; };
@@ -66,6 +110,10 @@
 		3A66EBF51C765B5700ECEA4D /* NativeParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NativeParser.swift; path = ../Sources/Jay/NativeParser.swift; sourceTree = SOURCE_ROOT; };
 		3A916EF71C765CAC00E8D500 /* NativeTypeConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NativeTypeConversions.swift; path = ../Sources/Jay/NativeTypeConversions.swift; sourceTree = SOURCE_ROOT; };
 		3AA85BE01C74821C0024225D /* Jay */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Jay; sourceTree = BUILT_PRODUCTS_DIR; };
+		3ABFC4FA1C76857E00F770D8 /* JayTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "JayTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3ABFC4FE1C76857E00F770D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3ABFC51C1C7685D500F770D8 /* JayTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "JayTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3ABFC5201C7685D500F770D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3ADB08A51C7539C50092B8AF /* ArrayParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArrayParser.swift; path = ../Sources/Jay/ArrayParser.swift; sourceTree = SOURCE_ROOT; };
 		3ADB08A61C7539C50092B8AF /* BooleanParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BooleanParser.swift; path = ../Sources/Jay/BooleanParser.swift; sourceTree = SOURCE_ROOT; };
 		3ADB08A71C7539C50092B8AF /* NullParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NullParser.swift; path = ../Sources/Jay/NullParser.swift; sourceTree = SOURCE_ROOT; };
@@ -97,6 +145,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3ABFC4F71C76857E00F770D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3ABFC5191C7685D500F770D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3AFC690C1C74EE4100BC8E73 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -112,6 +174,8 @@
 			children = (
 				3AA85BE21C74821C0024225D /* Jay */,
 				3AFC69101C74EE4100BC8E73 /* JayTests */,
+				3ABFC4FB1C76857E00F770D8 /* JayTests-iOS */,
+				3ABFC51D1C7685D500F770D8 /* JayTests-tvOS */,
 				3AA85BE11C74821C0024225D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -121,6 +185,8 @@
 			children = (
 				3AA85BE01C74821C0024225D /* Jay */,
 				3AFC690F1C74EE4100BC8E73 /* JayTests.xctest */,
+				3ABFC4FA1C76857E00F770D8 /* JayTests-iOS.xctest */,
+				3ABFC51C1C7685D500F770D8 /* JayTests-tvOS.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -134,6 +200,22 @@
 				3ADB08B61C753A1A0092B8AF /* Parser */,
 			);
 			path = Jay;
+			sourceTree = "<group>";
+		};
+		3ABFC4FB1C76857E00F770D8 /* JayTests-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				3ABFC4FE1C76857E00F770D8 /* Info.plist */,
+			);
+			path = "JayTests-iOS";
+			sourceTree = "<group>";
+		};
+		3ABFC51D1C7685D500F770D8 /* JayTests-tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				3ABFC5201C7685D500F770D8 /* Info.plist */,
+			);
+			path = "JayTests-tvOS";
 			sourceTree = "<group>";
 		};
 		3ADB08B31C7539FE0092B8AF /* Reader */ = {
@@ -214,6 +296,40 @@
 			productReference = 3AA85BE01C74821C0024225D /* Jay */;
 			productType = "com.apple.product-type.tool";
 		};
+		3ABFC4F91C76857E00F770D8 /* JayTests-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3ABFC5011C76857E00F770D8 /* Build configuration list for PBXNativeTarget "JayTests-iOS" */;
+			buildPhases = (
+				3ABFC4F61C76857E00F770D8 /* Sources */,
+				3ABFC4F71C76857E00F770D8 /* Frameworks */,
+				3ABFC4F81C76857E00F770D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "JayTests-iOS";
+			productName = "JayTests-iOS";
+			productReference = 3ABFC4FA1C76857E00F770D8 /* JayTests-iOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3ABFC51B1C7685D500F770D8 /* JayTests-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3ABFC5211C7685D500F770D8 /* Build configuration list for PBXNativeTarget "JayTests-tvOS" */;
+			buildPhases = (
+				3ABFC5181C7685D500F770D8 /* Sources */,
+				3ABFC5191C7685D500F770D8 /* Frameworks */,
+				3ABFC51A1C7685D500F770D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "JayTests-tvOS";
+			productName = "JayTests-tvOS";
+			productReference = 3ABFC51C1C7685D500F770D8 /* JayTests-tvOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		3AFC690E1C74EE4100BC8E73 /* JayTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3AFC69141C74EE4100BC8E73 /* Build configuration list for PBXNativeTarget "JayTests" */;
@@ -244,6 +360,12 @@
 					3AA85BDF1C74821C0024225D = {
 						CreatedOnToolsVersion = 7.3;
 					};
+					3ABFC4F91C76857E00F770D8 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					3ABFC51B1C7685D500F770D8 = {
+						CreatedOnToolsVersion = 7.3;
+					};
 					3AFC690E1C74EE4100BC8E73 = {
 						CreatedOnToolsVersion = 7.3;
 					};
@@ -263,11 +385,27 @@
 			targets = (
 				3AA85BDF1C74821C0024225D /* Jay */,
 				3AFC690E1C74EE4100BC8E73 /* JayTests */,
+				3ABFC4F91C76857E00F770D8 /* JayTests-iOS */,
+				3ABFC51B1C7685D500F770D8 /* JayTests-tvOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3ABFC4F81C76857E00F770D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3ABFC51A1C7685D500F770D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3AFC690D1C74EE4100BC8E73 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -300,6 +438,64 @@
 				3AFC69251C74F24200BC8E73 /* Consts.swift in Sources */,
 				3AFC69081C74EE1F00BC8E73 /* Jay.swift in Sources */,
 				3AFC69071C74EE1F00BC8E73 /* Extensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3ABFC4F61C76857E00F770D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3ABFC5061C76858C00F770D8 /* Reader.swift in Sources */,
+				3ABFC5141C76859100F770D8 /* ConstsTests.swift in Sources */,
+				3ABFC5101C76858C00F770D8 /* StringParser.swift in Sources */,
+				3ABFC5171C76859100F770D8 /* TestUtils.swift in Sources */,
+				3ABFC5071C76858C00F770D8 /* ByteReader.swift in Sources */,
+				3ABFC50A1C76858C00F770D8 /* Parser.swift in Sources */,
+				3ABFC5031C76858C00F770D8 /* Types.swift in Sources */,
+				3ABFC5161C76859100F770D8 /* ReaderTests.swift in Sources */,
+				3ABFC50C1C76858C00F770D8 /* RootParser.swift in Sources */,
+				3ABFC50B1C76858C00F770D8 /* NativeParser.swift in Sources */,
+				3ABFC5081C76858C00F770D8 /* Extensions.swift in Sources */,
+				3ABFC5041C76858C00F770D8 /* Consts.swift in Sources */,
+				3ABFC5091C76858C00F770D8 /* NativeTypeConversions.swift in Sources */,
+				3ABFC5151C76859100F770D8 /* ParsingTests.swift in Sources */,
+				3ABFC5021C76858C00F770D8 /* Jay.swift in Sources */,
+				3ABFC5051C76858C00F770D8 /* Error.swift in Sources */,
+				3ABFC50F1C76858C00F770D8 /* ArrayParser.swift in Sources */,
+				3ABFC5111C76858C00F770D8 /* NumberParser.swift in Sources */,
+				3ABFC50E1C76858C00F770D8 /* ObjectParser.swift in Sources */,
+				3ABFC5131C76858C00F770D8 /* NullParser.swift in Sources */,
+				3ABFC50D1C76858C00F770D8 /* ValueParser.swift in Sources */,
+				3ABFC5121C76858C00F770D8 /* BooleanParser.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3ABFC5181C7685D500F770D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3ABFC52B1C7685F100F770D8 /* Error.swift in Sources */,
+				3ABFC5391C7685F100F770D8 /* NullParser.swift in Sources */,
+				3ABFC5251C7685E900F770D8 /* ParsingTests.swift in Sources */,
+				3ABFC5351C7685F100F770D8 /* ArrayParser.swift in Sources */,
+				3ABFC5371C7685F100F770D8 /* NumberParser.swift in Sources */,
+				3ABFC5261C7685E900F770D8 /* ReaderTests.swift in Sources */,
+				3ABFC52C1C7685F100F770D8 /* Reader.swift in Sources */,
+				3ABFC5301C7685F100F770D8 /* Parser.swift in Sources */,
+				3ABFC5241C7685E900F770D8 /* ConstsTests.swift in Sources */,
+				3ABFC5331C7685F100F770D8 /* ValueParser.swift in Sources */,
+				3ABFC5291C7685F100F770D8 /* Types.swift in Sources */,
+				3ABFC52D1C7685F100F770D8 /* ByteReader.swift in Sources */,
+				3ABFC52A1C7685F100F770D8 /* Consts.swift in Sources */,
+				3ABFC52F1C7685F100F770D8 /* NativeTypeConversions.swift in Sources */,
+				3ABFC5271C7685E900F770D8 /* TestUtils.swift in Sources */,
+				3ABFC5311C7685F100F770D8 /* NativeParser.swift in Sources */,
+				3ABFC5341C7685F100F770D8 /* ObjectParser.swift in Sources */,
+				3ABFC5361C7685F100F770D8 /* StringParser.swift in Sources */,
+				3ABFC52E1C7685F100F770D8 /* Extensions.swift in Sources */,
+				3ABFC5321C7685F100F770D8 /* RootParser.swift in Sources */,
+				3ABFC5281C7685F100F770D8 /* Jay.swift in Sources */,
+				3ABFC5381C7685F100F770D8 /* BooleanParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,6 +632,58 @@
 			};
 			name = Release;
 		};
+		3ABFC4FF1C76857E00F770D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "JayTests-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honzadvorsky.JayTests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		3ABFC5001C76857E00F770D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "JayTests-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honzadvorsky.JayTests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3ABFC5221C7685D500F770D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "JayTests-tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honzadvorsky.JayTests-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Debug;
+		};
+		3ABFC5231C7685D500F770D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "JayTests-tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honzadvorsky.JayTests-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		3AFC69151C74EE4100BC8E73 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -478,6 +726,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		3ABFC5011C76857E00F770D8 /* Build configuration list for PBXNativeTarget "JayTests-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3ABFC4FF1C76857E00F770D8 /* Debug */,
+				3ABFC5001C76857E00F770D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		3ABFC5211C7685D500F770D8 /* Build configuration list for PBXNativeTarget "JayTests-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3ABFC5221C7685D500F770D8 /* Debug */,
+				3ABFC5231C7685D500F770D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		3AFC69141C74EE4100BC8E73 /* Build configuration list for PBXNativeTarget "JayTests" */ = {
 			isa = XCConfigurationList;

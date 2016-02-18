@@ -10,6 +10,8 @@
 
 public struct Jay {
     
+    public init() { }
+    
     //Parses data into a dictionary [String: Any] or array [Any].
     //Does not allow fragments. Test by conditional
     //casting whether you received what you expected.
