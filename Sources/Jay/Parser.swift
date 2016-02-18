@@ -38,7 +38,7 @@ extension JsonParser {
         reader.consumeWhitespace()
         
         //if no more chars, then we encountered an unexpected end
-        guard !reader.isDone() else { throw Error.UnexpectedEnd(reader) }
+        try reader.ensureNotDone()
         
         return reader
     }

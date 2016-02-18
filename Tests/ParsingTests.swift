@@ -71,26 +71,30 @@ class ParsingTests: XCTestCase {
         XCTAssertNil(ret)
     }
 
-    func testArray_NullsAndBooleans_Normal_Minimal_RootParser() {
+    func testArray_NullsBoolsNums_Normal_Minimal_RootParser() {
         
-        let reader = ByteReader(content: "[null,true,false]")
+        let reader = ByteReader(content: "[null,true,false,12,-24.3,18.2e9]")
         let ret = try! RootParser().parse(withReader: reader)
         let exp: JsonArray = [
             JsonValue.Null,
             JsonValue.Boolean(JsonBoolean.True),
-            JsonValue.Boolean(JsonBoolean.False)
+            JsonValue.Boolean(JsonBoolean.False),
+            JsonValue.Number(JsonNumber.JsonInt(12)),
+            JsonValue.Number(JsonNumber.JsonDbl(-24.3)),
+            JsonValue.Number(JsonNumber.JsonDbl(18200000000)),
         ]
         ensureArray(ret.0, exp: exp)
         XCTAssert(ret.1.isDone())
     }
 
-    func testArray_NullsAndBooleans_Normal_MuchWhitespace() {
+    func testArray_NullsBoolsNums_Normal_MuchWhitespace() {
         
-        let reader = ByteReader(content: " \t[\n  null ,true, \nfalse\r\n]\n  ")
+        let reader = ByteReader(content: " \t[\n  null ,true, \n-12.3 , false\r\n]\n  ")
         let ret = try! ArrayParser().parse(withReader: reader)
         let exp: JsonArray = [
             JsonValue.Null,
             JsonValue.Boolean(JsonBoolean.True),
+            JsonValue.Number(JsonNumber.JsonDbl(-12.3)),
             JsonValue.Boolean(JsonBoolean.False)
         ]
         ensureArray(ret.0, exp: exp)
@@ -126,29 +130,70 @@ class ParsingTests: XCTestCase {
     }
 
     func testNumber_Int_Basic() {
-        let reader = ByteReader(content: "24")
+        let reader = ByteReader(content: "24  ")
         let ret = try! NumberParser().parse(withReader: reader)
         ensureNumber(ret.0, exp: JsonNumber.JsonInt(24))
     }
     
     func testNumber_Int_Negative() {
-        let reader = ByteReader(content: "24")
+        let reader = ByteReader(content: "24 , ")
         let ret = try! NumberParser().parse(withReader: reader)
         ensureNumber(ret.0, exp: JsonNumber.JsonInt(24))
     }
     
     func testNumber_Dbl_Basic() {
-        let reader = ByteReader(content: "24.34")
+        let reader = ByteReader(content: "24.34, ")
         let ret = try! NumberParser().parse(withReader: reader)
         ensureNumber(ret.0, exp: JsonNumber.JsonDbl(24.34))
     }
     
+    func testNumber_Dbl_Incomplete() {
+        let reader = ByteReader(content: "24., ")
+        let ret = try? NumberParser().parse(withReader: reader)
+        XCTAssertNil(ret)
+    }
+    
     func testNumber_Dbl_Negative() {
-        let reader = ByteReader(content: "-24.34")
+        let reader = ByteReader(content: "-24.34]")
         let ret = try! NumberParser().parse(withReader: reader)
         ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-24.34))
     }
+    
+    func testNumber_Dbl_Negative_WrongChar() {
+        let reader = ByteReader(content: "-24.3a4]")
+        let ret = try? NumberParser().parse(withReader: reader)
+        XCTAssertNil(ret)
+    }
 
+    func testNumber_Dbl_Negative_TwoDecimalPoints() {
+        let reader = ByteReader(content: "-24.3.4]")
+        let ret = try? NumberParser().parse(withReader: reader)
+        XCTAssertNil(ret)
+    }
+    
+    func testNumber_Dbl_Negative_TwoMinuses() {
+        let reader = ByteReader(content: "--24.34]")
+        let ret = try? NumberParser().parse(withReader: reader)
+        XCTAssertNil(ret)
+    }
+
+    func testNumber_Double_Exp_Normal() {
+        let reader = ByteReader(content: "-24.3245e2, ")
+        let ret = try! NumberParser().parse(withReader: reader)
+        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-2432.45))
+    }
+    
+    func testNumber_Double_Exp_NoFrac() {
+        let reader = ByteReader(content: "24E2, ")
+        let ret = try! NumberParser().parse(withReader: reader)
+        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(2400))
+    }
+
+    func testNumber_Double_Exp_TwoEs() {
+        let reader = ByteReader(content: "-24.3245eE2, ")
+        let ret = try? NumberParser().parse(withReader: reader)
+        XCTAssertNil(ret)
+    }
 
     
 }

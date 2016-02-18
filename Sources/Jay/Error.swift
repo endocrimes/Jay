@@ -12,5 +12,6 @@ enum Error: ErrorType {
     case ParseStringFromCharsFailed([CChar])
     case UnexpectedCharacter(Reader)
     case Mismatch(Reader, Reader)
+    case NumberParsingFailed(Reader)
 }
 

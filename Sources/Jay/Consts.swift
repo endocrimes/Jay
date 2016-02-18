@@ -31,6 +31,7 @@ struct Const {
     static let Minus: CChar             = 0x2d // "-"
     static let Plus: CChar              = 0x2b // "+"
     static let QuotationMark: CChar     = 0x22 // """
+    static let DecimalPoint: CChar      = 0x2e // "."
     
     //Convenience Collections
     static let Whitespace: Set<CChar> = [
@@ -43,6 +44,13 @@ struct Const {
     static let Zero: CChar              = 0x30 // "0"
     static let Digits1to9: Set<CChar>   = Set(0x31...0x39) // 1...9
     static let Digits0to9: Set<CChar>   = Const.Digits1to9.union([Const.Zero]) // 0...9
+    static let Exponent: Set<CChar>     = [0x65, 0x45] // "e", "E"
+    
+    static let NumberTerminators: Set<CChar> = Const.Whitespace.union([
+        Const.EndArray,
+        Const.EndObject,
+        Const.ValueSeparator
+    ])
 }
 
 struct StartChars {

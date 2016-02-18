@@ -23,6 +23,17 @@ protocol Reader {
 
 extension Reader {
     
+    func ensureNotDone() throws {
+        if self.isDone() {
+            throw Error.UnexpectedEnd(self)
+        }
+    }
+    
+    mutating func nextAndCheckNotDone() throws {
+        self.next()
+        try self.ensureNotDone()
+    }
+    
     // Consumes all contiguous whitespace and returns # of consumed chars
     mutating func consumeWhitespace() -> Int {
         var counter = 0
