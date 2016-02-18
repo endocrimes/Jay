@@ -21,7 +21,18 @@ func ensureArray(val: JsonValue, exp: JsonArray) {
 }
 
 func ensureNumber(val: JsonValue, exp: JsonNumber) {
-    XCTAssertEqual(val, JsonValue.Number(exp))
+    switch val {
+    case .Number(let num):
+        
+        switch (num, exp) {
+        case (.JsonDbl(let l), .JsonDbl(let r)):
+            XCTAssertEqualWithAccuracy(r, l, accuracy: 1e-10)
+        case (.JsonInt(let l), .JsonInt(let r)):
+            XCTAssertEqual(l, r)
+        default: XCTFail()
+        }
+    default: XCTFail()
+    }
 }
 
 func ensureString(val: JsonValue, exp: JsonString) {

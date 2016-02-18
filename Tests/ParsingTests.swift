@@ -173,6 +173,18 @@ class ParsingTests: XCTestCase {
         ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-2432.45))
     }
     
+    func testNumber_Double_Exp_Positive() {
+        let reader = ByteReader(content: "-24.3245e+2, ")
+        let ret = try! ValueParser().parse(withReader: reader)
+        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-2432.45))
+    }
+    
+    func testNumber_Double_Exp_Negative() {
+        let reader = ByteReader(content: "-24.3245e-2, ")
+        let ret = try! ValueParser().parse(withReader: reader)
+        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-0.243245))
+    }
+    
     func testNumber_Double_Exp_NoFrac() {
         let reader = ByteReader(content: "24E2, ")
         let ret = try! ValueParser().parse(withReader: reader)
