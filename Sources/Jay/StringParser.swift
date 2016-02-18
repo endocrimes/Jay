@@ -34,7 +34,7 @@ struct StringParser: JsonParser {
         return true
     }
     
-    func unescapedCharacter(r: Reader) throws -> (Character, Reader) {
+    func unescapedCharacter(r: Reader) throws -> (UnicodeScalar, Reader) {
         
         var reader = r
         
@@ -46,7 +46,7 @@ struct StringParser: JsonParser {
         if Const.Escaped.contains(reader.curr()) {
             
             //we encountered one of the simple escapable characters, just add it
-            let char = Character(UnicodeScalar(UInt8(reader.curr())))
+            let char = UnicodeScalar(UInt8(reader.curr()))
             try reader.nextAndCheckNotDone()
             return (char, reader)
         }
@@ -66,8 +66,7 @@ struct StringParser: JsonParser {
         //unicode code points at once? read up on this. test with emoji.
         
         let last4 = try Array(unicode.suffix(4)).string()
-        let uniScalar = UnicodeScalar(Int(strtoul("0x\(last4)", nil, 16)))
-        let char = Character(uniScalar)
+        let char = UnicodeScalar(Int(strtoul("0x\(last4)", nil, 16)))
         return (char, reader)
     }
 }

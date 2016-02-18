@@ -198,7 +198,7 @@ class ParsingTests: XCTestCase {
     func testEscape_Unicode_Normal() {
         
         var reader: Reader = ByteReader(content: "\\u0048 ")
-        let char: Character
+        let char: UnicodeScalar
         (char, reader) = try! StringParser().unescapedCharacter(reader)
         
         XCTAssert(String(char) == "H")
@@ -231,7 +231,7 @@ class ParsingTests: XCTestCase {
         ]
         
         var reader: Reader = ByteReader(content: chars)
-        var char: Character
+        var char: UnicodeScalar
         
         (char, reader) = try! StringParser().unescapedCharacter(reader)
         XCTAssert("\"" == String(char))
