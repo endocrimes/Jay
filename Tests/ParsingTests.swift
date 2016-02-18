@@ -195,5 +195,70 @@ class ParsingTests: XCTestCase {
         XCTAssertNil(ret)
     }
 
+    func testEscape_Unicode_Normal() {
+        
+        var reader: Reader = ByteReader(content: "\\u0048 ")
+        let char: Character
+        (char, reader) = try! StringParser().unescapedCharacter(reader)
+        
+        XCTAssert(String(char) == "H")
+    }
     
+    func testEscape_Unicode_InvalidUnicode_MissingDigit() {
+        
+        let reader: Reader = ByteReader(content: "\\u048 ")
+        XCTAssertNil(try? StringParser().unescapedCharacter(reader))
+    }
+    
+    func testEscape_Unicode_InvalidUnicode_MissingAllDigits() {
+        
+        let reader: Reader = ByteReader(content: "\\u ")
+        XCTAssertNil(try? StringParser().unescapedCharacter(reader))
+    }
+
+    func testEscape_SpecialChars() {
+        
+        let chars: [CChar] = [
+            Const.Escape, Const.QuotationMark,
+            Const.Escape, Const.ReverseSolidus,
+            Const.Escape, Const.Solidus,
+            Const.Escape, Const.Backspace,
+            Const.Escape, Const.FormFeed,
+            Const.Escape, Const.NewLine,
+            Const.Escape, Const.CarriageReturn,
+            Const.Escape, Const.HorizontalTab,
+            Const.Space
+        ]
+        
+        var reader: Reader = ByteReader(content: chars)
+        var char: Character
+        
+        (char, reader) = try! StringParser().unescapedCharacter(reader)
+        XCTAssert("\"" == String(char))
+
+        (char, reader) = try! StringParser().unescapedCharacter(reader)
+        XCTAssert("\\" == String(char))
+
+        (char, reader) = try! StringParser().unescapedCharacter(reader)
+        XCTAssert("/" == String(char))
+
+        (char, reader) = try! StringParser().unescapedCharacter(reader)
+        XCTAssert(try! Const.Backspace.string() == String(char))
+
+        (char, reader) = try! StringParser().unescapedCharacter(reader)
+        XCTAssert(try! Const.FormFeed.string() == String(char))
+
+        (char, reader) = try! StringParser().unescapedCharacter(reader)
+        XCTAssert("\n" == String(char))
+
+        (char, reader) = try! StringParser().unescapedCharacter(reader)
+        XCTAssert("\r" == String(char))
+
+        (char, reader) = try! StringParser().unescapedCharacter(reader)
+        XCTAssert("\t" == String(char))
+    }
+
+    
+    //TODO test string: emoji, normal alphabet, regular unicode
+
 }

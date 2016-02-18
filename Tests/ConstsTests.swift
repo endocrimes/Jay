@@ -28,4 +28,17 @@ class ConstsTests: XCTestCase {
         XCTAssertEqual(try! Const.True.string(), "true")
     }
     
+    func testUnicodeTesting() {
+        XCTAssert(StringParser().isValidUnicodeHexDigit("uab01".cchars()) == true)
+        XCTAssert(StringParser().isValidUnicodeHexDigit("uAB01".cchars()) == true)
+        XCTAssert(StringParser().isValidUnicodeHexDigit("uaB09".cchars()) == true)
+        XCTAssert(StringParser().isValidUnicodeHexDigit("u0000".cchars()) == true)
+        XCTAssert(StringParser().isValidUnicodeHexDigit("uFFFF".cchars()) == true)
+        
+        XCTAssert(StringParser().isValidUnicodeHexDigit("FFFF".cchars()) == false)
+        XCTAssert(StringParser().isValidUnicodeHexDigit("ug001".cchars()) == false)
+        XCTAssert(StringParser().isValidUnicodeHexDigit("u12345".cchars()) == false)
+        XCTAssert(StringParser().isValidUnicodeHexDigit("u12F".cchars()) == false)
+    }
+        
 }

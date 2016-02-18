@@ -30,8 +30,28 @@ struct Const {
     // Special Characters
     static let Minus: CChar             = 0x2d // "-"
     static let Plus: CChar              = 0x2b // "+"
-    static let QuotationMark: CChar     = 0x22 // """
     static let DecimalPoint: CChar      = 0x2e // "."
+    
+    // Strings
+    static let QuotationMark: CChar     = 0x22 // """
+    static let ReverseSolidus: CChar    = 0x5c // "\"
+    static let Solidus: CChar           = 0x2f // "/"
+    static let Backspace: CChar         = 0x08 // "b"
+    static let FormFeed: CChar          = 0x0c // "f"
+    static let UnicodeStart: CChar      = 0x75 // "u"
+    
+    static let Escape: CChar            = Const.ReverseSolidus
+    
+    static let Escaped: Set<CChar> = [
+        Const.QuotationMark,
+        Const.ReverseSolidus,
+        Const.Solidus,
+        Const.Backspace,
+        Const.FormFeed,
+        Const.NewLine,
+        Const.CarriageReturn,
+        Const.HorizontalTab
+    ]
     
     //Convenience Collections
     static let Whitespace: Set<CChar> = [
@@ -44,6 +64,9 @@ struct Const {
     static let Zero: CChar              = 0x30 // "0"
     static let Digits1to9: Set<CChar>   = Set(0x31...0x39) // 1...9
     static let Digits0to9: Set<CChar>   = Const.Digits1to9.union([Const.Zero]) // 0...9
+    static let HexLettersUp: Set<CChar> = Set(0x41...0x46) // A...F
+    static let HexLettersDo: Set<CChar> = Set(0x61...0x66) // a...f
+    static let HexDigits: Set<CChar>    = Const.Digits0to9.union(Const.HexLettersUp).union(Const.HexLettersDo)
     static let Exponent: Set<CChar>     = [0x65, 0x45] // "e", "E"
     
     static let NumberTerminators: Set<CChar> = Const.Whitespace.union([

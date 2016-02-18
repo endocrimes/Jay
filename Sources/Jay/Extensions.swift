@@ -6,7 +6,11 @@
 //  Copyright © 2016 Honza Dvorsky. All rights reserved.
 //
 
-import Darwin //TODO: import GLibc
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
 
 extension CChar {
     func string() throws -> String {

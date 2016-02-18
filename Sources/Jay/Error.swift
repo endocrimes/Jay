@@ -13,5 +13,7 @@ enum Error: ErrorType {
     case UnexpectedCharacter(Reader)
     case Mismatch(Reader, Reader)
     case NumberParsingFailed(Reader)
+    case InvalidUnicodeSpecifier(Reader)
+    case InvalidEscape(Reader)
 }
 

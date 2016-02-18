@@ -95,6 +95,40 @@ class ReaderTests: XCTestCase {
             XCTFail()
         }
     }
+    
+    func testPeek_EnoughAvailable() {
+        var mainReader = ByteReader(content: "hello world")
+        mainReader.next()
+        mainReader.next()
+        XCTAssert(mainReader.peek(5) == "llo w".cchars())
+    }
+    
+    func testPeek_LessAvailable() {
+        var mainReader = ByteReader(content: "hello world")
+        mainReader.next()
+        mainReader.next()
+        XCTAssert(mainReader.peek(12) == "llo world".cchars())
+    }
+    
+    func testPeek_NoAvailable() {
+        var mainReader = ByteReader(content: "hey")
+        mainReader.next()
+        mainReader.next()
+        mainReader.next()
+        XCTAssert(mainReader.peek(5) == [])
+    }
 
+    func testReadNext_EnoughAvailable() {
+        var mainReader = ByteReader(content: "hello world")
+        try! mainReader.readNext(2)
+        let next = try! mainReader.readNext(5)
+        XCTAssert(next == "llo w".cchars())
+        XCTAssert(mainReader.curr() == "o".cchar())
+    }
+    
+    func testReadNext_LessAvailable() {
+        var mainReader = ByteReader(content: "hello world")
+        XCTAssertNil(try? mainReader.readNext(12))
+    }
 
 }

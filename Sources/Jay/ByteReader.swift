@@ -21,12 +21,11 @@ struct ByteReader: Reader {
         self.cursor = self.cursor.successor()
     }
     
-    func peek() -> CChar? {
-        let nextCursor = self.cursor.successor()
-        if nextCursor == self.content.endIndex {
-            return nil
-        }
-        return self.content[nextCursor]
+    func peek(next: Int) -> [CChar] {
+        
+        let take = min(next, self.content.endIndex - self.cursor)
+        let range = self.cursor..<self.cursor.advancedBy(take)
+        return Array(self.content[range])
     }
     
     func curr() -> CChar {
