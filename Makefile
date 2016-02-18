@@ -24,7 +24,7 @@ xctest-osx:
 xctest-ios:
 	set -o pipefail && \
 	xcodebuild \
-	  -project XcodeProject/Redbird.xcodeproj \
+	  -project XcodeProject/Jay.xcodeproj \
 	  -scheme JayTests-iOS \
 	  -destination 'platform=iOS Simulator,name=iPhone 6s,OS=9.3' \
 	  test \
@@ -33,7 +33,7 @@ xctest-ios:
 xctest-tvos:
 	set -o pipefail && \
 	xcodebuild \
-	  -project XcodeProject/Redbird.xcodeproj \
+	  -project XcodeProject/Jay.xcodeproj \
 	  -scheme JayTests-tvOS \
 	  -destination 'platform=tvOS Simulator,name=Apple TV 1080p,OS=9.2' \
 	  test \
