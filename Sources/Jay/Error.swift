@@ -17,5 +17,6 @@ enum Error: ErrorType {
     case InvalidEscape(Reader)
     case UnescapedControlCharacterInString(Reader)
     case UnicodeCharacterParsing([JChar], Reader)
+    case InvalidSurrogatePair(UInt16, UInt16, Reader)
 }
 

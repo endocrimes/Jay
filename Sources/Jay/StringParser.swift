@@ -115,12 +115,14 @@ struct StringParser: JsonParser {
         return true
     }
     
-    func unescapedCharacter(r: Reader) throws -> (UnicodeScalar, Reader) {
+    func unescapedCharacter(r: Reader, expectingLowSurrogate: Bool = false) throws -> (UnicodeScalar, Reader) {
         
         var reader = r
         
-        //this MUST start with escape, otherwise there's a logic error
-        precondition(reader.curr() == Const.Escape)
+        //this MUST start with escape
+        guard reader.curr() == Const.Escape else {
+            throw Error.InvalidEscape(reader)
+        }
         try reader.nextAndCheckNotDone()
         
         //first check for the set escapable chars
@@ -143,11 +145,66 @@ struct StringParser: JsonParser {
             throw Error.InvalidUnicodeSpecifier(reader)
         }
         
-        //TODO: do we need to loop here and potentially parse all 
-        //unicode code points at once? read up on this. test with emoji.
-        
         let last4 = try Array(unicode.suffix(4)).string()
-        let char = UnicodeScalar(Int(strtoul("0x\(last4)", nil, 16)))
+        let value = self.fourBytesToUnicodeCode(last4)
+        
+        //check for high/low surrogate pairs
+        if let complexScalarRet = try self.parseSurrogate(reader, value: value) {
+            return complexScalarRet
+        }
+        
+        //nope, normal unicode char
+        let char = UnicodeScalar(value)
         return (char, reader)
     }
+    
+    func fourBytesToUnicodeCode(last4: String) -> UInt16 {
+        return UInt16(strtoul("0x\(last4)", nil, 16))
+    }
+    
+    //nil means no surrogate found, parse normally
+    func parseSurrogate(r: Reader, value: UInt16) throws -> (UnicodeScalar, Reader)? {
+        
+        var reader = r
+        
+        //no surrogate starting
+        guard UTF16.isLeadSurrogate(value) else { return nil }
+        
+        //this MUST start with escape - the low surrogate
+        guard reader.curr() == Const.Escape else {
+            throw Error.InvalidEscape(reader)
+        }
+        try reader.nextAndCheckNotDone()
+
+        let high = value
+        
+        //validate u + next 4 digits (total of 5)
+        let unicode = try reader.readNext(5)
+        guard self.isValidUnicodeHexDigit(unicode) else {
+            throw Error.InvalidUnicodeSpecifier(reader)
+        }
+        let last4 = try Array(unicode.suffix(4)).string()
+        let low = self.fourBytesToUnicodeCode(last4)
+        
+        //must be a low, otherwise invalid
+        guard UTF16.isTrailSurrogate(low) else {
+            throw Error.InvalidSurrogatePair(high, low, reader)
+        }
+        
+        //we have a high and a low surrogate, both as UTF-16
+        //append and parse them as such
+        let data = [high, low]
+        var utf = UTF16()
+        var gen = data.generate()
+        switch utf.decode(&gen) {
+        case .Result(let char):
+            return (char, reader)
+        case .EmptyInput, .Error:
+            throw Error.InvalidSurrogatePair(high, low, reader)
+        }
+    }
+    
+    
+    
+    
 }

@@ -9,16 +9,6 @@
 import XCTest
 
 class ParsingTests: XCTestCase {
-
-//    func testParsing_Example1() {
-//        
-//        XCTFail()
-////        let data = "{\t\"hello\" : \"world\", \n\t \"val\": 1234}".chars()
-////        let obj = try! Parser().parseJsonFromData(data)
-////        print("\(obj)")
-////        print("\(obj)")
-////        XCTAssertEqual(obj as! [String: Any], ["hello":"world","val":1234] as [String: Any])
-//    }
     
     func testPrepareForReading_FailOnEmpty() {
         let reader = ByteReader(content: "")
@@ -295,13 +285,13 @@ class ParsingTests: XCTestCase {
     }
     
     func testString_Unicode_SpecialCharacter_EmojiSimple() {
-        let reader = ByteReader(content: "\"h\\u1f63bw\" ")
+        let reader = ByteReader(content: "\"h\\ud83d\\ude3bw\" ")
         let ret = try! ValueParser().parse(withReader: reader)
         ensureString(ret.0, exp: "h😻w")
     }
     
     func testString_Unicode_SpecialCharacter_EmojiComplex() {
-        let reader = ByteReader(content: "\"h\\u1f1e8\\u1f1ffbw\" ")
+        let reader = ByteReader(content: "\"h\\ud83c\\udde8\\ud83c\\uddffw\" ")
         let ret = try! ValueParser().parse(withReader: reader)
         ensureString(ret.0, exp: "h🇨🇿w")
     }
@@ -323,10 +313,4 @@ class ParsingTests: XCTestCase {
         let ret = try! ValueParser().parse(withReader: reader)
         ensureString(ret.0, exp: "h🇨🇿w")
     }
-
-
-
-    
-    //TODO test string: emoji, normal alphabet, regular unicode
-
 }
