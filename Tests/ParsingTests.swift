@@ -313,4 +313,33 @@ class ParsingTests: XCTestCase {
         let ret = try! ValueParser().parse(withReader: reader)
         ensureString(ret.0, exp: "h🇨🇿w")
     }
+    
+    func testObject_Empty() {
+        let reader = ByteReader(content: "{}")
+        let ret = try! ValueParser().parse(withReader: reader)
+        let exp: JsonObject = [:]
+        ensureObject(ret.0, exp: exp)
+    }
+    
+    func testObject_Example1() {
+        let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, null, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
+        let reader = ByteReader(content: data)
+        let ret = try! ValueParser().parse(withReader: reader)
+        let exp: JsonObject = [
+            "hello": JsonValue.String("wor🇨🇿ld"),
+            "val": JsonValue.Number(.JsonInt(1234)),
+            "many": JsonValue.Array([
+                JsonValue.Number(.JsonDbl(-12.32)),
+                JsonValue.Null,
+                JsonValue.String("yo")
+            ]),
+            "emptyDict": JsonValue.Object([:]),
+            "dict": JsonValue.Object([
+                    "arr": JsonValue.Array([])
+                ]),
+            "name": JsonValue.Boolean(.True)
+        ]
+        ensureObject(ret.0, exp: exp)
+    }
+
 }

@@ -28,3 +28,7 @@ func ensureString(val: JsonValue, exp: JsonString) {
     XCTAssertEqual(val, JsonValue.String(exp))
 }
 
+func ensureObject(val: JsonValue, exp: JsonObject) {
+    XCTAssertEqual(val, JsonValue.Object(exp))
+}
+

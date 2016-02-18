@@ -49,6 +49,7 @@ struct StringParser: JsonParser {
                 
             case Const.QuotationMark:
                 //end of string, return what we have
+                try reader.nextAndCheckNotDone()
                 return (str, reader)
                 
             case Const.Escape:

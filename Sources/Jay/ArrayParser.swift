@@ -16,7 +16,7 @@ struct ArrayParser: JsonParser {
         guard reader.curr() == Const.BeginArray else {
             throw Error.UnexpectedCharacter(reader)
         }
-        reader.next()
+        try reader.nextAndCheckNotDone()
         
         //move along, now start looking for values
         reader = try self.prepareForReading(withReader: reader)
