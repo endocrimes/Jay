@@ -208,6 +208,17 @@ struct NumberParser: JsonParser {
         }
         try reader.nextAndCheckNotDone()
         
+        var sign = 1
+        //optionally there can be a sign: + or -
+        if Set<JChar>([Const.Plus, Const.Minus]).contains(reader.curr()) {
+            //found a sign, if it's plus, there's nothing to do,
+            //if it's minus, change out sign var
+            if reader.curr() == Const.Minus {
+                sign = -1
+            }
+            try reader.nextAndCheckNotDone()
+        }
+        
         var digs = [JChar]()
         
         //at least one digit 1...9 must follow
@@ -237,7 +248,7 @@ struct NumberParser: JsonParser {
             if expTerm.contains(reader.curr()) {
                 //gracefully end this section
                 let expString = try digs.string()
-                let exp = Int(expString)!
+                let exp = Int(expString)! * sign
                 return (exp, reader)
             }
             
