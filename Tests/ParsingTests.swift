@@ -341,5 +341,28 @@ class ParsingTests: XCTestCase {
         ]
         ensureObject(ret.0, exp: exp)
     }
+    
+    func testNative_Example1() {
+        let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, null, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
+        
+        let ret = try! Jay().jsonFromData(data)
+        let exp: [String: Any] = [
+            "hello": "wor🇨🇿ld",
+            "val": 1234,
+            "many": [Any]([
+                -12.32,
+                "yo"
+                ]),
+            "emptyDict": [String:Any](),
+            "dict": [
+                "arr": [Any]()
+                ],
+            "name": true
+        ]
+        let expStr = "\(exp)"
+        let retStr = "\(ret)"
+        XCTAssertEqual(expStr, retStr)
+    }
+
 
 }

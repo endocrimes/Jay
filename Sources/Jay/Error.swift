@@ -19,5 +19,6 @@ enum Error: ErrorType {
     case UnicodeCharacterParsing([JChar], Reader)
     case InvalidSurrogatePair(UInt16, UInt16, Reader)
     case ObjectNameSeparatorMissing(Reader)
+    case FailedToConvertIntoNativeType(JsonValue)
 }
 
