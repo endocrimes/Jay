@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Jay"
-  s.version      = "0.1.1"
+  s.version      = "0.1.2"
   s.summary      = "Pure-Swift JSON parser. Linux & OS X ready"
 
   s.description  = <<-DESC
