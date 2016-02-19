@@ -64,7 +64,10 @@ struct ObjectParser: JsonParser {
                 reader.next()
                 let exported = self.exportArray(pairs)
                 return (JsonValue.Object(exported), reader)
-            case Const.ValueSeparator: reader.next(); break //comma, so another value must come. let the loop repeat.
+            case Const.ValueSeparator:
+                //comma, so another value must come. let the loop repeat.
+                reader.next()
+                continue
             default: throw Error.UnexpectedCharacter(reader)
             }
         } while true

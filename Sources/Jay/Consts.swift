@@ -39,6 +39,9 @@ struct Const {
     static let Backspace: JChar         = 0x08 // "b"
     static let FormFeed: JChar          = 0x0c // "f"
     static let UnicodeStart: JChar      = 0x75 // "u"
+    static let TabChar: JChar           = 0x74 // "t"
+    static let NewlineChar: JChar       = 0x6e // "n"
+    static let ReturnChar: JChar        = 0x72 // "r"
     
     static let Escape: JChar            = Const.ReverseSolidus
     
@@ -48,9 +51,9 @@ struct Const {
         Const.Solidus,
         Const.Backspace,
         Const.FormFeed,
-        Const.NewLine,
-        Const.CarriageReturn,
-        Const.HorizontalTab
+        Const.NewlineChar,
+        Const.ReturnChar,
+        Const.TabChar
     ]
     
     //Convenience Collections

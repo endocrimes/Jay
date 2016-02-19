@@ -44,7 +44,6 @@ struct NumberParser: JsonParser {
             
             //now if any number terminator is here, finish up with 0
             if Const.NumberTerminators.contains(reader.curr()) {
-                try reader.nextAndCheckNotDone()
                 return (JsonValue.Number(JsonNumber.JsonInt(0)), reader)
             }
             
