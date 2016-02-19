@@ -129,10 +129,18 @@ struct StringParser: JsonParser {
         //first check for the set escapable chars
         if Const.Escaped.contains(reader.curr()) {
             
-            //we encountered one of the simple escapable characters, just add it
-            let char = UnicodeScalar(reader.curr())
+            let char: JChar
+            if let replacement = Const.EscapingRules[reader.curr()] {
+                //rule based, replace properly
+                char = replacement
+            } else {
+                //we encountered one of the simple escapable characters, just add it
+                char = reader.curr()
+            }
+            
+            let uniScalar = UnicodeScalar(char)
             try reader.nextAndCheckNotDone()
-            return (char, reader)
+            return (uniScalar, reader)
         }
         
         //now the char must be 'u', otherwise this is invalid escaping

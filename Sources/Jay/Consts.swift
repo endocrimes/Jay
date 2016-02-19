@@ -16,12 +16,6 @@ struct Const {
     static let NameSeparator: JChar     = 0x3a // ":"
     static let ValueSeparator: JChar    = 0x2c // ","
     
-    // Insignificant Whitespace
-    static let Space: JChar             = 0x20 // " "
-    static let HorizontalTab: JChar     = 0x09 // "\t"
-    static let NewLine: JChar           = 0x0a // "\n"
-    static let CarriageReturn: JChar    = 0x0d // "\r"
-    
     // Literals
     static let False: [JChar]   = [0x66, 0x61, 0x6c, 0x73, 0x65] // "false"
     static let Null: [JChar]    = [0x6e, 0x75, 0x6c, 0x6c] // "null"
@@ -32,25 +26,52 @@ struct Const {
     static let Plus: JChar              = 0x2b // "+"
     static let DecimalPoint: JChar      = 0x2e // "."
     
-    // Strings
-    static let QuotationMark: JChar     = 0x22 // """
-    static let ReverseSolidus: JChar    = 0x5c // "\"
-    static let Solidus: JChar           = 0x2f // "/"
-    static let Backspace: JChar         = 0x08 // "b"
-    static let FormFeed: JChar          = 0x0c // "f"
-    static let UnicodeStart: JChar      = 0x75 // "u"
+    // Whitespace / Control Characters
+    static let Space: JChar             = 0x20 // " "
+
+    static let Backspace: JChar         = 0x08 // "\b"
+    static let HorizontalTab: JChar     = 0x09 // "\t"
+    static let NewLine: JChar           = 0x0a // "\n"
+    static let FormFeed: JChar          = 0x0c // "\f"
+    static let CarriageReturn: JChar    = 0x0d // "\r"
+
+    // Control characters get replaced by a special char
+    // when unescaping. E.g. "\" (5c) + "n" (6e) -> "\n" (0a)
+    static let EscapingRules: [JChar: JChar] = [
+        Const.BackspaceChar: Const.Backspace,
+        Const.HorizontalTabChar: Const.HorizontalTab,
+        Const.NewlineChar: Const.NewLine,
+        Const.FormFeedChar: Const.FormFeed,
+        Const.CarriageReturnChar: Const.CarriageReturn
+    ]
     
+    // Strings
+    static let QuotationMark: JChar         = 0x22 // """
+    static let ReverseSolidus: JChar        = 0x5c // "\"
+    static let Solidus: JChar               = 0x2f // "/"
+
+    static let BackspaceChar: JChar         = 0x62 // "b"
+    static let HorizontalTabChar: JChar     = 0x74 // "t"
+    static let NewlineChar: JChar           = 0x6e // "n"
+    static let FormFeedChar: JChar          = 0x66 // "f"
+    static let CarriageReturnChar: JChar    = 0x72 // "r"
+    
+    static let UnicodeStart: JChar          = 0x75 // "u"
+
     static let Escape: JChar            = Const.ReverseSolidus
     
+    //Chars that can follow the escape character (apart from 'u' for unicode)
     static let Escaped: Set<JChar> = [
+        
         Const.QuotationMark,
         Const.ReverseSolidus,
         Const.Solidus,
-        Const.Backspace,
-        Const.FormFeed,
-        Const.NewLine,
-        Const.CarriageReturn,
-        Const.HorizontalTab
+        
+        Const.BackspaceChar,
+        Const.FormFeedChar,
+        Const.NewlineChar,
+        Const.CarriageReturnChar,
+        Const.HorizontalTabChar
     ]
     
     //Convenience Collections
