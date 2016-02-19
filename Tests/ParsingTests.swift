@@ -304,6 +304,12 @@ class ParsingTests: XCTestCase {
         ensureString(ret.0, exp: "hello world")
     }
     
+    func testString_StartEndWithSpaces() {
+        let reader = ByteReader(content: "\"  hello world    \" ")
+        let ret = try! ValueParser().parse(withReader: reader)
+        ensureString(ret.0, exp: "  hello world    ")
+    }
+    
     func testString_Unicode_RegularChar() {
         let reader = ByteReader(content: "\"hel\\u006co world\" ")
         let ret = try! ValueParser().parse(withReader: reader)
