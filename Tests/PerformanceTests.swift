@@ -40,7 +40,64 @@ class PerformanceTests: XCTestCase {
             _ = try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
         }
     }
+    
+    func assertEqual(my: [UInt8], exp: [UInt8]) {
+        
+        //iterate over both and find the first difference
+        for (index, char) in exp.enumerate() {
+            
+            guard index < my.endIndex else {
+                XCTFail("Ran out of my data at index \(index)")
+                return
+            }
+            
+            if my[index] == char {
+                continue
+            }
+            
+            //different
+            XCTFail("Mismatch at index \(index)")
+        }
+        
+        if my.count > exp.count {
+            XCTFail("We have \(my.count) bytes, exp has \(exp.count)")
+        }
+    }
+    
+    //can't do until we can ensure that the original data 
+    //has sorted keys in objects. otherwise not reproducible.
+//    func test_LoopTest() {
+//        
+//        //first we parse it
+//        let data = self.loadFixture("large_min")
+//        let jay = Jay()
+//        let json = try! jay.jsonFromData(data)
+//        
+//        //then we format it
+//        let outData = try! jay.dataFromJson(json)
+//        
+//        //compare data
+//        assertEqual(outData, exp: data)
+//    }
 
+    //can't test pure data either because order isn't preserved
+//    func test_FormatLargeJson_SameAsNSJSONSerialization() {
+//        
+//        let nsDataIn = self.loadFixtureNSData("large")
+//        let obj = try! NSJSONSerialization.JSONObjectWithData(nsDataIn, options: NSJSONReadingOptions())
+//
+//        //first we format it
+//        let jay = Jay()
+//        let myDataOut = try! jay.dataFromJson(obj)
+//        
+//        //nsjson parses it
+//        let nsNSDataOut = try! NSJSONSerialization.dataWithJSONObject(obj, options: NSJSONWritingOptions())
+//        let nsDataOut = Array(UnsafeBufferPointer(start: UnsafePointer<UInt8>(nsNSDataOut.bytes), count: nsNSDataOut.length))
+//        
+//        //compare
+//        assertEqual(myDataOut, exp: nsDataOut)
+//    }
+    
     
     //Enable when we have formatting and can pretty print it/
     //format into data and compare data with NSJSONSerialization
