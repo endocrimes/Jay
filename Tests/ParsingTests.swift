@@ -245,29 +245,37 @@ class ParsingTests: XCTestCase {
     func testEscape_SpecialChars() {
         
         let chars: [JChar] = [
+            //regular translation
             Const.Escape, Const.QuotationMark,
             Const.Escape, Const.ReverseSolidus,
             Const.Escape, Const.Solidus,
-            Const.Escape, Const.Backspace,
-            Const.Escape, Const.FormFeed,
-            Const.Escape, Const.NewLine,
-            Const.Escape, Const.CarriageReturn,
-            Const.Escape, Const.HorizontalTab,
+            
+            //special substitution
+            Const.Escape, Const.BackspaceChar,
+            Const.Escape, Const.FormFeedChar,
+            Const.Escape, Const.NewlineChar,
+            Const.Escape, Const.CarriageReturnChar,
+            Const.Escape, Const.HorizontalTabChar,
             Const.Space
         ]
         
         var reader: Reader = ByteReader(content: chars)
         var char: UnicodeScalar
         
+        //regular
+        
         (char, reader) = try! StringParser().unescapedCharacter(reader)
-        XCTAssert("\"" == String(char))
+        XCTAssert(try! Const.QuotationMark.string() == String(char))
 
         (char, reader) = try! StringParser().unescapedCharacter(reader)
-        XCTAssert("\\" == String(char))
+        XCTAssert(try! Const.ReverseSolidus.string() == String(char))
 
         (char, reader) = try! StringParser().unescapedCharacter(reader)
-        XCTAssert("/" == String(char))
+        XCTAssert(try! Const.Solidus.string() == String(char))
 
+        
+        //rule-based
+        
         (char, reader) = try! StringParser().unescapedCharacter(reader)
         XCTAssert(try! Const.Backspace.string() == String(char))
 
@@ -275,13 +283,13 @@ class ParsingTests: XCTestCase {
         XCTAssert(try! Const.FormFeed.string() == String(char))
 
         (char, reader) = try! StringParser().unescapedCharacter(reader)
-        XCTAssert("\n" == String(char))
+        XCTAssertEqual(try! Const.NewLine.string(), String(char))
 
         (char, reader) = try! StringParser().unescapedCharacter(reader)
-        XCTAssert("\r" == String(char))
+        XCTAssertEqual(try! Const.CarriageReturn.string(), String(char))
 
         (char, reader) = try! StringParser().unescapedCharacter(reader)
-        XCTAssert("\t" == String(char))
+        XCTAssertEqual(try! Const.HorizontalTab.string(), String(char))
     }
     
     func testString_Empty() {
