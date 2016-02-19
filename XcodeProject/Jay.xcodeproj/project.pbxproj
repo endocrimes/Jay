@@ -91,6 +91,12 @@
 		3AFC69251C74F24200BC8E73 /* Consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69241C74F24200BC8E73 /* Consts.swift */; };
 		3AFC69271C74F5E500BC8E73 /* ConstsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69261C74F5E500BC8E73 /* ConstsTests.swift */; };
 		3AFC69281C74F62900BC8E73 /* Consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC69241C74F24200BC8E73 /* Consts.swift */; };
+		3AFE31B91C76908F003EF3DB /* large.json in Resources */ = {isa = PBXBuildFile; fileRef = 3AFE31B81C76908F003EF3DB /* large.json */; };
+		3AFE31BB1C7690A3003EF3DB /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFE31BA1C7690A3003EF3DB /* PerformanceTests.swift */; };
+		3AFE31BC1C7690A3003EF3DB /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFE31BA1C7690A3003EF3DB /* PerformanceTests.swift */; };
+		3AFE31BD1C7690A3003EF3DB /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFE31BA1C7690A3003EF3DB /* PerformanceTests.swift */; };
+		3AFE31BE1C7690F5003EF3DB /* large.json in Resources */ = {isa = PBXBuildFile; fileRef = 3AFE31B81C76908F003EF3DB /* large.json */; };
+		3AFE31BF1C7690F6003EF3DB /* large.json in Resources */ = {isa = PBXBuildFile; fileRef = 3AFE31B81C76908F003EF3DB /* large.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -135,6 +141,8 @@
 		3AFC69211C74F16100BC8E73 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Types.swift; path = ../Sources/Jay/Types.swift; sourceTree = SOURCE_ROOT; };
 		3AFC69241C74F24200BC8E73 /* Consts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Consts.swift; path = ../Sources/Jay/Consts.swift; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3AFC69261C74F5E500BC8E73 /* ConstsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ConstsTests.swift; path = ../../Tests/ConstsTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		3AFE31B81C76908F003EF3DB /* large.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = large.json; path = ../../Tests/Fixtures/large.json; sourceTree = "<group>"; };
+		3AFE31BA1C7690A3003EF3DB /* PerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceTests.swift; path = ../../Tests/PerformanceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,11 +275,13 @@
 		3AFC69101C74EE4100BC8E73 /* JayTests */ = {
 			isa = PBXGroup;
 			children = (
+				3AFE31B81C76908F003EF3DB /* large.json */,
 				3AFC69131C74EE4100BC8E73 /* Info.plist */,
 				3AFC69261C74F5E500BC8E73 /* ConstsTests.swift */,
 				3AFC691C1C74EE6400BC8E73 /* ParsingTests.swift */,
 				3AF442E01C7504D1009A8EA7 /* ReaderTests.swift */,
 				3A4F1DBB1C75210200222D4A /* TestUtils.swift */,
+				3AFE31BA1C7690A3003EF3DB /* PerformanceTests.swift */,
 			);
 			path = JayTests;
 			sourceTree = "<group>";
@@ -396,6 +406,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AFE31BE1C7690F5003EF3DB /* large.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +414,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AFE31BF1C7690F6003EF3DB /* large.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +422,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AFE31B91C76908F003EF3DB /* large.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +464,7 @@
 				3ABFC5171C76859100F770D8 /* TestUtils.swift in Sources */,
 				3ABFC5071C76858C00F770D8 /* ByteReader.swift in Sources */,
 				3ABFC50A1C76858C00F770D8 /* Parser.swift in Sources */,
+				3AFE31BC1C7690A3003EF3DB /* PerformanceTests.swift in Sources */,
 				3ABFC5031C76858C00F770D8 /* Types.swift in Sources */,
 				3ABFC5161C76859100F770D8 /* ReaderTests.swift in Sources */,
 				3ABFC50C1C76858C00F770D8 /* RootParser.swift in Sources */,
@@ -480,6 +494,7 @@
 				3ABFC5351C7685F100F770D8 /* ArrayParser.swift in Sources */,
 				3ABFC5371C7685F100F770D8 /* NumberParser.swift in Sources */,
 				3ABFC5261C7685E900F770D8 /* ReaderTests.swift in Sources */,
+				3AFE31BD1C7690A3003EF3DB /* PerformanceTests.swift in Sources */,
 				3ABFC52C1C7685F100F770D8 /* Reader.swift in Sources */,
 				3ABFC5301C7685F100F770D8 /* Parser.swift in Sources */,
 				3ABFC5241C7685E900F770D8 /* ConstsTests.swift in Sources */,
@@ -509,6 +524,7 @@
 				3A1E87901C753D2300F70C40 /* RootParser.swift in Sources */,
 				3AF442E11C7504D1009A8EA7 /* ReaderTests.swift in Sources */,
 				3AFC69171C74EE5000BC8E73 /* Error.swift in Sources */,
+				3AFE31BB1C7690A3003EF3DB /* PerformanceTests.swift in Sources */,
 				3AFC691D1C74EE6400BC8E73 /* ParsingTests.swift in Sources */,
 				3AFC69231C74F1F200BC8E73 /* Types.swift in Sources */,
 				3A1E87921C753D2300F70C40 /* ObjectParser.swift in Sources */,
