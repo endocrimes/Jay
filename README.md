@@ -19,16 +19,18 @@ We all use JSON. Especially when writing server-side Swift that needs to run on 
 
 # Features
 - [x] Parsing of JSON object from data
-- [ ] Formatting a JSON object into data
+- [x] Formatting a JSON object into data
 
 # Usage
+
+## Deserializing a JSON object from data
 ```swift
 do {
 	//get data from disk/network
 	let data: [UInt8] = ...
 
 	//ask Jay to parse your data
-	let json = try Jay().jsonFromData(data)
+	let json = try Jay().jsonFromData(data) // Any
 
 	//if it doesn't throw an error, all went well
 	if let dictionary = json as? [String: Any] {
@@ -36,6 +38,21 @@ do {
 	} else if let array = json as? [Any] {
 		//you have an array root object
 	}
+} catch {
+	print("Parsing error: \(error)")
+}
+```
+
+## Serializing a JSON object into data
+```swift
+do {
+	//get a json object
+	let json: Any = ...
+
+	//ask Jay to generate data
+	let data = try Jay().dataFromJson(json) // [UInt8]
+
+	//send data over network, save to disk
 } catch {
 	print("Parsing error: \(error)")
 }
