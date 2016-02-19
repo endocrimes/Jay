@@ -13,7 +13,7 @@
 #endif
 
 extension JChar {
-    func string() throws -> String {
+    public func string() throws -> String {
         return try [self].string()
     }
 }
@@ -32,9 +32,9 @@ extension String {
     }
 }
 
-extension CollectionType where Generator.Element == JChar {
+extension CollectionType where Generator.Element == UInt8 {
     
-    func string() throws -> String {
+    public func string() throws -> String {
         var utf = UTF8()
         var gen = self.generate()
         var str = String()
