@@ -60,13 +60,13 @@ struct NativeTypeConverter {
         return (key, value)
     }
     
-    func convertDict(dict: [String: Any]) throws -> JsonValue? {
+    func convertDict<T>(dict: [String: T]) throws -> JsonValue? {
         var obj = [String: JsonValue]()
         for i in dict { obj[i.0] = try self.toJayType(i.1) }
         return JsonValue.Object(obj)
     }
     
-    func convertArray(array: [Any]) throws -> JsonValue? {
+    func convertArray<T>(array: [T]) throws -> JsonValue? {
         let vals = try array.map { try self.toJayType($0) }
         return JsonValue.Array(vals)
     }
@@ -85,7 +85,7 @@ struct NativeTypeConverter {
         return try self.convertDict(dOut)
     }
     
-    func arrayToJayType<T>(maybeArray: T) throws -> JsonValue? {
+    func arrayToJayType(maybeArray: Any) throws -> JsonValue? {
         
         switch maybeArray {
             
@@ -108,7 +108,7 @@ struct NativeTypeConverter {
         }
     }
     
-    func dictionaryToJayType<T>(maybeDictionary: T) throws -> JsonValue? {
+    func dictionaryToJayType(maybeDictionary: Any) throws -> JsonValue? {
         
         switch maybeDictionary {
             
