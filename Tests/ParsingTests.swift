@@ -253,7 +253,7 @@ class ParsingTests: XCTestCase {
             //special substitution
             Const.Escape, Const.BackspaceChar,
             Const.Escape, Const.FormFeedChar,
-            Const.Escape, Const.NewlineChar,
+            Const.Escape, Const.NewLineChar,
             Const.Escape, Const.CarriageReturnChar,
             Const.Escape, Const.HorizontalTabChar,
             Const.Space

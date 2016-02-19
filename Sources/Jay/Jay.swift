@@ -19,6 +19,14 @@ public struct Jay {
     public func jsonFromData(data: [UInt8]) throws -> Any {
         return try NativeParser().parse(data)
     }
+    
+    //Formats your JSON-compatible object into data or throws an error.
+    public func dataFromJson(json: Any) throws -> [UInt8] {
+        
+        let jayType = try NativeTypeConverter().toJayType(json)
+        let data = try jayType.format()
+        return data
+    }
 }
 
 

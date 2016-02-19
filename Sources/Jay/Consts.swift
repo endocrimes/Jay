@@ -40,11 +40,18 @@ struct Const {
     static let EscapingRules: [JChar: JChar] = [
         Const.BackspaceChar: Const.Backspace,
         Const.HorizontalTabChar: Const.HorizontalTab,
-        Const.NewlineChar: Const.NewLine,
+        Const.NewLineChar: Const.NewLine,
         Const.FormFeedChar: Const.FormFeed,
         Const.CarriageReturnChar: Const.CarriageReturn
     ]
-    
+    static let EscapingRulesInv: [JChar: JChar] = [
+        Const.Backspace: Const.BackspaceChar,
+        Const.HorizontalTab: Const.HorizontalTabChar,
+        Const.NewLine: Const.NewLineChar,
+        Const.FormFeed: Const.FormFeedChar,
+        Const.CarriageReturn: Const.CarriageReturnChar
+    ]
+
     // Strings
     static let QuotationMark: JChar         = 0x22 // """
     static let ReverseSolidus: JChar        = 0x5c // "\"
@@ -52,27 +59,22 @@ struct Const {
 
     static let BackspaceChar: JChar         = 0x62 // "b"
     static let HorizontalTabChar: JChar     = 0x74 // "t"
-    static let NewlineChar: JChar           = 0x6e // "n"
+    static let NewLineChar: JChar           = 0x6e // "n"
     static let FormFeedChar: JChar          = 0x66 // "f"
     static let CarriageReturnChar: JChar    = 0x72 // "r"
     
     static let UnicodeStart: JChar          = 0x75 // "u"
 
     static let Escape: JChar            = Const.ReverseSolidus
-    
-    //Chars that can follow the escape character (apart from 'u' for unicode)
-    static let Escaped: Set<JChar> = [
-        
+
+    static let SimpleEscaped: Set<JChar> = [
         Const.QuotationMark,
         Const.ReverseSolidus,
-        Const.Solidus,
-        
-        Const.BackspaceChar,
-        Const.FormFeedChar,
-        Const.NewlineChar,
-        Const.CarriageReturnChar,
-        Const.HorizontalTabChar
+        Const.Solidus
     ]
+    
+    //Chars that can follow the escape character (apart from 'u' for unicode)
+    static let Escaped: Set<JChar> = SimpleEscaped.union(Const.EscapingRules.keys)
     
     //Convenience Collections
     static let Whitespace: Set<JChar> = [
