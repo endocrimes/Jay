@@ -16,14 +16,31 @@ class PerformanceTests: XCTestCase {
         return data
     }
     
+    func loadFixtureNSData(name: String) -> NSData {
+        let url = NSBundle(forClass: PerformanceTests.classForCoder()).URLForResource(name, withExtension: "json")!
+        let data = NSData(contentsOfURL: url)!
+        return data
+    }
+
     func testPerf_ParseLargeJson() {
         
+        //at the moment we're 39x slower in parsing than NSJSONSerialization :D
+        //(in release). but to be fair, it took me 2 evenings to write this parser.
         let data = self.loadFixture("large")
         let jay = Jay()
         measureBlock {
             _ = try! jay.jsonFromData(data)
         }
     }
+    
+    func testPerf_ParseLargeJson_Darwin() {
+        
+        let data = self.loadFixtureNSData("large")
+        measureBlock {
+            _ = try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
+        }
+    }
+
     
     //Enable when we have formatting and can pretty print it/
     //format into data and compare data with NSJSONSerialization
@@ -32,9 +49,7 @@ class PerformanceTests: XCTestCase {
 //        let jay = Jay()
 //        let json = try! jay.jsonFromData(data)
 //        
-//        let url = NSBundle(forClass: PerformanceTests.classForCoder()).URLForResource("large", withExtension: "json")!
-//
-//        let d2 = NSData(contentsOfURL: url)!
+//        let data = self.loadFixtureNSData("large")
 //        let json2 = try! NSJSONSerialization.JSONObjectWithData(d2, options: NSJSONReadingOptions())
 //        
 //        let j1 = String(json)
