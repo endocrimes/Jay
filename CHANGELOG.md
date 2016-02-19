@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.1.2](https://github.com/czechboy0/Jay/tree/0.1.2) (2016-02-19)
+[Full Changelog](https://github.com/czechboy0/Jay/compare/0.1.1...0.1.2)
+
+**Fixed bugs:**
+
+- Parsing bugfixes [\#2](https://github.com/czechboy0/Jay/pull/2) ([czechboy0](https://github.com/czechboy0))
+- Exponent sign parsing [\#1](https://github.com/czechboy0/Jay/pull/1) ([czechboy0](https://github.com/czechboy0))
+
 ## [0.1.1](https://github.com/czechboy0/Jay/tree/0.1.1) (2016-02-18)
 [Full Changelog](https://github.com/czechboy0/Jay/compare/0.1.0...0.1.1)
 
