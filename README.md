@@ -54,7 +54,7 @@ do {
 
 	//send data over network, save to disk
 } catch {
-	print("Parsing error: \(error)")
+	print("Formatting error: \(error)")
 }
 ```
 
