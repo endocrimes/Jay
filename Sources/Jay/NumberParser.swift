@@ -30,14 +30,25 @@ struct NumberParser: JsonParser {
         
         //2. Integer part & 3. Frac part
         //here we need to read the first digit 
-        // - if it's 0, continue to the frac part right away
+        // - if it's 0
+        //      - must be followed by a number terminating char or
+        //      - continue to the frac part right away
         // - if it's 1...9, continue to parsing integer part first
         let integer: Int
         let frac: Int
         if reader.curr() == Const.Zero {
+            try reader.nextAndCheckNotDone()
+            
             //no int part means 0
             integer = 0
-            //now there MUST be a frac part
+            
+            //now if any number terminator is here, finish up with 0
+            if Const.NumberTerminators.contains(reader.curr()) {
+                try reader.nextAndCheckNotDone()
+                return (JsonValue.Number(JsonNumber.JsonInt(0)), reader)
+            }
+            
+            //else there MUST be a frac part
             (frac, reader) = try self.parseFrac(reader)
         } else {
             //parse int part
