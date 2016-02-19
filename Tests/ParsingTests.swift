@@ -155,6 +155,12 @@ class ParsingTests: XCTestCase {
         ensureNumber(ret.0, exp: JsonNumber.JsonDbl(0.34))
     }
     
+    func testNumber_Dbl_MinusZeroSomething() {
+        let reader = ByteReader(content: "-0.34, ")
+        let ret = try! ValueParser().parse(withReader: reader)
+        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-0.34))
+    }
+    
     func testNumber_Dbl_Incomplete() {
         let reader = ByteReader(content: "24., ")
         let ret = try? ValueParser().parse(withReader: reader)
