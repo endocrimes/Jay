@@ -119,6 +119,18 @@ class ParsingTests: XCTestCase {
         XCTAssertNil(ret)
     }
 
+    func testNumber_Int_Zero() {
+        let reader = ByteReader(content: "0  ")
+        let ret = try! ValueParser().parse(withReader: reader)
+        ensureNumber(ret.0, exp: JsonNumber.JsonInt(0))
+    }
+    
+    func testNumber_Int_One() {
+        let reader = ByteReader(content: "1  ")
+        let ret = try! ValueParser().parse(withReader: reader)
+        ensureNumber(ret.0, exp: JsonNumber.JsonInt(1))
+    }
+
     func testNumber_Int_Basic() {
         let reader = ByteReader(content: "24  ")
         let ret = try! ValueParser().parse(withReader: reader)
@@ -135,6 +147,18 @@ class ParsingTests: XCTestCase {
         let reader = ByteReader(content: "24.34, ")
         let ret = try! ValueParser().parse(withReader: reader)
         ensureNumber(ret.0, exp: JsonNumber.JsonDbl(24.34))
+    }
+    
+    func testNumber_Dbl_ZeroSomething() {
+        let reader = ByteReader(content: "0.34, ")
+        let ret = try! ValueParser().parse(withReader: reader)
+        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(0.34))
+    }
+    
+    func testNumber_Dbl_MinusZeroSomething() {
+        let reader = ByteReader(content: "-0.34, ")
+        let ret = try! ValueParser().parse(withReader: reader)
+        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-0.34))
     }
     
     func testNumber_Dbl_Incomplete() {
