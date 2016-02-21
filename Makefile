@@ -39,9 +39,9 @@ xctest-tvos:
 	  test \
 	| xcpretty
 
-example: build-release
+example: build
 	@echo "Running example parsing"
-	.build/release/JayExample
+	.build/debug/JayExample
 
 validate_spec:
 	@echo "Validating podspec"
