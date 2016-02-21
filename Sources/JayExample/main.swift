@@ -1,4 +1,5 @@
 import Jay
+import Foundation
 
 func tryParsing() {
 
@@ -6,10 +7,11 @@ func tryParsing() {
     let exp: [String: Any] = [
         "hello": "wor🇨🇿ld",
         "val": 1234,
-        "many": [Any]([
+        "many": [
             -12.32,
+            NSNull(),
             "yo"
-        ]),
+        ] as [Any],
         "emptyDict": [String:Any](),
         "dict": [
             "arr": [Any]()
@@ -27,14 +29,15 @@ func tryParsing() {
 
 func tryFormatting() {
 
-    let origStr = "{\"dict\":{\"arr\":[]},\"emptyDict\":{},\"hello\":\"wor🇨🇿ld\",\"many\":[-12.32,\"yo\"],\"name\":true,\"val\":1234}"
+    let origStr = "{\"dict\":{\"arr\":[]},\"emptyDict\":{},\"hello\":\"wor🇨🇿ld\",\"many\":[-12.32,null,\"yo\"],\"name\":true,\"val\":1234}"
     let obj: [String: Any] = [
         "hello": "wor🇨🇿ld",
         "val": 1234,
-        "many": [Any]([
+        "many": [
             -12.32,
+            NSNull(),
             "yo"
-        ]),
+        ] as [Any],
         "emptyDict": [String:Any](),
         "dict": [
             "arr": [Int]()
