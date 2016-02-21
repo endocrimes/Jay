@@ -4,7 +4,7 @@ build:
 
 debug: build
 	@echo "Debugging Jay"
-	@lldb .build/debug/Jay
+	@lldb .build/debug/JayExample
 
 build-release:
 	@echo "Building Jay in Release"
