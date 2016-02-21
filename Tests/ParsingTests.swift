@@ -405,10 +405,11 @@ class ParsingTests: XCTestCase {
         let exp: [String: Any] = [
             "hello": "wor🇨🇿ld",
             "val": 1234,
-            "many": [Any]([
+            "many": [
                 -12.32,
+                NSNull(),
                 "yo"
-                ]),
+            ] as [Any],
             "emptyDict": [String:Any](),
             "dict": [
                 "arr": [Any]()

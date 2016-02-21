@@ -10,26 +10,16 @@ import Foundation
 
 extension JsonValue {
 
-    func toNative() -> Any? {
+    func toNative() -> Any {
         switch self {
             
         case .Object(let obj):
             var out: [Swift.String: Any] = [:]
-            for i in obj {
-                if let val = i.1.toNative() {
-                    out[i.0] = val
-                }
-            }
+            for i in obj { out[i.0] = i.1.toNative() }
             return out
             
         case .Array(let arr):
-            var out: [Any] = []
-            for i in arr {
-                if let val = i.toNative() {
-                    out.append(val)
-                }
-            }
-            return out
+            return arr.map { $0.toNative() }
             
         case .Number(let num):
             switch num {
@@ -47,7 +37,7 @@ extension JsonValue {
             }
             
         case .Null:
-            return nil
+            return NSNull()
         }
     }
 }
