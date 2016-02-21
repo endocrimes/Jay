@@ -16,6 +16,12 @@ class ParsingTests: XCTestCase {
         XCTAssertNil(ret)
     }
     
+    func testExtraTokensThrow() {
+        let data = "{\"hello\":\"world\"} blah".chars()
+        let ret = try? Parser().parseJsonFromData(data)
+        XCTAssertNil(ret)
+    }
+    
     func testNull_Normal() {
         
         let reader = ByteReader(content: "null,   heyo")

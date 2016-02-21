@@ -22,5 +22,6 @@ enum Error: ErrorType {
     case FailedToConvertIntoNativeType(JsonValue)
     case UnsupportedType(Any)
     case KeyIsNotString(Any)
+    case ExtraTokensFound(Reader)
 }
 
