@@ -113,7 +113,12 @@ class FormattingTests: XCTestCase {
     }
 
     func testNSArray_Simple() {
-        let json = NSArray(array: ["hello", "world"])
+        #if os(Linux)
+            let json = ["hello", "world"].bridge()
+        #else
+            let json = NSArray(array: ["hello", "world"])
+        #endif
+
         let data = try! Jay().dataFromJson(json)
         XCTAssertEqual(data, "[\"hello\",\"world\"]".chars())
     }
