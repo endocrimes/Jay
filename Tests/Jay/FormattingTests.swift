@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import Jay
+import Foundation
 
 #if os(Linux)
     extension FormattingTests: XCTestCaseProvider {
