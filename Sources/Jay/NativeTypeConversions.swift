@@ -85,18 +85,21 @@ struct NativeTypeConverter {
         case let a as [Any]: return try self.convertArray(a)
             
             //whenever bridging works properly, we can just keep the above [Any]
-        case let a as NSArray: return try self.parseNSArray(a)
             
-        case let a as [NSArray]: return try self.convertArray(a)
-        case let a as [NSDictionary]: return try self.convertArray(a)
-        case let a as [NSNumber]: return try self.convertArray(a)
-        case let a as [NSString]: return try self.convertArray(a)
-        case let a as [NSNull]: return try self.convertArray(a)
         case let a as [String]: return try self.convertArray(a)
         case let a as [Double]: return try self.convertArray(a)
         case let a as [Float]: return try self.convertArray(a)
         case let a as [Int]: return try self.convertArray(a)
         case let a as [Bool]: return try self.convertArray(a)
+
+        case let a as [NSArray]: return try self.convertArray(a)
+        case let a as [NSDictionary]: return try self.convertArray(a)
+        case let a as [NSNumber]: return try self.convertArray(a)
+        case let a as [NSString]: return try self.convertArray(a)
+        case let a as [NSNull]: return try self.convertArray(a)
+
+        case let a as NSArray: return try self.parseNSArray(a)
+            
         default: return nil
         }
     }
@@ -108,18 +111,20 @@ struct NativeTypeConverter {
         case let d as [String: Any]: return try self.convertDict(d)
             
             //whenever bridging works properly, we can just keep the above [Any]
-        case let d as NSDictionary: return try self.parseNSDictionary(d)
+        case let d as [String: String]: return try self.convertDict(d)
+        case let d as [String: Double]: return try self.convertDict(d)
+        case let d as [String: Float]: return try self.convertDict(d)
+        case let d as [String: Int]: return try self.convertDict(d)
+        case let d as [String: Bool]: return try self.convertDict(d)
             
         case let d as [String: NSArray]: return try self.convertDict(d)
         case let d as [String: NSDictionary]: return try self.convertDict(d)
         case let d as [String: NSNumber]: return try self.convertDict(d)
         case let d as [String: NSString]: return try self.convertDict(d)
         case let d as [String: NSNull]: return try self.convertDict(d)
-        case let d as [String: String]: return try self.convertDict(d)
-        case let d as [String: Double]: return try self.convertDict(d)
-        case let d as [String: Float]: return try self.convertDict(d)
-        case let d as [String: Int]: return try self.convertDict(d)
-        case let d as [String: Bool]: return try self.convertDict(d)
+
+        case let d as NSDictionary: return try self.parseNSDictionary(d)
+
         default: return nil
         }
     }
@@ -139,33 +144,29 @@ struct NativeTypeConverter {
 
         switch json {
 
-            //string
-        case let string as String:
-            return JsonValue.String(string)
-        case let string as CustomStringConvertible:
-            return JsonValue.String(string.description)
-
-            
             //boolean
         case let bool as BooleanType:
             return JsonValue.Boolean(bool.boolValue ? JsonBoolean.True : JsonBoolean.False)
             
             //number
-        default:
-
-            //only valid object is an int type or a double type.
-            //bc we can't directly match IntegerType and FloatingPointType,
-            //wrap them as strings and then try to parse them as int or double.
-            //if both fail, then fail.
+        case let dbl as FloatingPointType:
+            guard let double = Double(String(dbl)) else {
+                throw Error.UnsupportedFloatingPointType(dbl)
+            }
+            return JsonValue.Number(JsonNumber.JsonDbl(double))
+        case let int as IntegerType:
+            guard let integer = Int(String(int)) else {
+                throw Error.UnsupportedIntegerType(int)
+            }
+            return JsonValue.Number(JsonNumber.JsonInt(integer))
             
-            //number
-            let str = String(json)
-            if let int = Int(str) {
-                return JsonValue.Number(JsonNumber.JsonInt(int))
-            }
-            if let dbl = Double(str) {
-                return JsonValue.Number(JsonNumber.JsonDbl(dbl))
-            }
+        //string (or anything representable as string that didn't match above)
+        case let string as String:
+            return JsonValue.String(string)
+        case let string as CustomStringConvertible:
+            return JsonValue.String(string.description)
+            
+        default: break
         }
         //nothing matched
         throw Error.UnsupportedType(json)
