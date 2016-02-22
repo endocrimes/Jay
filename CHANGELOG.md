@@ -1,5 +1,14 @@
 # Change Log
 
+## [Unreleased](https://github.com/czechboy0/Jay/tree/HEAD)
+
+[Full Changelog](https://github.com/czechboy0/Jay/compare/0.1.2...HEAD)
+
+**Merged pull requests:**
+
+- More test cases [\#4](https://github.com/czechboy0/Jay/pull/4) ([czechboy0](https://github.com/czechboy0))
+- JSON Serialization \(object -\> data\) [\#3](https://github.com/czechboy0/Jay/pull/3) ([czechboy0](https://github.com/czechboy0))
+
 ## [0.1.2](https://github.com/czechboy0/Jay/tree/0.1.2) (2016-02-19)
 [Full Changelog](https://github.com/czechboy0/Jay/compare/0.1.1...0.1.2)
 

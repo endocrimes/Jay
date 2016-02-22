@@ -15,6 +15,7 @@ xctest: xctest-osx xctest-ios xctest-tvos #TODO: watchOS when test bundles are a
 xctest-osx:
 	set -o pipefail && \
 	xcodebuild \
+	  -toolchain /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-02-08-a.xctoolchain \
 	  -project XcodeProject/Jay.xcodeproj \
 	  -scheme JayTests \
 	  -destination 'platform=OS X,arch=x86_64' \
@@ -24,6 +25,7 @@ xctest-osx:
 xctest-ios:
 	set -o pipefail && \
 	xcodebuild \
+	  -toolchain /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-02-08-a.xctoolchain \
 	  -project XcodeProject/Jay.xcodeproj \
 	  -scheme JayTests-iOS \
 	  -destination 'platform=iOS Simulator,name=iPhone 6s,OS=9.3' \
@@ -33,6 +35,7 @@ xctest-ios:
 xctest-tvos:
 	set -o pipefail && \
 	xcodebuild \
+	  -toolchain /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-02-08-a.xctoolchain \
 	  -project XcodeProject/Jay.xcodeproj \
 	  -scheme JayTests-tvOS \
 	  -destination 'platform=tvOS Simulator,name=Apple TV 1080p,OS=9.2' \
