@@ -20,6 +20,8 @@ import XCTest
     }
 #endif
 
+#if os(Linux)
+#else
 class PerformanceTests: XCTestCase {
 
     func loadFixture(name: String) -> [UInt8] {
@@ -129,3 +131,5 @@ class PerformanceTests: XCTestCase {
 //        print(eq)
 //    }
 }
+#endif
+
