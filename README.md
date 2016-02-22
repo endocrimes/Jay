@@ -72,6 +72,9 @@ do {
 pod 'Jay'
 ```
 
+## Swift Versions
+This project was originally created for a Swift server running on Linux, so it's always built (and assumes) the latest Swift and SwiftPM versions. To manage Swift versions easily, I recommend you use [swiftenv](https://github.com/kylef/swiftenv#installation). You can see which Swift version Jay requires at the moment in the [`.swift-version`](https://github.com/czechboy0/Jay/blob/master/.swift-version) file in the root of the repository. Please make sure you're always running at least that version if you want to use Jay in your project.
+
 :gift_heart: Contributing
 ------------
 Please create an issue with a description of your problem or open a pull request with a fix.
