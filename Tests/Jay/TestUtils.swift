@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import Jay
 
 func ensureNull(val: JsonValue) {
     XCTAssertEqual(val, JsonValue.Null)

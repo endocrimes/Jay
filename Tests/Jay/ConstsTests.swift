@@ -7,9 +7,21 @@
 //
 
 import XCTest
+@testable import Jay
+
+#if os(Linux)
+    extension ConstsTests: XCTestCaseProvider {
+        var allTests : [(String, () throws -> Void)] {
+            return [
+                ("testConsts", testConsts),
+                ("testUnicodeTesting", testUnicodeTesting)
+            ]
+        }
+    }
+#endif
 
 class ConstsTests: XCTestCase {
-
+    
     func testConsts() {
         XCTAssertEqual(try! Const.BeginArray.string(), "[")
         XCTAssertEqual(try! Const.BeginObject.string(), "{")

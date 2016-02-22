@@ -48,7 +48,7 @@ func tryFormatting() {
     let dataOut = try! Jay().dataFromJson(obj)
     let retStr = try! dataOut.string()
 
-    assert(origStr == retStr, "Mismatch: Expected:\n\(expStr)\nReturned:\n\(retStr)")
+    assert(origStr == retStr, "Mismatch: Expected:\n\(origStr)\nReturned:\n\(retStr)")
     print("Formatting works")
 }
 

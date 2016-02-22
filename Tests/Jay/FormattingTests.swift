@@ -7,6 +7,27 @@
 //
 
 import XCTest
+@testable import Jay
+
+#if os(Linux)
+    extension FormattingTests: XCTestCaseProvider {
+        var allTests : [(String, () throws -> Void)] {
+            return [
+                ("testObject_Empty", testObject_Empty),
+                ("testNSDictionary_Empty", testNSDictionary_Empty),
+                ("testNSDictionary_Simple", testNSDictionary_Simple),
+                ("testObject_Simple", testObject_Simple),
+                ("testObject_Normal", testObject_Normal),
+                ("testObject_Nested", testObject_Nested),
+                ("testArray_Empty", testArray_Empty),
+                ("testNSArray_Empty", testNSArray_Empty),
+                ("testArray_Simple", testArray_Simple),
+                ("testArray_Nested", testArray_Nested),
+                ("testNSArray_Simple", testNSArray_Simple)
+            ]
+        }
+    }
+#endif
 
 class FormattingTests: XCTestCase {
 

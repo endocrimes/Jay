@@ -7,8 +7,68 @@
 //
 
 import XCTest
+@testable import Jay
 
-class ParsingTests: XCTestCase {
+#if os(Linux)
+    extension ParsingTests: XCTestCaseProvider {
+        var allTests : [(String, () throws -> Void)] {
+            return [
+                ("testPrepareForReading_FailOnEmpty", testPrepareForReading_FailOnEmpty),
+                ("testExtraTokensThrow", testExtraTokensThrow),
+                ("testNull_Normal", testNull_Normal),
+                ("testNull_Mismatch", testNull_Mismatch),
+                ("testBoolean_True_Normal", testBoolean_True_Normal),
+                ("testBoolean_True_Mismatch", testBoolean_True_Mismatch),
+                ("testBoolean_False_Normal", testBoolean_False_Normal),
+                ("testBoolean_False_Mismatch", testBoolean_False_Mismatch),
+                ("testArray_NullsBoolsNums_Normal_Minimal_RootParser", testArray_NullsBoolsNums_Normal_Minimal_RootParser),
+                ("testArray_NullsBoolsNums_Normal_MuchWhitespace", testArray_NullsBoolsNums_Normal_MuchWhitespace),
+                ("testArray_NullsAndBooleans_Bad_MissingEnd", testArray_NullsAndBooleans_Bad_MissingEnd),
+                ("testArray_NullsAndBooleans_Bad_MissingComma", testArray_NullsAndBooleans_Bad_MissingComma),
+                ("testArray_NullsAndBooleans_Bad_ExtraComma", testArray_NullsAndBooleans_Bad_ExtraComma),
+                ("testArray_NullsAndBooleans_Bad_TrailingComma", testArray_NullsAndBooleans_Bad_TrailingComma),
+                ("testNumber_Int_Zero", testNumber_Int_Zero),
+                ("testNumber_Int_One", testNumber_Int_One),
+                ("testNumber_Int_Basic", testNumber_Int_Basic),
+                ("testNumber_Int_Negative", testNumber_Int_Negative),
+                ("testNumber_Dbl_Basic", testNumber_Dbl_Basic),
+                ("testNumber_Dbl_ZeroSomething", testNumber_Dbl_ZeroSomething),
+                ("testNumber_Dbl_MinusZeroSomething", testNumber_Dbl_MinusZeroSomething),
+                ("testNumber_Dbl_Incomplete", testNumber_Dbl_Incomplete),
+                ("testNumber_Dbl_Negative", testNumber_Dbl_Negative),
+                ("testNumber_Dbl_Negative_WrongChar", testNumber_Dbl_Negative_WrongChar),
+                ("testNumber_Dbl_Negative_TwoDecimalPoints", testNumber_Dbl_Negative_TwoDecimalPoints),
+                ("testNumber_Dbl_Negative_TwoMinuses", testNumber_Dbl_Negative_TwoMinuses),
+                ("testNumber_Double_Exp_Normal", testNumber_Double_Exp_Normal),
+                ("testNumber_Double_Exp_Positive", testNumber_Double_Exp_Positive),
+                ("testNumber_Double_Exp_Negative", testNumber_Double_Exp_Negative),
+                ("testNumber_Double_Exp_NoFrac", testNumber_Double_Exp_NoFrac),
+                ("testNumber_Double_Exp_TwoEs", testNumber_Double_Exp_TwoEs),
+                ("testEscape_Unicode_Normal", testEscape_Unicode_Normal),
+                ("testEscape_Unicode_InvalidUnicode_MissingDigit", testEscape_Unicode_InvalidUnicode_MissingDigit),
+                ("testEscape_Unicode_InvalidUnicode_MissingAllDigits", testEscape_Unicode_InvalidUnicode_MissingAllDigits),
+                ("testEscape_SpecialChars", testEscape_SpecialChars),
+                ("testString_Empty", testString_Empty),
+                ("testString_Normal", testString_Normal),
+                ("testString_StartEndWithSpaces", testString_StartEndWithSpaces),
+                ("testString_Unicode_RegularChar", testString_Unicode_RegularChar),
+                ("testString_Unicode_SpecialCharacter_CoolA", testString_Unicode_SpecialCharacter_CoolA),
+                ("testString_Unicode_SpecialCharacter_HebrewShin", testString_Unicode_SpecialCharacter_HebrewShin),
+                ("testString_Unicode_SpecialCharacter_QuarterTo", testString_Unicode_SpecialCharacter_QuarterTo),
+                ("testString_Unicode_SpecialCharacter_EmojiSimple", testString_Unicode_SpecialCharacter_EmojiSimple),
+                ("testString_Unicode_SpecialCharacter_EmojiComplex", testString_Unicode_SpecialCharacter_EmojiComplex),
+                ("testString_SpecialCharacter_QuarterTo", testString_SpecialCharacter_QuarterTo),
+                ("testString_SpecialCharacter_EmojiSimple", testString_SpecialCharacter_EmojiSimple),
+                ("testString_SpecialCharacter_EmojiComplex", testString_SpecialCharacter_EmojiComplex),
+                ("testObject_Empty", testObject_Empty),
+                ("testObject_Example1", testObject_Example1),
+                ("testNative_Example1", testNative_Example1)
+            ]
+        }
+    }
+#endif
+
+class ParsingTests:XCTestCase {
     
     func testPrepareForReading_FailOnEmpty() {
         let reader = ByteReader(content: "")
