@@ -51,6 +51,7 @@ import Foundation
                 ("testEscape_SpecialChars", testEscape_SpecialChars),
                 ("testString_Empty", testString_Empty),
                 ("testString_Normal", testString_Normal),
+                ("testString_Normal_WhitespaceInside", testString_Normal_WhitespaceInside),
                 ("testString_StartEndWithSpaces", testString_StartEndWithSpaces),
                 ("testString_Unicode_RegularChar", testString_Unicode_RegularChar),
                 ("testString_Unicode_SpecialCharacter_CoolA", testString_Unicode_SpecialCharacter_CoolA),

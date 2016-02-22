@@ -24,7 +24,8 @@ import Foundation
                 ("testNSArray_Empty", testNSArray_Empty),
                 ("testArray_Simple", testArray_Simple),
                 ("testArray_Nested", testArray_Nested),
-                ("testNSArray_Simple", testNSArray_Simple)
+                ("testNSArray_Simple", testNSArray_Simple),
+                ("testString_Escaping", testString_Escaping)
             ]
         }
     }
