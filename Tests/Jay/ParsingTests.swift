@@ -460,7 +460,7 @@ class ParsingTests:XCTestCase {
     }
     
     func testNative_Example1() {
-        let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, null, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
+        let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
         
         let ret = try! Jay().jsonFromData(data)
         let exp: [String: Any] = [
@@ -468,7 +468,7 @@ class ParsingTests:XCTestCase {
             "val": 1234,
             "many": [
                 -12.32,
-                NSNull(),
+                // NSNull(), //add null testing back once we can compare arbitrary hierarchies, printing its descriptions gives different pointers for different NSNulls thus they don't compare as ==
                 "yo"
             ] as [Any],
             "emptyDict": [String:Any](),
