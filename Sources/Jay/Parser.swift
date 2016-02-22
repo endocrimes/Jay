@@ -17,6 +17,13 @@ struct Parser {
         //delegate parsing
         let result = try RootParser().parse(withReader: reader)
         let json = result.0
+        var endReader = result.1
+        
+        //skip whitespace and ensure no more tokens are present, otherwise throw
+        endReader.consumeWhitespace()
+        guard endReader.isDone() else {
+            throw Error.ExtraTokensFound(endReader)
+        }
         
         return json
     }

@@ -15,10 +15,7 @@ struct NativeParser {
         let jsonValue = try Parser().parseJsonFromData(data)
         
         //recursively convert into native types
-        guard let native = jsonValue.toNative() else {
-            throw Error.FailedToConvertIntoNativeType(jsonValue)
-        }
-        
+        let native = jsonValue.toNative()
         return native
     }
 }

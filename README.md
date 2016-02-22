@@ -18,17 +18,19 @@ We all use JSON. Especially when writing server-side Swift that needs to run on 
 `NSJSONSerialization` is not yet fully implemented in the Swift standard libraries, so this is my take on how parsers should work. *This is not another JSON mapping utility library.* This is an actual **JSON parser**. Check out the code, it was fun to write 😇
 
 # Features
-- [x] Parsing of JSON object from data
-- [ ] Formatting a JSON object into data
+- [x] Parsing: data -> JSON object
+- [x] Formatting: JSON object -> data
 
 # Usage
+
+## Parsing from data
 ```swift
 do {
 	//get data from disk/network
 	let data: [UInt8] = ...
 
 	//ask Jay to parse your data
-	let json = try Jay().jsonFromData(data)
+	let json = try Jay().jsonFromData(data) // Any
 
 	//if it doesn't throw an error, all went well
 	if let dictionary = json as? [String: Any] {
@@ -38,6 +40,21 @@ do {
 	}
 } catch {
 	print("Parsing error: \(error)")
+}
+```
+
+## Formatting into data
+```swift
+do {
+	//get a json object
+	let json: Any = ...
+
+	//ask Jay to generate data
+	let data = try Jay().dataFromJson(json) // [UInt8]
+
+	//send data over network, save to disk
+} catch {
+	print("Formatting error: \(error)")
 }
 ```
 

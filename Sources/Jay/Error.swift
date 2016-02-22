@@ -20,5 +20,10 @@ enum Error: ErrorType {
     case InvalidSurrogatePair(UInt16, UInt16, Reader)
     case ObjectNameSeparatorMissing(Reader)
     case FailedToConvertIntoNativeType(JsonValue)
+    case UnsupportedType(Any)
+    case UnsupportedFloatingPointType(Any)
+    case UnsupportedIntegerType(Any)
+    case KeyIsNotString(Any)
+    case ExtraTokensFound(Reader)
 }
 

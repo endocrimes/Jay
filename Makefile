@@ -4,7 +4,7 @@ build:
 
 debug: build
 	@echo "Debugging Jay"
-	@lldb .build/debug/Jay
+	@lldb .build/debug/JayExample
 
 build-release:
 	@echo "Building Jay in Release"
@@ -39,9 +39,9 @@ xctest-tvos:
 	  test \
 	| xcpretty
 
-example: build-release
+example: build
 	@echo "Running example parsing"
-	.build/release/JayExample
+	.build/debug/JayExample
 
 validate_spec:
 	@echo "Validating podspec"
