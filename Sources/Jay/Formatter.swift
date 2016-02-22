@@ -63,13 +63,14 @@ extension JsonValue: JsonFormattable {
             //if this is an escapable character, escape it
             //first check for specific rules
             if let replacement = Const.EscapingRulesInv[c] {
-                contents.append(replacement)
+                contents.appendContentsOf([Const.Escape, replacement])
                 continue
             }
             
             //simple escape, just prepend with the escape char
             if Const.SimpleEscaped.contains(c) {
                 contents.appendContentsOf([Const.Escape, c])
+                continue
             }
             
             //nothing to escape, just append byte

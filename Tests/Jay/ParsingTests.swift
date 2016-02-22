@@ -371,6 +371,12 @@ class ParsingTests:XCTestCase {
         ensureString(ret.0, exp: "hello world")
     }
     
+    func testString_Normal_WhitespaceInside() {
+        let reader = ByteReader(content: "\"he \\r\\n l \\t l \\n o wo\\rrld \" ")
+        let ret = try! ValueParser().parse(withReader: reader)
+        ensureString(ret.0, exp: "he \r\n l \t l \n o wo\rrld ")
+    }
+    
     func testString_StartEndWithSpaces() {
         let reader = ByteReader(content: "\"  hello world    \" ")
         let ret = try! ValueParser().parse(withReader: reader)

@@ -123,6 +123,11 @@ class FormattingTests: XCTestCase {
         XCTAssertEqual(data, "[\"hello\",\"world\"]".chars())
     }
 
+    func testString_Escaping() {
+        let json = ["he \r\n l \t l \n o w\"o\rrld "]
+        let data = try! Jay().dataFromJson(json)
+        XCTAssertEqual(data, "[\"he \\r\\n l \\t l \\n o w\\\"o\\rrld \"]".chars())
+    }
     
     
 }
