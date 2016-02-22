@@ -68,9 +68,12 @@ struct NativeTypeConverter {
     func parseNSDictionary(dict: NSDictionary) throws -> JsonValue? {
         var dOut = [String: Any]()
         for i in dict {
-            guard let key = i.key as? String else { throw Error.KeyIsNotString(i.key) }
+            //for Linux reasons we must cast into CustomStringConvertible instead of String  
+            //revert once bridging works.
+            // guard let key = i.key as? String else { throw Error.KeyIsNotString(i.key) }
+            guard let key = i.key as? CustomStringConvertible else { throw Error.KeyIsNotString(i.key) }
             let value = i.value as Any
-            dOut[key] = value
+            dOut[key.description] = value
         }
         return try self.convertDict(dOut)
     }
@@ -139,6 +142,9 @@ struct NativeTypeConverter {
             //string
         case let string as String:
             return JsonValue.String(string)
+        case let string as CustomStringConvertible:
+            return JsonValue.String(string.description)
+
             
             //boolean
         case let bool as BooleanType:
