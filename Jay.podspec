@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
 
   s.name         = "Jay"
-  s.version      = "0.1.2"
-  s.summary      = "Pure-Swift JSON parser. Linux & OS X ready"
+  s.version      = "0.2.0"
+  s.summary      = "Pure-Swift JSON parser & formatter. Linux & OS X ready"
 
   s.description  = <<-DESC
-                  Pure-Swift JSON parser. Linux & OS X ready. Replacement for NSJSONSerialization.
+                  Pure-Swift JSON parser & formatter. Linux & OS X ready. Replacement for NSJSONSerialization.
                    DESC
 
   s.homepage     = "https://github.com/czechboy0/Jay"
