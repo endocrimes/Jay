@@ -12,8 +12,8 @@ script:
   - git clone https://github.com/apple/swift-package-manager swiftpm
   - cd swiftpm && git checkout 0373b84 && cd ../
   - swiftpm/Utilities/bootstrap
-  - ${PWD}/swift-package-manager/.build/debug/swift-build
-  - ${PWD}/swift-package-manager/.build/debug/swift-test
+  - ${PWD}/swiftpm/.build/debug/swift-build
+  - ${PWD}/swiftpm/.build/debug/swift-test
   # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make xctest; fi
   - make example
 notifications:
