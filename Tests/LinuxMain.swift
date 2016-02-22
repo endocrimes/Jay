@@ -1,9 +1,10 @@
 import XCTest
+@testable import Jay
 
 XCTMain([
 	ConstsTests(),
-	// FormattingTests(),
-	// ParsingTests(),
+	FormattingTests(),
+	ParsingTests(),
+	ReaderTests()	
 	// PerformanceTests(),
-	// ReaderTests()	
 ])
