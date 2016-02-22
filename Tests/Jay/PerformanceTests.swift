@@ -24,14 +24,28 @@ import XCTest
 #else
 class PerformanceTests: XCTestCase {
 
+    func urlForFixture(name: String) -> NSURL {
+        let url: NSURL
+        //if we're running from CLI, use SPM_INSTALL_PATH to find fixtures, otherwise bundle
+        if let path = NSProcessInfo().environment["SPM_INSTALL_PATH"] {
+            url = NSURL(string: "file://\(path)/../Tests/Jay/Fixtures/\(name).json")!
+        } else {
+            url = NSBundle(forClass: PerformanceTests.classForCoder()).URLForResource(name, withExtension: "json")!
+        }
+        print("Loading fixture from url \(url)")
+        return url
+    }
+    
     func loadFixture(name: String) -> [UInt8] {
-        let url = NSBundle(forClass: PerformanceTests.classForCoder()).URLForResource(name, withExtension: "json")
-        let data = Array(try! String(contentsOfURL: url!).utf8)
+        
+        let url = self.urlForFixture(name)
+        let data = Array(try! String(contentsOfURL: url).utf8)
         return data
     }
     
     func loadFixtureNSData(name: String) -> NSData {
-        let url = NSBundle(forClass: PerformanceTests.classForCoder()).URLForResource(name, withExtension: "json")!
+        
+        let url = self.urlForFixture(name)
         let data = NSData(contentsOfURL: url)!
         return data
     }
@@ -43,7 +57,11 @@ class PerformanceTests: XCTestCase {
         let data = self.loadFixture("large")
         let jay = Jay()
         measureBlock {
-            _ = try! jay.jsonFromData(data)
+            do {
+                _ = try jay.jsonFromData(data)
+            } catch {
+                XCTFail("\(error)")
+            }
         }
     }
     
