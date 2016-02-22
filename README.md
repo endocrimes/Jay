@@ -8,14 +8,15 @@
 [![Blog](https://img.shields.io/badge/blog-honzadvorsky.com-green.svg)](http://honzadvorsky.com)
 [![Twitter Czechboy0](https://img.shields.io/badge/twitter-czechboy0-green.svg)](http://twitter.com/czechboy0)
 
-> Pure-Swift JSON parser. Linux &amp; OS X ready. Replacement for NSJSONSerialization.
+> Pure-Swift JSON parser & formatter. Linux &amp; OS X ready. Replacement for NSJSONSerialization.
 
-JSON Spec: Implemented from [RFC4627](http://www.ietf.org/rfc/rfc4627.txt)
+Jay conforms to the following specifications:
+- JSON [RFC4627](http://www.ietf.org/rfc/rfc4627.txt)
 
 # :question: Why?
 We all use JSON. Especially when writing server-side Swift that needs to run on Linux. `#0dependencies`
 
-`NSJSONSerialization` is not yet fully implemented in the Swift standard libraries, so this is my take on how parsers should work. *This is not another JSON mapping utility library.* This is an actual **JSON parser**. Check out the code, it was fun to write 😇
+`NSJSONSerialization` is not yet fully implemented in the Swift standard libraries, so this is my take on how parsers should work. *This is not another JSON mapping utility library.* This is an actual **JSON parser** and **formatter**. Check out the code, it was fun to write 😇
 
 # Features
 - [x] Parsing: data -> JSON object
@@ -47,7 +48,7 @@ do {
 ```swift
 do {
 	//get a json object
-	let json: Any = ...
+	let json: [String: Any] = ... // [String: Any] or [Any]
 
 	//ask Jay to generate data
 	let data = try Jay().dataFromJson(json) // [UInt8]
