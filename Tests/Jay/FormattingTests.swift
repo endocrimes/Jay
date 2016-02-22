@@ -45,7 +45,11 @@ class FormattingTests: XCTestCase {
     }
 
     func testNSDictionary_Simple() {
+    #if os(Linux)
+        let json = ["hello": "world"].bridge()
+    #else
         let json = NSDictionary(dictionary: ["hello": "world"])
+    #endif
         let data = try! Jay().dataFromJson(json)
         XCTAssertEqual(data, "{\"hello\":\"world\"}".chars())
     }

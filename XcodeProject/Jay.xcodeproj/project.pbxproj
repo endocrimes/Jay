@@ -304,11 +304,11 @@
 				3AFE31B81C76908F003EF3DB /* large.json */,
 				3AFC69131C74EE4100BC8E73 /* Info.plist */,
 				3AFC69261C74F5E500BC8E73 /* ConstsTests.swift */,
+				3A90347D1C772205008C14D6 /* FormattingTests.swift */,
 				3AFC691C1C74EE6400BC8E73 /* ParsingTests.swift */,
+				3AFE31BA1C7690A3003EF3DB /* PerformanceTests.swift */,
 				3AF442E01C7504D1009A8EA7 /* ReaderTests.swift */,
 				3A4F1DBB1C75210200222D4A /* TestUtils.swift */,
-				3AFE31BA1C7690A3003EF3DB /* PerformanceTests.swift */,
-				3A90347D1C772205008C14D6 /* FormattingTests.swift */,
 			);
 			path = JayTests;
 			sourceTree = "<group>";
