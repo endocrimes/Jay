@@ -20,6 +20,7 @@ import Foundation
                 ("testObject_Simple", testObject_Simple),
                 ("testObject_Normal", testObject_Normal),
                 ("testObject_Nested", testObject_Nested),
+                ("testObject_AllTypes", testObject_AllTypes),
                 ("testArray_Empty", testArray_Empty),
                 ("testNSArray_Empty", testNSArray_Empty),
                 ("testArray_Simple", testArray_Simple),
@@ -83,6 +84,20 @@ class FormattingTests: XCTestCase {
         let data = try! Jay().dataFromJson(json)
         XCTAssertEqual(data, "{\"few\":[true,\"bad\",null],\"he🇨🇿lo\":\"wo😎ld\"}".chars())
     }
+    
+    func testObject_AllTypes() {
+        //testing this works in Jay: https://github.com/Zewo/JSON/pull/4
+        let json: [String : Any] = [
+            "array double" : [1.2, 2.3, 3.4],
+            "array int" : [0, 1, 2, -1],
+            "array str" : ["s1", "s2", "s3"],
+            "double" : 1.0,
+            "int" : 123,
+            "string" : "abcde"
+        ]
+        let data = try! Jay().dataFromJson(json)
+        XCTAssertEqual(data, "{\"array double\":[1.2,2.3,3.4],\"array int\":[0,1,2,-1],\"array str\":[\"s1\",\"s2\",\"s3\"],\"double\":1.0,\"int\":123,\"string\":\"abcde\"}".chars())
+    }
 
     func testArray_Empty() {
         let json = [Int]()
@@ -129,6 +144,5 @@ class FormattingTests: XCTestCase {
         let data = try! Jay().dataFromJson(json)
         XCTAssertEqual(data, "[\"he \\r\\n l \\t l \\n o w\\\"o\\rrld \"]".chars())
     }
-    
     
 }
