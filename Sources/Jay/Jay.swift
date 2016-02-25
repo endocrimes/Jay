@@ -21,7 +21,8 @@ public struct Jay {
     }
     
     //Formats your JSON-compatible object into data or throws an error.
-    public func dataFromJson(json: Any) throws -> [UInt8] {
+
+    public func dataFromJson(json: JaySON) throws -> [UInt8] {
         
         let jayType = try NativeTypeConverter().toJayType(json)
         let data = try jayType.format()

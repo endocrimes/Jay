@@ -147,21 +147,21 @@ class FormattingTests: XCTestCase {
     }
     
     func testVaporExample() {
-        
-        let data = try! Jay().dataFromJson(
-            [
-                "number": 123,
-                "string": "test",
-                "array": [
-                    0, 1, 2, 3
-                ],
-                "dict": [
-                    "name": "Vapor",
-                    "lang": "Swift"
-                ]
+
+        let json: [String: Any] = [
+            "number": 123,
+            "string": "test",
+            "array": [
+                0, 1, 2, 3
+            ],
+            "dict": [
+                "name": "Vapor",
+                "lang": "Swift"
             ]
-        )
-        XCTAssertEqual(data, "{\"array\":[0.0,1.0,2.0,3.0],\"dict\":{\"lang\":\"Swift\",\"name\":\"Vapor\"},\"number\":\"123\",\"string\":\"test\"}".chars())
+        ]
+        let data = try! Jay().dataFromJson(json)
+        let exp = "{\"array\":[0,1,2,3],\"dict\":{\"lang\":\"Swift\",\"name\":\"Vapor\"},\"number\":123,\"string\":\"test\"}"
+        XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
     }
     
 }

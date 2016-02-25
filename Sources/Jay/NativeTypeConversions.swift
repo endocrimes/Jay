@@ -8,6 +8,12 @@
 
 import Foundation
 
+public protocol JaySON {}
+extension NSArray: JaySON {}
+extension NSDictionary: JaySON {}
+extension Dictionary where Generator.Element == (String, Any): JaySON {}
+extension Array where Generator.Element == Any: JaySON {}
+
 extension JsonValue {
 
     func toNative() -> Any {
