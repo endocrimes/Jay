@@ -13,6 +13,7 @@ extension NSArray: JaySON {}
 extension NSDictionary: JaySON {}
 extension Dictionary: JaySON {}
 extension Array: JaySON {}
+extension DictionaryLiteral: JaySON {}
 
 extension JsonValue {
 
