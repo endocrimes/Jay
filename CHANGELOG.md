@@ -2,7 +2,18 @@
 
 ## [Unreleased](https://github.com/czechboy0/Jay/tree/HEAD)
 
-[Full Changelog](https://github.com/czechboy0/Jay/compare/0.1.2...HEAD)
+[Full Changelog](https://github.com/czechboy0/Jay/compare/0.2.0...HEAD)
+
+**Closed issues:**
+
+- Purpose of Jay struct [\#7](https://github.com/czechboy0/Jay/issues/7)
+
+**Merged pull requests:**
+
+- Easier serialization for Linux [\#9](https://github.com/czechboy0/Jay/pull/9) ([czechboy0](https://github.com/czechboy0))
+
+## [0.2.0](https://github.com/czechboy0/Jay/tree/0.2.0) (2016-02-22)
+[Full Changelog](https://github.com/czechboy0/Jay/compare/0.1.2...0.2.0)
 
 **Merged pull requests:**
 
