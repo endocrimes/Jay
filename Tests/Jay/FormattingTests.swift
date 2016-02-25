@@ -146,7 +146,7 @@ class FormattingTests: XCTestCase {
         XCTAssertEqual(data, "[\"he \\r\\n l \\t l \\n o w\\\"o\\rrld \"]".chars())
     }
     
-    func takeJson(json: [String: Any]) -> JaySON {
+    func takeJson(json: [String: Any]) -> Any {
         return json
     }
     
