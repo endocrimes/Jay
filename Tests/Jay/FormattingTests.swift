@@ -27,7 +27,8 @@ import Foundation
                 ("testArray_Nested", testArray_Nested),
                 ("testNSArray_Simple", testNSArray_Simple),
                 ("testString_Escaping", testString_Escaping),
-                ("testVaporExample", testVaporExample)
+                ("testVaporExample_Dict", testVaporExample_Dict),
+                ("testVaporExample_Array", testVaporExample_Array)
             ]
         }
     }
