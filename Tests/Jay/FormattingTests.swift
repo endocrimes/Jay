@@ -146,13 +146,9 @@ class FormattingTests: XCTestCase {
         XCTAssertEqual(data, "[\"he \\r\\n l \\t l \\n o w\\\"o\\rrld \"]".chars())
     }
     
-    func takeJson(json: [String: Any]) -> Any {
-        return json
-    }
-    
-    func testVaporExample() {
+    func testVaporExample_Dict() {
         
-        let json = self.takeJson(
+        let json = JSON(
             [
                 "number": 123,
                 "string": "test",
@@ -169,5 +165,28 @@ class FormattingTests: XCTestCase {
         let exp = "{\"array\":[0,1,2,3],\"dict\":{\"lang\":\"Swift\",\"name\":\"Vapor\"},\"number\":123,\"string\":\"test\"}"
         XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
     }
+    
+    func testVaporExample_Array() {
+        
+        let json = JSON(
+            [
+                "number",
+                123,
+                "string",
+                "test",
+                "array",
+                [0, 1, 2, 3],
+                "dict",
+                [
+                    "name": "Vapor",
+                    "lang": "Swift"
+                ]
+            ]
+        )
+        let data = try! Jay().dataFromJson(json)
+        let exp = "[\"number\",123,\"string\",\"test\",\"array\",[0,1,2,3],\"dict\",{\"lang\":\"Swift\",\"name\":\"Vapor\"}]"
+        XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
+    }
+
     
 }

@@ -8,6 +8,17 @@
 
 import Foundation
 
+public struct JSON {
+    public let json: Any
+}
+
+extension JSON {
+    public init(_ dict: NSDictionary) { self.json = dict }
+    public init(_ array: NSArray) { self.json = array }
+    public init(_ dict: [String: Any]) { self.json = dict }
+    public init(_ array: [Any]) { self.json = array }
+}
+
 extension JsonValue {
 
     func toNative() -> Any {
@@ -80,9 +91,6 @@ struct NativeTypeConverter {
     
     func arrayToJayType(maybeArray: Any) throws -> JsonValue? {
         
-        let mirror = Mirror(reflecting: maybeArray)
-        print(mirror)
-        
         switch maybeArray {
             
         case let a as [Any]: return try self.convertArray(a)
@@ -110,9 +118,6 @@ struct NativeTypeConverter {
     }
     
     func dictionaryToJayType(maybeDictionary: Any) throws -> JsonValue? {
-        
-        let mirror = Mirror(reflecting: maybeDictionary)
-        print(mirror)
         
         switch maybeDictionary {
             
@@ -186,7 +191,7 @@ struct NativeTypeConverter {
         default: break
         }
         //nothing matched
-        throw Error.UnsupportedType(json)
+        throw Error.UnsupportedType("\(Mirror(reflecting: json))")
     }
 }
 
