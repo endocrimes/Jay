@@ -145,4 +145,22 @@ class FormattingTests: XCTestCase {
         XCTAssertEqual(data, "[\"he \\r\\n l \\t l \\n o w\\\"o\\rrld \"]".chars())
     }
     
+    func testVaporExample() {
+        
+        let data = try! Jay().dataFromJson(
+            [
+                "number": 123,
+                "string": "test",
+                "array": [
+                    0, 1, 2, 3
+                ],
+                "dict": [
+                    "name": "Vapor",
+                    "lang": "Swift"
+                ]
+            ]
+        )
+        XCTAssertEqual(data, "".chars())
+    }
+    
 }

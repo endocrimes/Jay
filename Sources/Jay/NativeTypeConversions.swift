@@ -80,6 +80,9 @@ struct NativeTypeConverter {
     
     func arrayToJayType(maybeArray: Any) throws -> JsonValue? {
         
+        let mirror = Mirror(reflecting: maybeArray)
+        print(mirror)
+        
         switch maybeArray {
             
         case let a as [Any]: return try self.convertArray(a)
@@ -105,6 +108,9 @@ struct NativeTypeConverter {
     }
     
     func dictionaryToJayType(maybeDictionary: Any) throws -> JsonValue? {
+        
+        let mirror = Mirror(reflecting: maybeDictionary)
+        print(mirror)
         
         switch maybeDictionary {
             
