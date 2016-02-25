@@ -146,19 +146,25 @@ class FormattingTests: XCTestCase {
         XCTAssertEqual(data, "[\"he \\r\\n l \\t l \\n o w\\\"o\\rrld \"]".chars())
     }
     
+    func takeJson(json: JaySON) -> JaySON {
+        return json
+    }
+    
     func testVaporExample() {
-
-        let json: [String: Any] = [
-            "number": 123,
-            "string": "test",
-            "array": [
-                0, 1, 2, 3
-            ],
-            "dict": [
-                "name": "Vapor",
-                "lang": "Swift"
+        
+        let json = self.takeJson(
+            [
+                "number": 123,
+                "string": "test",
+                "array": [
+                    0, 1, 2, 3
+                ],
+                "dict": [
+                    "name": "Vapor",
+                    "lang": "Swift"
+                ]
             ]
-        ]
+        )
         let data = try! Jay().dataFromJson(json)
         let exp = "{\"array\":[0,1,2,3],\"dict\":{\"lang\":\"Swift\",\"name\":\"Vapor\"},\"number\":123,\"string\":\"test\"}"
         XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")

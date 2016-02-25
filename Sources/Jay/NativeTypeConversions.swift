@@ -95,6 +95,7 @@ struct NativeTypeConverter {
             
             //whenever bridging works properly, we can just keep the above [Any]
             
+        case let a as [AnyObject]: return try self.convertArray(a)
         case let a as [String]: return try self.convertArray(a)
         case let a as [Double]: return try self.convertArray(a)
         case let a as [Float]: return try self.convertArray(a)
@@ -124,6 +125,7 @@ struct NativeTypeConverter {
         case let d as [String: Any]: return try self.convertDict(d)
             
             //whenever bridging works properly, we can just keep the above [Any]
+        case let d as [String: AnyObject]: return try self.convertDict(d)
         case let d as [String: String]: return try self.convertDict(d)
         case let d as [String: Double]: return try self.convertDict(d)
         case let d as [String: Float]: return try self.convertDict(d)
@@ -173,6 +175,13 @@ struct NativeTypeConverter {
                 throw Error.UnsupportedIntegerType(int)
             }
             return JsonValue.Number(JsonNumber.JsonInt(integer))
+        case let num as NSNumber:
+            //if the double value equals the int->double value, let's call it
+            //an int. otherwise call it a value.
+            if Double(num.intValue) == num.doubleValue {
+                return JsonValue.Number(JsonNumber.JsonInt(Int(num.intValue)))
+            }
+            return JsonValue.Number(JsonNumber.JsonDbl(num.doubleValue))
             
         //string (or anything representable as string that didn't match above)
         case let string as String:
