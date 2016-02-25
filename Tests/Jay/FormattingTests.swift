@@ -26,7 +26,9 @@ import Foundation
                 ("testArray_Simple", testArray_Simple),
                 ("testArray_Nested", testArray_Nested),
                 ("testNSArray_Simple", testNSArray_Simple),
-                ("testString_Escaping", testString_Escaping)
+                ("testString_Escaping", testString_Escaping),
+                ("testVaporExample_Dict", testVaporExample_Dict),
+                ("testVaporExample_Array", testVaporExample_Array)
             ]
         }
     }
@@ -144,5 +146,48 @@ class FormattingTests: XCTestCase {
         let data = try! Jay().dataFromJson(json)
         XCTAssertEqual(data, "[\"he \\r\\n l \\t l \\n o w\\\"o\\rrld \"]".chars())
     }
+    
+    func testVaporExample_Dict() {
+        
+        let json = JSON(
+            [
+                "number": 123,
+                "string": "test",
+                "array": [
+                    0, 1, 2, 3
+                ],
+                "dict": [
+                    "name": "Vapor",
+                    "lang": "Swift"
+                ]
+            ]
+        )
+        let data = try! Jay().dataFromJson(json)
+        let exp = "{\"array\":[0,1,2,3],\"dict\":{\"lang\":\"Swift\",\"name\":\"Vapor\"},\"number\":123,\"string\":\"test\"}"
+        XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
+    }
+    
+    func testVaporExample_Array() {
+        
+        let json = JSON(
+            [
+                "number",
+                123,
+                "string",
+                "test",
+                "array",
+                [0, 1, 2, 3],
+                "dict",
+                [
+                    "name": "Vapor",
+                    "lang": "Swift"
+                ]
+            ]
+        )
+        let data = try! Jay().dataFromJson(json)
+        let exp = "[\"number\",123,\"string\",\"test\",\"array\",[0,1,2,3],\"dict\",{\"lang\":\"Swift\",\"name\":\"Vapor\"}]"
+        XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
+    }
+
     
 }

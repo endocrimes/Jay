@@ -8,6 +8,17 @@
 
 import Foundation
 
+public struct JSON {
+    public let json: Any
+}
+
+extension JSON {
+    public init(_ dict: NSDictionary) { self.json = dict }
+    public init(_ array: NSArray) { self.json = array }
+    public init(_ dict: [String: Any]) { self.json = dict }
+    public init(_ array: [Any]) { self.json = array }
+}
+
 extension JsonValue {
 
     func toNative() -> Any {
@@ -86,6 +97,7 @@ struct NativeTypeConverter {
             
             //whenever bridging works properly, we can just keep the above [Any]
             
+        case let a as [AnyObject]: return try self.convertArray(a)
         case let a as [String]: return try self.convertArray(a)
         case let a as [Double]: return try self.convertArray(a)
         case let a as [Float]: return try self.convertArray(a)
@@ -97,6 +109,7 @@ struct NativeTypeConverter {
         case let a as [NSNumber]: return try self.convertArray(a)
         case let a as [NSString]: return try self.convertArray(a)
         case let a as [NSNull]: return try self.convertArray(a)
+        case let a as [NSObject]: return try self.convertArray(a)
 
         case let a as NSArray: return try self.parseNSArray(a)
             
@@ -111,6 +124,7 @@ struct NativeTypeConverter {
         case let d as [String: Any]: return try self.convertDict(d)
             
             //whenever bridging works properly, we can just keep the above [Any]
+        case let d as [String: AnyObject]: return try self.convertDict(d)
         case let d as [String: String]: return try self.convertDict(d)
         case let d as [String: Double]: return try self.convertDict(d)
         case let d as [String: Float]: return try self.convertDict(d)
@@ -122,6 +136,7 @@ struct NativeTypeConverter {
         case let d as [String: NSNumber]: return try self.convertDict(d)
         case let d as [String: NSString]: return try self.convertDict(d)
         case let d as [String: NSNull]: return try self.convertDict(d)
+        case let d as [String: NSObject]: return try self.convertDict(d)
 
         case let d as NSDictionary: return try self.parseNSDictionary(d)
 
@@ -159,6 +174,13 @@ struct NativeTypeConverter {
                 throw Error.UnsupportedIntegerType(int)
             }
             return JsonValue.Number(JsonNumber.JsonInt(integer))
+        case let num as NSNumber:
+            //if the double value equals the int->double value, let's call it
+            //an int. otherwise call it a value.
+            if Double(num.intValue) == num.doubleValue {
+                return JsonValue.Number(JsonNumber.JsonInt(Int(num.intValue)))
+            }
+            return JsonValue.Number(JsonNumber.JsonDbl(num.doubleValue))
             
         //string (or anything representable as string that didn't match above)
         case let string as String:
@@ -169,7 +191,7 @@ struct NativeTypeConverter {
         default: break
         }
         //nothing matched
-        throw Error.UnsupportedType(json)
+        throw Error.UnsupportedType("\(Mirror(reflecting: json))")
     }
 }
 
