@@ -100,6 +100,7 @@ struct NativeTypeConverter {
         case let a as [NSNumber]: return try self.convertArray(a)
         case let a as [NSString]: return try self.convertArray(a)
         case let a as [NSNull]: return try self.convertArray(a)
+        case let a as [NSObject]: return try self.convertArray(a)
 
         case let a as NSArray: return try self.parseNSArray(a)
             
@@ -128,6 +129,7 @@ struct NativeTypeConverter {
         case let d as [String: NSNumber]: return try self.convertDict(d)
         case let d as [String: NSString]: return try self.convertDict(d)
         case let d as [String: NSNull]: return try self.convertDict(d)
+        case let d as [String: NSObject]: return try self.convertDict(d)
 
         case let d as NSDictionary: return try self.parseNSDictionary(d)
 

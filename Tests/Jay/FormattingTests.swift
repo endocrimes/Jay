@@ -160,7 +160,7 @@ class FormattingTests: XCTestCase {
                 ]
             ]
         )
-        XCTAssertEqual(data, "".chars())
+        XCTAssertEqual(data, "{\"array\":[0.0,1.0,2.0,3.0],\"dict\":{\"lang\":\"Swift\",\"name\":\"Vapor\"},\"number\":\"123\",\"string\":\"test\"}".chars())
     }
     
 }
