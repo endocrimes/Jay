@@ -8,11 +8,11 @@
 
 import Foundation
 
-public struct JSON {
+public struct JaySON {
     public let json: Any
 }
 
-extension JSON {
+extension JaySON {
     public init(_ dict: NSDictionary) { self.json = dict }
     public init(_ array: NSArray) { self.json = array }
     public init(_ dict: [String: Any]) { self.json = dict }
