@@ -20,14 +20,6 @@ public struct Jay {
         return try NativeParser().parse(data)
     }
     
-    //Allows users to get the JSON representation in a typesafe matter.
-    //However these types are wrapped, so the user is responsible for
-    //manually unwrapping each value recursively. If you just want
-    //Swift types with less type-information, use `jsonFromData()` above.
-    public func typesafeJsonFromData(data: [UInt8]) throws -> JsonValue {
-        return try Parser().parseJsonFromData(data)
-    }
-    
     //Formats your JSON-compatible object into data or throws an error.
     public func dataFromJson(json: JSON) throws -> [UInt8] {
         return try self.dataFromAnyJson(json.json)
@@ -50,6 +42,23 @@ public struct Jay {
         let jayType = try NativeTypeConverter().toJayType(json)
         let data = try jayType.format()
         return data
+    }
+}
+
+//Typesafe
+extension Jay {
+    
+    //Allows users to get the JSON representation in a typesafe matter.
+    //However these types are wrapped, so the user is responsible for
+    //manually unwrapping each value recursively. If you just want
+    //Swift types with less type-information, use `jsonFromData()` above.
+    public func typesafeJsonFromData(data: [UInt8]) throws -> JsonValue {
+        return try Parser().parseJsonFromData(data)
+    }
+
+    //Formats your JSON-compatible object into data or throws an error.
+    public func dataFromJson(json: JsonValue) throws -> [UInt8] {
+        return try json.format()
     }
 }
 
