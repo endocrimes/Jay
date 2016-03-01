@@ -79,7 +79,7 @@ extension CollectionType where Generator.Element == UInt8 {
 }
 
 extension JsonValue: Equatable { }
-func ==(lhs: JsonValue, rhs: JsonValue) -> Bool {
+public func ==(lhs: JsonValue, rhs: JsonValue) -> Bool {
     switch (lhs, rhs) {
     case (.Null, .Null): return true
     case (.Boolean(let l), .Boolean(let r)): return l == r

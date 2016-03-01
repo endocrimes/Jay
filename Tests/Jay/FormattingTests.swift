@@ -149,7 +149,7 @@ class FormattingTests: XCTestCase {
     
     func testVaporExample_Dict() {
         
-        let json = JSON(
+        let json = JaySON(
             [
                 "number": 123,
                 "string": "test",
@@ -169,7 +169,7 @@ class FormattingTests: XCTestCase {
     
     func testVaporExample_Array() {
         
-        let json = JSON(
+        let json = JaySON(
             [
                 "number",
                 123,
