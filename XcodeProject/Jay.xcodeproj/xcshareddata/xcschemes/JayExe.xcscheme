@@ -15,9 +15,9 @@
             hideIssues = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3A1281B21C7A9ED800C92A21"
-               BuildableName = "Jay.framework"
-               BlueprintName = "Jay"
+               BlueprintIdentifier = "3AA85BDF1C74821C0024225D"
+               BuildableName = "JayExe"
+               BlueprintName = "JayExe"
                ReferencedContainer = "container:Jay.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,6 +30,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "3AA85BDF1C74821C0024225D"
+            BuildableName = "JayExe"
+            BlueprintName = "JayExe"
+            ReferencedContainer = "container:Jay.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -43,12 +52,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <PathRunnable
+         runnableDebuggingMode = "0"
+         FilePath = "~/Documents/Jay/.build/debug/JayExample">
+      </PathRunnable>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3A1281B21C7A9ED800C92A21"
-            BuildableName = "Jay.framework"
-            BlueprintName = "Jay"
+            BlueprintIdentifier = "3AA85BDF1C74821C0024225D"
+            BuildableName = "JayExe"
+            BlueprintName = "JayExe"
             ReferencedContainer = "container:Jay.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -61,15 +74,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3A1281B21C7A9ED800C92A21"
-            BuildableName = "Jay.framework"
-            BlueprintName = "Jay"
+            BlueprintIdentifier = "3AA85BDF1C74821C0024225D"
+            BuildableName = "JayExe"
+            BlueprintName = "JayExe"
             ReferencedContainer = "container:Jay.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
