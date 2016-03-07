@@ -192,7 +192,8 @@ class FormattingTests: XCTestCase {
 
     //https://twitter.com/schwa/status/706765578631979008
     func test_Example2() {
-        let json = JaySON([1,[2,[3]]])
+        //this 'as [Any]' ugliness is here bc on Linux w/out automatic bridging to NSArray, the compiler considers it ambiguous instead of assuming [Any] for some reason. probably reportable as a bug.
+        let json = JaySON([1,[2,[3]] as [Any]])
         let data = try! Jay().dataFromJson(json)
         XCTAssertEqual(data, "[1,[2,[3]]]".chars())
     }
