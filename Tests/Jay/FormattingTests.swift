@@ -14,21 +14,22 @@ import Foundation
     extension FormattingTests: XCTestCaseProvider {
         var allTests : [(String, () throws -> Void)] {
             return [
-                ("testObject_Empty", testObject_Empty),
-                ("testNSDictionary_Empty", testNSDictionary_Empty),
-                ("testNSDictionary_Simple", testNSDictionary_Simple),
-                ("testObject_Simple", testObject_Simple),
-                ("testObject_Normal", testObject_Normal),
-                ("testObject_Nested", testObject_Nested),
-                ("testObject_AllTypes", testObject_AllTypes),
-                ("testArray_Empty", testArray_Empty),
-                ("testNSArray_Empty", testNSArray_Empty),
-                ("testArray_Simple", testArray_Simple),
-                ("testArray_Nested", testArray_Nested),
-                ("testNSArray_Simple", testNSArray_Simple),
-                ("testString_Escaping", testString_Escaping),
-                ("testVaporExample_Dict", testVaporExample_Dict),
-                ("testVaporExample_Array", testVaporExample_Array)
+                       ("testObject_Empty", testObject_Empty),
+                       ("testNSDictionary_Empty", testNSDictionary_Empty),
+                       ("testNSDictionary_Simple", testNSDictionary_Simple),
+                       ("testObject_Simple", testObject_Simple),
+                       ("testObject_Normal", testObject_Normal),
+                       ("testObject_Nested", testObject_Nested),
+                       ("testObject_AllTypes", testObject_AllTypes),
+                       ("testArray_Empty", testArray_Empty),
+                       ("testNSArray_Empty", testNSArray_Empty),
+                       ("testArray_Simple", testArray_Simple),
+                       ("testArray_Nested", testArray_Nested),
+                       ("testNSArray_Simple", testNSArray_Simple),
+                       ("testString_Escaping", testString_Escaping),
+                       ("testVaporExample_Dict", testVaporExample_Dict),
+                       ("testVaporExample_Array", testVaporExample_Array),
+                       ("test_Example2", test_Example2)
             ]
         }
     }
@@ -189,5 +190,12 @@ class FormattingTests: XCTestCase {
         XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
     }
 
+    //https://twitter.com/schwa/status/706765578631979008
+    func test_Example2() {
+        //this 'as [Any]' ugliness is here bc on Linux w/out automatic bridging to NSArray, the compiler considers it ambiguous instead of assuming [Any] for some reason. probably reportable as a bug.
+        let json = JaySON([1,[2,[3]] as [Any]])
+        let data = try! Jay().dataFromJson(json)
+        XCTAssertEqual(data, "[1,[2,[3]]]".chars())
+    }
     
 }
