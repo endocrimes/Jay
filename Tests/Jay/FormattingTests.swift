@@ -189,5 +189,11 @@ class FormattingTests: XCTestCase {
         XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
     }
 
+    //https://twitter.com/schwa/status/706765578631979008
+    func test_Example2() {
+        let json = [1,[2,[3]]]
+        let data = try! Jay().dataFromJson(json)
+        XCTAssertEqual(data, "[1,[2,[3]]]".chars())
+    }
     
 }

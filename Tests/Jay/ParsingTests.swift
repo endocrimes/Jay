@@ -488,6 +488,22 @@ class ParsingTests:XCTestCase {
         let retStr = "\(ret)"
         XCTAssertEqual(expStr, retStr)
     }
+    
+    //https://twitter.com/schwa/status/706765578631979008
+    func test_Example2() {
+        let data = "[1,[2,[3]]]".chars()
+        let ret = try! Jay().typesafeJsonFromData(data)
+        let exp: JsonArray = [
+            JsonValue.Number(JsonNumber.JsonInt(1)),
+            JsonValue.Array([
+                JsonValue.Number(JsonNumber.JsonInt(2)),
+                JsonValue.Array([
+                    JsonValue.Number(JsonNumber.JsonInt(3))
+                ])
+            ])
+        ]
+        ensureArray(ret, exp: exp)
+    }
 
     
 }
