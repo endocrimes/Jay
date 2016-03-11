@@ -6,7 +6,7 @@
 //  Copyright © 2016 Honza Dvorsky. All rights reserved.
 //
 
-enum Error: ErrorType {
+enum Error: ErrorProtocol {
     case UnexpectedEnd(Reader)
     case Unimplemented(String)
     case ParseStringFromCharsFailed([JChar])
