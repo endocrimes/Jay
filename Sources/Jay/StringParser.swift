@@ -26,6 +26,7 @@ struct StringParser: JsonParser {
         
         //if another quote, it's just an empty string
         if reader.curr() == Const.QuotationMark {
+            try reader.nextAndCheckNotDone()
             return (JsonValue.String(""), reader)
         }
         
