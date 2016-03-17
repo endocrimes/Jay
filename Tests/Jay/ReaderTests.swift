@@ -13,17 +13,17 @@ import XCTest
     extension ReaderTests: XCTestCaseProvider {
         var allTests : [(String, () throws -> Void)] {
             return [
-                ("testConsumingWhitespace_Normal", testConsumingWhitespace_Normal),
-                ("testConsumingWhitespace_NoWhitespace", testConsumingWhitespace_NoWhitespace),
-                ("testConsumingWhitespace_Empty", testConsumingWhitespace_Empty),
-                ("testStopAtFirstDifference_RegularMismatch", testStopAtFirstDifference_RegularMismatch),
-                ("testStopAtFirstDifference_EmptyMain", testStopAtFirstDifference_EmptyMain),
-                ("testStopAtFirstDifference_EmptyExpected", testStopAtFirstDifference_EmptyExpected),
-                ("testStopAtFirstDifference_Normal", testStopAtFirstDifference_Normal),
-                ("testReadNext_EnoughAvailable", testReadNext_EnoughAvailable),
-                ("testReadNext_LessAvailable", testReadNext_LessAvailable),
-                ("testCurrIndex_Start", testCurrIndex_Start),
-                ("testCurrIndex_End", testCurrIndex_End)
+                       ("testConsumingWhitespace_Normal", testConsumingWhitespace_Normal),
+                       ("testConsumingWhitespace_NoWhitespace", testConsumingWhitespace_NoWhitespace),
+                       ("testConsumingWhitespace_Empty", testConsumingWhitespace_Empty),
+                       ("testStopAtFirstDifference_RegularMismatch", testStopAtFirstDifference_RegularMismatch),
+                       ("testStopAtFirstDifference_EmptyMain", testStopAtFirstDifference_EmptyMain),
+                       ("testStopAtFirstDifference_EmptyExpected", testStopAtFirstDifference_EmptyExpected),
+                       ("testStopAtFirstDifference_Normal", testStopAtFirstDifference_Normal),
+                       ("testReadNext_EnoughAvailable", testReadNext_EnoughAvailable),
+                       ("testReadNext_LessAvailable", testReadNext_LessAvailable),
+                       ("testCurrIndex_Start", testCurrIndex_Start),
+                       ("testCurrIndex_End", testCurrIndex_End)
             ]
         }
     }
