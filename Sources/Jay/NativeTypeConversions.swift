@@ -19,6 +19,40 @@ extension JaySON {
     public init(_ array: [Any]) { self.json = array }
 }
 
+extension ParsedJsonToken {
+    
+    func stripAnnotations() -> JsonValue {
+        return self.value.stripAnnotations()
+    }
+}
+
+extension ParsedJsonValue {
+    func stripAnnotations() -> JsonValue {
+        switch self {
+            
+        case .Object(let obj):
+            var out: [Swift.String: JsonValue] = [:]
+            for i in obj { out[i.0] = i.1.stripAnnotations() }
+            return .Object(out)
+            
+        case .Array(let arr):
+            return .Array(arr.map({ $0.stripAnnotations() }))
+            
+        case .Boolean(let bool):
+            return .Boolean(bool)
+            
+        case .Null:
+            return .Null
+            
+        case .Number(let num):
+            return .Number(num)
+            
+        case .String(let str):
+            return .String(str)
+        }
+    }
+}
+
 extension JsonValue {
 
     func toNative() -> Any {

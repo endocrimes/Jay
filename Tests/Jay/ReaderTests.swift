@@ -13,18 +13,17 @@ import XCTest
     extension ReaderTests: XCTestCaseProvider {
         var allTests : [(String, () throws -> Void)] {
             return [
-                ("testConsumingWhitespace_Normal", testConsumingWhitespace_Normal),
-                ("testConsumingWhitespace_NoWhitespace", testConsumingWhitespace_NoWhitespace),
-                ("testConsumingWhitespace_Empty", testConsumingWhitespace_Empty),
-                ("testStopAtFirstDifference_RegularMismatch", testStopAtFirstDifference_RegularMismatch),
-                ("testStopAtFirstDifference_EmptyMain", testStopAtFirstDifference_EmptyMain),
-                ("testStopAtFirstDifference_EmptyExpected", testStopAtFirstDifference_EmptyExpected),
-                ("testStopAtFirstDifference_Normal", testStopAtFirstDifference_Normal),
-                ("testPeek_EnoughAvailable", testPeek_EnoughAvailable),
-                ("testPeek_LessAvailable", testPeek_LessAvailable),
-                ("testPeek_NoAvailable", testPeek_NoAvailable),
-                ("testReadNext_EnoughAvailable", testReadNext_EnoughAvailable),
-                ("testReadNext_LessAvailable", testReadNext_LessAvailable)
+                       ("testConsumingWhitespace_Normal", testConsumingWhitespace_Normal),
+                       ("testConsumingWhitespace_NoWhitespace", testConsumingWhitespace_NoWhitespace),
+                       ("testConsumingWhitespace_Empty", testConsumingWhitespace_Empty),
+                       ("testStopAtFirstDifference_RegularMismatch", testStopAtFirstDifference_RegularMismatch),
+                       ("testStopAtFirstDifference_EmptyMain", testStopAtFirstDifference_EmptyMain),
+                       ("testStopAtFirstDifference_EmptyExpected", testStopAtFirstDifference_EmptyExpected),
+                       ("testStopAtFirstDifference_Normal", testStopAtFirstDifference_Normal),
+                       ("testReadNext_EnoughAvailable", testReadNext_EnoughAvailable),
+                       ("testReadNext_LessAvailable", testReadNext_LessAvailable),
+                       ("testCurrIndex_Start", testCurrIndex_Start),
+                       ("testCurrIndex_End", testCurrIndex_End)
             ]
         }
     }
@@ -117,28 +116,6 @@ class ReaderTests: XCTestCase {
             XCTFail()
         }
     }
-    
-    func testPeek_EnoughAvailable() {
-        var mainReader = ByteReader(content: "hello world")
-        mainReader.next()
-        mainReader.next()
-        XCTAssert(mainReader.peek(5) == "llo w".chars())
-    }
-    
-    func testPeek_LessAvailable() {
-        var mainReader = ByteReader(content: "hello world")
-        mainReader.next()
-        mainReader.next()
-        XCTAssert(mainReader.peek(12) == "llo world".chars())
-    }
-    
-    func testPeek_NoAvailable() {
-        var mainReader = ByteReader(content: "hey")
-        mainReader.next()
-        mainReader.next()
-        mainReader.next()
-        XCTAssert(mainReader.peek(5) == [])
-    }
 
     func testReadNext_EnoughAvailable() {
         var mainReader = ByteReader(content: "hello world")
@@ -153,4 +130,16 @@ class ReaderTests: XCTestCase {
         XCTAssertNil(try? mainReader.readNext(12))
     }
 
+    func testCurrIndex_Start() {
+        let r = ByteReader(content: "hello world")
+        XCTAssertEqual(r.currIndex(), 0)
+    }
+    
+    func testCurrIndex_End() {
+        var r = ByteReader(content: "hey")
+        r.next()
+        r.next()
+        r.next()
+        XCTAssertEqual(r.currIndex(), 3)
+    }
 }

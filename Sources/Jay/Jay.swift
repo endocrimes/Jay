@@ -53,12 +53,22 @@ extension Jay {
     //manually unwrapping each value recursively. If you just want
     //Swift types with less type-information, use `jsonFromData()` above.
     public func typesafeJsonFromData(data: [UInt8]) throws -> JsonValue {
-        return try Parser().parseJsonFromData(data)
+        return try Parser().parseJsonFromData(data).stripAnnotations()
     }
 
     //Formats your JSON-compatible object into data or throws an error.
     public func dataFromJson(json: JsonValue) throws -> [UInt8] {
         return try json.format()
+    }
+}
+
+//Typesafe with location annotations
+extension Jay {
+    
+    //Returns JSON representation in a typesafe manner, also includes
+    //source location information (range in which each token was found).
+    public func annotatedTypesafeJsonFromData(data: [UInt8]) throws -> ParsedJsonToken {
+        return try Parser().parseJsonFromData(data)
     }
 }
 

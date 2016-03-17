@@ -21,16 +21,13 @@ struct ByteReader: Reader {
         self.cursor = self.cursor.successor()
     }
     
-    func peek(next: Int) -> [JChar] {
-        
-        let take = min(next, self.content.endIndex - self.cursor)
-        let range = self.cursor..<self.cursor.advancedBy(take)
-        return Array(self.content[range])
-    }
-    
     func curr() -> JChar {
         precondition(!self.isDone())
         return self.content[self.cursor]
+    }
+    
+    func currIndex() -> Int {
+        return self.cursor
     }
     
     func isDone() -> Bool {

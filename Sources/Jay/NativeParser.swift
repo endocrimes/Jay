@@ -13,9 +13,9 @@ struct NativeParser {
     func parse(data: [UInt8]) throws -> Any {
         
         let jsonValue = try Parser().parseJsonFromData(data)
-        
+                
         //recursively convert into native types
-        let native = jsonValue.toNative()
+        let native = jsonValue.stripAnnotations().toNative()
         return native
     }
 }

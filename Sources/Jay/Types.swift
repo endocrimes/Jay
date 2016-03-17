@@ -40,7 +40,31 @@ public enum JsonValue {
     case Null
 }
 
+// Types with additional metadata attached by parser
 
+public typealias JsonRange = Range<Int>
+
+public typealias ParsedJsonObject = [String: ParsedJsonToken]
+public typealias ParsedJsonArray = [ParsedJsonToken]
+
+public enum ParsedJsonValue {
+    case Object(ParsedJsonObject)
+    case Array(ParsedJsonArray)
+    case Number(JsonNumber)
+    case String(JsonString)
+    case Boolean(JsonBoolean)
+    case Null
+}
+
+public struct ParsedJsonToken {
+    public let value: ParsedJsonValue
+    public let range: JsonRange
+    
+    init(_ value: ParsedJsonValue, _ range: JsonRange) {
+        self.value = value
+        self.range = range
+    }
+}
 
 
 

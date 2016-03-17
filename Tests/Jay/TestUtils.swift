@@ -9,19 +9,27 @@
 import XCTest
 @testable import Jay
 
-func ensureNull(val: JsonValue) {
-    XCTAssertEqual(val, JsonValue.Null)
+func ensureNull(val: ParsedJsonValue) {
+    XCTAssertEqual(val, ParsedJsonValue.Null)
 }
 
-func ensureBool(val: JsonValue, exp: JsonBoolean) {
-    XCTAssertEqual(val, JsonValue.Boolean(exp))
+func ensureBool(val: ParsedJsonValue, exp: JsonBoolean) {
+    XCTAssertEqual(val, ParsedJsonValue.Boolean(exp))
 }
 
 func ensureArray(val: JsonValue, exp: JsonArray) {
     XCTAssertEqual(val, JsonValue.Array(exp))
 }
 
-func ensureNumber(val: JsonValue, exp: JsonNumber) {
+func ensureArray(val: ParsedJsonValue, exp: JsonArray) {
+    XCTAssertEqual(val.stripAnnotations(), JsonValue.Array(exp))
+}
+
+func ensureArray(val: ParsedJsonValue, exp: ParsedJsonArray) {
+    XCTAssertEqual(val, ParsedJsonValue.Array(exp))
+}
+
+func ensureNumber(val: ParsedJsonValue, exp: JsonNumber) {
     switch val {
     case .Number(let num):
         
@@ -36,11 +44,15 @@ func ensureNumber(val: JsonValue, exp: JsonNumber) {
     }
 }
 
-func ensureString(val: JsonValue, exp: JsonString) {
-    XCTAssertEqual(val, JsonValue.String(exp))
+func ensureString(val: ParsedJsonValue, exp: JsonString) {
+    XCTAssertEqual(val, ParsedJsonValue.String(exp))
 }
 
-func ensureObject(val: JsonValue, exp: JsonObject) {
-    XCTAssertEqual(val, JsonValue.Object(exp))
+func ensureObject(val: ParsedJsonValue, exp: JsonObject) {
+    XCTAssertEqual(val.stripAnnotations(), JsonValue.Object(exp))
+}
+
+func ensureObject(val: ParsedJsonValue, exp: ParsedJsonObject) {
+    XCTAssertEqual(val, ParsedJsonValue.Object(exp))
 }
 

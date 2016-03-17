@@ -20,9 +20,10 @@ struct NumberParser: JsonParser {
     //frac = decimal-point 1*DIGIT
     //int = zero / ( digit1-9 *DIGIT )
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (ParsedJsonToken, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
+        let start = reader.currIndex()
         
         //1. Optional minus
         let negative: Bool
@@ -44,7 +45,8 @@ struct NumberParser: JsonParser {
             
             //now if any number terminator is here, finish up with 0
             if Const.NumberTerminators.contains(reader.curr()) {
-                return (JsonValue.Number(JsonNumber.JsonInt(0)), reader)
+                let range = reader.rangeFrom(start)
+                return (ParsedJsonToken(.Number(JsonNumber.JsonInt(0)), range), reader)
             }
             
             //else there MUST be a frac part
@@ -66,7 +68,9 @@ struct NumberParser: JsonParser {
         
         //Generate the final number
         let number = self.generateNumber(negative: negative, integer: integer, frac: frac, exp: exp)
-        let value = JsonValue.Number(number)
+        let range = reader.rangeFrom(start)
+        
+        let value = ParsedJsonToken(.Number(number), range)
         return (value, reader)
     }
     

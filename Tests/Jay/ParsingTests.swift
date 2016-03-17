@@ -64,6 +64,7 @@ import Foundation
                        ("testString_SpecialCharacter_EmojiComplex", testString_SpecialCharacter_EmojiComplex),
                        ("testObject_Empty", testObject_Empty),
                        ("testObject_Example1", testObject_Example1),
+                       ("testObject_Example1_Annotated", testObject_Example1_Annotated),
                        ("testNative_Example1", testNative_Example1),
                        ("test_Example2", test_Example2)
             ]
@@ -89,7 +90,7 @@ class ParsingTests:XCTestCase {
         
         let reader = ByteReader(content: "null,   heyo")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNull(ret.0)
+        ensureNull(ret.0.value)
         XCTAssert(ret.1.curr() == ",".char())
     }
     
@@ -104,7 +105,7 @@ class ParsingTests:XCTestCase {
         
         let reader = ByteReader(content: "true, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureBool(ret.0, exp: JsonBoolean.True)
+        ensureBool(ret.0.value, exp: JsonBoolean.True)
         XCTAssert(ret.1.curr() == ",".char())
     }
 
@@ -119,7 +120,7 @@ class ParsingTests:XCTestCase {
         
         let reader = ByteReader(content: "false, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureBool(ret.0, exp: JsonBoolean.False)
+        ensureBool(ret.0.value, exp: JsonBoolean.False)
         XCTAssert(ret.1.curr() == ",".char())
     }
     
@@ -142,7 +143,7 @@ class ParsingTests:XCTestCase {
             JsonValue.Number(JsonNumber.JsonDbl(-24.3)),
             JsonValue.Number(JsonNumber.JsonDbl(18200000000)),
         ]
-        ensureArray(ret.0, exp: exp)
+        ensureArray(ret.0.value, exp: exp)
         XCTAssert(ret.1.isDone())
     }
 
@@ -156,7 +157,7 @@ class ParsingTests:XCTestCase {
             JsonValue.Number(JsonNumber.JsonDbl(-12.3)),
             JsonValue.Boolean(JsonBoolean.False)
         ]
-        ensureArray(ret.0, exp: exp)
+        ensureArray(ret.0.value, exp: exp)
         XCTAssert(ret.1.curr() == "\n".char())
     }
     
@@ -191,43 +192,43 @@ class ParsingTests:XCTestCase {
     func testNumber_Int_Zero() {
         let reader = ByteReader(content: "0  ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonInt(0))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonInt(0))
     }
     
     func testNumber_Int_One() {
         let reader = ByteReader(content: "1  ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonInt(1))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonInt(1))
     }
 
     func testNumber_Int_Basic() {
         let reader = ByteReader(content: "24  ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonInt(24))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonInt(24))
     }
     
     func testNumber_Int_Negative() {
         let reader = ByteReader(content: "24 , ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonInt(24))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonInt(24))
     }
     
     func testNumber_Dbl_Basic() {
         let reader = ByteReader(content: "24.34, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(24.34))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonDbl(24.34))
     }
     
     func testNumber_Dbl_ZeroSomething() {
         let reader = ByteReader(content: "0.34, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(0.34))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonDbl(0.34))
     }
     
     func testNumber_Dbl_MinusZeroSomething() {
         let reader = ByteReader(content: "-0.34, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-0.34))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonDbl(-0.34))
     }
     
     func testNumber_Dbl_Incomplete() {
@@ -239,7 +240,7 @@ class ParsingTests:XCTestCase {
     func testNumber_Dbl_Negative() {
         let reader = ByteReader(content: "-24.34]")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-24.34))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonDbl(-24.34))
     }
     
     func testNumber_Dbl_Negative_WrongChar() {
@@ -263,25 +264,25 @@ class ParsingTests:XCTestCase {
     func testNumber_Double_Exp_Normal() {
         let reader = ByteReader(content: "-24.3245e2, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-2432.45))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonDbl(-2432.45))
     }
     
     func testNumber_Double_Exp_Positive() {
         let reader = ByteReader(content: "-24.3245e+2, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-2432.45))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonDbl(-2432.45))
     }
     
     func testNumber_Double_Exp_Negative() {
         let reader = ByteReader(content: "-24.3245e-2, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(-0.243245))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonDbl(-0.243245))
     }
     
     func testNumber_Double_Exp_NoFrac() {
         let reader = ByteReader(content: "24E2, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonNumber.JsonDbl(2400))
+        ensureNumber(ret.0.value, exp: JsonNumber.JsonDbl(2400))
     }
 
     func testNumber_Double_Exp_TwoEs() {
@@ -364,86 +365,86 @@ class ParsingTests:XCTestCase {
     func testString_Empty() {
         let reader = ByteReader(content: "\"\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "")
+        ensureString(ret.0.value, exp: "")
     }
     
     func testString_Normal() {
         let reader = ByteReader(content: "\"hello world\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "hello world")
+        ensureString(ret.0.value, exp: "hello world")
     }
     
     func testString_Normal_WhitespaceInside() {
         let reader = ByteReader(content: "\"he \\r\\n l \\t l \\n o wo\\rrld \" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "he \r\n l \t l \n o wo\rrld ")
+        ensureString(ret.0.value, exp: "he \r\n l \t l \n o wo\rrld ")
     }
     
     func testString_StartEndWithSpaces() {
         let reader = ByteReader(content: "\"  hello world    \" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "  hello world    ")
+        ensureString(ret.0.value, exp: "  hello world    ")
     }
     
     func testString_Unicode_RegularChar() {
         let reader = ByteReader(content: "\"hel\\u006co world\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "hello world")
+        ensureString(ret.0.value, exp: "hello world")
     }
     
     func testString_Unicode_SpecialCharacter_CoolA() {
         let reader = ByteReader(content: "\"h\\u01cdw\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "hǍw")
+        ensureString(ret.0.value, exp: "hǍw")
     }
 
     func testString_Unicode_SpecialCharacter_HebrewShin() {
         let reader = ByteReader(content: "\"h\\u05e9w\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "hשw")
+        ensureString(ret.0.value, exp: "hשw")
     }
     
     func testString_Unicode_SpecialCharacter_QuarterTo() {
         let reader = ByteReader(content: "\"h\\u25d5w\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "h◕w")
+        ensureString(ret.0.value, exp: "h◕w")
     }
     
     func testString_Unicode_SpecialCharacter_EmojiSimple() {
         let reader = ByteReader(content: "\"h\\ud83d\\ude3bw\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "h😻w")
+        ensureString(ret.0.value, exp: "h😻w")
     }
     
     func testString_Unicode_SpecialCharacter_EmojiComplex() {
         let reader = ByteReader(content: "\"h\\ud83c\\udde8\\ud83c\\uddffw\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "h🇨🇿w")
+        ensureString(ret.0.value, exp: "h🇨🇿w")
     }
     
     func testString_SpecialCharacter_QuarterTo() {
         let reader = ByteReader(content: "\"h◕w\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "h◕w")
+        ensureString(ret.0.value, exp: "h◕w")
     }
 
     func testString_SpecialCharacter_EmojiSimple() {
         let reader = ByteReader(content: "\"h😻w\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "h😻w")
+        ensureString(ret.0.value, exp: "h😻w")
     }
 
     func testString_SpecialCharacter_EmojiComplex() {
         let reader = ByteReader(content: "\"h🇨🇿w\" ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureString(ret.0, exp: "h🇨🇿w")
+        ensureString(ret.0.value, exp: "h🇨🇿w")
     }
     
     func testObject_Empty() {
         let reader = ByteReader(content: "{}")
         let ret = try! ValueParser().parse(withReader: reader)
-        let exp: JsonObject = [:]
-        ensureObject(ret.0, exp: exp)
+        let exp: ParsedJsonObject = [:]
+        ensureObject(ret.0.value, exp: exp)
     }
     
     func testObject_Example1() {
@@ -464,7 +465,30 @@ class ParsingTests:XCTestCase {
                 ]),
             "name": JsonValue.Boolean(.True)
         ]
-        ensureObject(ret.0, exp: exp)
+        ensureObject(ret.0.value, exp: exp)
+    }
+    
+    func testObject_Example1_Annotated() {
+        let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, null, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
+        let reader = ByteReader(content: data)
+        let ret = try! ValueParser().parse(withReader: reader)
+        
+        let exp: ParsedJsonToken = ParsedJsonToken(.Object([
+            "hello": ParsedJsonToken(.String("wor🇨🇿ld"), 12..<27),
+            "val": ParsedJsonToken(.Number(.JsonInt(1234)), 39..<43),
+            "many": ParsedJsonToken(.Array([
+                   ParsedJsonToken(.Number(.JsonDbl(-12.32)), 55..<61),
+                   ParsedJsonToken(.Null, 63..<67),
+                   ParsedJsonToken(.String("yo"), 69..<73)
+                ]), 53..<75),
+            "emptyDict": ParsedJsonToken(.Object([:]), 90..<92),
+            "dict": ParsedJsonToken(.Object([
+                "arr": ParsedJsonToken(.Array([]), 109..<111)
+            ]), 102..<112),
+            "name": ParsedJsonToken(.Boolean(.True), 122..<126)
+        ]), 0..<127)
+        let res = (ret.0 == exp)
+        XCTAssert(res, "Ret: \(ret.0), exp: \(exp)")
     }
     
     func testNative_Example1() {
