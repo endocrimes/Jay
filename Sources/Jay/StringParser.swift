@@ -14,9 +14,10 @@
 
 struct StringParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (ParsedJsonToken, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
+        let start = reader.currIndex()
         
         //ensure we're starting with a quote
         guard reader.curr() == Const.QuotationMark else {
@@ -27,13 +28,15 @@ struct StringParser: JsonParser {
         //if another quote, it's just an empty string
         if reader.curr() == Const.QuotationMark {
             try reader.nextAndCheckNotDone()
-            return (JsonValue.String(""), reader)
+            let range = reader.rangeFrom(start)
+            return (ParsedJsonToken(.String(""), range), reader)
         }
         
         let str: String
         (str, reader) = try self.parseString(reader)
-        let obj = JsonValue.String(str)
-        return (obj, reader)
+        let obj = ParsedJsonValue.String(str)
+        let range = reader.rangeFrom(start)
+        return (ParsedJsonToken(obj, range), reader)
     }
     
     func parseString(r: Reader) throws -> (String, Reader) {

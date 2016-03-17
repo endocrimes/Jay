@@ -8,20 +8,24 @@
 
 struct BooleanParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (ParsedJsonToken, Reader) {
         
-        func parseTrue(rr: Reader) throws -> (JsonValue, Reader) {
+        func parseTrue(rr: Reader) throws -> (ParsedJsonToken, Reader) {
             var rd = rr
+            let start = rd.currIndex()
             //try to read the "true" literal, throw if anything goes wrong
             try rd.stopAtFirstDifference(ByteReader(content: Const.True))
-            return (JsonValue.Boolean(JsonBoolean.True), rd)
+            let range = rd.rangeFrom(start)
+            return (ParsedJsonToken(.Boolean(JsonBoolean.True), range), rd)
         }
         
-        func parseFalse(rr: Reader) throws -> (JsonValue, Reader) {
+        func parseFalse(rr: Reader) throws -> (ParsedJsonToken, Reader) {
             var rd = rr
+            let start = rd.currIndex()
             //try to read the "false" literal, throw if anything goes wrong
             try rd.stopAtFirstDifference(ByteReader(content: Const.False))
-            return (JsonValue.Boolean(JsonBoolean.False), rd)
+            let range = rd.rangeFrom(start)
+            return (ParsedJsonToken(.Boolean(JsonBoolean.False), range), rd)
         }
         
         let reader = try self.prepareForReading(withReader: r)

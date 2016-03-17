@@ -11,18 +11,21 @@ protocol Reader {
     // Returns the currently pointed-at char
     func curr() -> JChar
 
+    // Returns the index of the cursor
+    func currIndex() -> JsonRange.Index
+    
     // Moves cursor to the next char
     mutating func next()
-    
-    // Returns the `next` next characters, if not enough chars, returns
-    // less characters.
-    func peek(next: Int) -> [JChar]
     
     // Returns `true` if all characters have been read 
     func isDone() -> Bool
 }
 
 extension Reader {
+    
+    func rangeFrom(start: JsonRange.Index) -> JsonRange {
+        return start..<self.currIndex()
+    }
     
     mutating func readNext(next: Int) throws -> [JChar] {
         try self.ensureNotDone()

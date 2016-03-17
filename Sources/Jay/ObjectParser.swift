@@ -8,7 +8,7 @@
 
 struct ObjectParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (ParsedJsonToken, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
         
@@ -16,6 +16,7 @@ struct ObjectParser: JsonParser {
         guard reader.curr() == Const.BeginObject else {
             throw Error.UnexpectedCharacter(reader)
         }
+        let start = reader.currIndex()
         try reader.nextAndCheckNotDone()
         
         //move along, now start looking for name/value pairs
@@ -25,20 +26,21 @@ struct ObjectParser: JsonParser {
         if reader.curr() == Const.EndObject {
             //empty object
             reader.next()
-            return (JsonValue.Object([:]), reader)
+            let range = reader.rangeFrom(start)
+            return (ParsedJsonToken(.Object([:]), range), reader)
         }
 
         //now start scanning for name/value pairs
-        var pairs = [(JsonString, JsonValue)]()
+        var pairs = [(JsonString, ParsedJsonToken)]()
         repeat {
             
             //scan for name
             let nameRet = try StringParser().parse(withReader: reader)
             reader = nameRet.1
             let name: JsonString
-            switch nameRet.0 {
+            switch nameRet.0.value {
             case .String(let n): name = n; break
-            default: fatalError("Logic error: Should have returned a dictionary")
+            default: fatalError("Logic error: Dictionary key must be a string")
             }
             
             //scan for name separator :
@@ -63,7 +65,8 @@ struct ObjectParser: JsonParser {
             case Const.EndObject:
                 reader.next()
                 let exported = self.exportArray(pairs)
-                return (JsonValue.Object(exported), reader)
+                let range = reader.rangeFrom(start)
+                return (ParsedJsonToken(.Object(exported), range), reader)
             case Const.ValueSeparator:
                 //comma, so another value must come. let the loop repeat.
                 reader.next()
@@ -73,9 +76,9 @@ struct ObjectParser: JsonParser {
         } while true
     }
     
-    func exportArray(pairs: [(JsonString, JsonValue)]) -> [JsonString: JsonValue] {
+    func exportArray(pairs: [(JsonString, ParsedJsonToken)]) -> [JsonString: ParsedJsonToken] {
         
-        var object = [JsonString: JsonValue]()
+        var object = [JsonString: ParsedJsonToken]()
         for i in pairs {
             object[i.0] = i.1
         }

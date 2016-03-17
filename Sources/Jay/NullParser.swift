@@ -8,12 +8,14 @@
 
 struct NullParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (ParsedJsonToken, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
+        let start = reader.currIndex()
         
         //try to read the "null" literal, throw if anything goes wrong
         try reader.stopAtFirstDifference(ByteReader(content: Const.Null))
-        return (JsonValue.Null, reader)
+        let range = reader.rangeFrom(start)
+        return (ParsedJsonToken(.Null, range), reader)
     }
 }

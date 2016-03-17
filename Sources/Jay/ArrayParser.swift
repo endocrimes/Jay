@@ -8,9 +8,10 @@
 
 struct ArrayParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (ParsedJsonToken, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
+        let start = reader.currIndex()
         
         //detect opening bracket
         guard reader.curr() == Const.BeginArray else {
@@ -25,11 +26,12 @@ struct ArrayParser: JsonParser {
         if reader.curr() == Const.EndArray {
             //empty array
             reader.next()
-            return (JsonValue.Array([]), reader)
+            let range = reader.rangeFrom(start)
+            return (ParsedJsonToken(.Array([]), range), reader)
         }
         
         //now start scanning for values
-        var values = [JsonValue]()
+        var values = [ParsedJsonToken]()
         repeat {
             
             //scan for value
@@ -41,7 +43,10 @@ struct ArrayParser: JsonParser {
             //value OR for a closing bracket
             reader = try self.prepareForReading(withReader: reader)
             switch reader.curr() {
-            case Const.EndArray: reader.next(); return (JsonValue.Array(values), reader)
+            case Const.EndArray:
+                reader.next()
+                let range = reader.rangeFrom(start)
+                return (ParsedJsonToken(.Array(values), range), reader)
             case Const.ValueSeparator: reader.next(); break //comma, so another value must come. let the loop repeat.
             default: throw Error.UnexpectedCharacter(reader)
             }
