@@ -11,8 +11,8 @@ import XCTest
 import Foundation
 
 #if os(Linux)
-    extension ParsingTests: XCTestCaseProvider {
-        var allTests : [(String, () throws -> Void)] {
+    extension ParsingTests {
+        static var allTests : [(String, ParsingTests -> () throws -> Void)] {
             return [
                        ("testPrepareForReading_FailOnEmpty", testPrepareForReading_FailOnEmpty),
                        ("testExtraTokensThrow", testExtraTokensThrow),

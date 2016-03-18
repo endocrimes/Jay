@@ -15,6 +15,7 @@ notifications:
   email:
     on_success: never
     on_failure: change
-
+env:
+    - LD_LIBRARY_PATH=/home/travis/.swiftenv/versions/DEVELOPMENT-SNAPSHOT-2016-03-16-a/usr/lib:/home/travis/.swiftenv/versions/DEVELOPMENT-SNAPSHOT-2016-03-16-a/usr/lib/swift/linux  DYLD_FALLBACK_LIBRARY_PATH=/home/travis/.swiftenv/versions/DEVELOPMENT-SNAPSHOT-2016-03-16-a/usr/lib:/home/travis/.swiftenv/versions/DEVELOPMENT-SNAPSHOT-2016-03-16-a/usr/lib/swift/macosx
 
 

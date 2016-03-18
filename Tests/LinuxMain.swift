@@ -1,10 +1,10 @@
 import XCTest
-@testable import Jaytest
+@testable import JayTestSuite
 
 XCTMain([
-	ConstsTests(),
-	FormattingTests(),
-	ParsingTests(),
-	ReaderTests()	
+	testCase(ConstsTests.allTests),
+	testCase(FormattingTests.allTests),
+	testCase(ParsingTests.allTests),
+	testCase(ReaderTests.allTests)
 	// PerformanceTests(),
 ])

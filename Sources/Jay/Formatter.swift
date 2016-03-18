@@ -98,8 +98,8 @@ extension JsonValue: JsonFormattable {
         
         //join all converted name/value pairs and join them with value separator
         //sort first however, to be good citizens
-        //let pairs = object.sort(isOrderedBefore: { (a, b) -> Bool in a.0 <= b.0 })
-        let pairs = object
+        let pairs = object.sorted { (a, b) -> Bool in a.0 <= b.0 }
+        
         let convPairs = try pairs.map { (pair) -> [JChar] in
             let val = try pair.1.format()
             return try self.formatSwiftString(pair.0) + [Const.NameSeparator] + val
