@@ -87,14 +87,14 @@ struct StringParser: JsonParser {
         while buffer.count < 4 {
             
             buffer.append(reader.curr())
-            var gen = buffer.generate()
+            var gen = buffer.makeIterator()
             
             var utf = UTF8()
             switch utf.decode(&gen) {
-            case .Result(let unicodeScalar):
+            case .scalarValue(let unicodeScalar):
                 try reader.nextAndCheckNotDone()
                 return (unicodeScalar, reader)
-            case .EmptyInput, .Error:
+            case .emptyInput, .error:
                 //continue because we might be reading a longer char
                 try reader.nextAndCheckNotDone()
                 continue
@@ -205,11 +205,11 @@ struct StringParser: JsonParser {
         //append and parse them as such
         let data = [high, low]
         var utf = UTF16()
-        var gen = data.generate()
+        var gen = data.makeIterator()
         switch utf.decode(&gen) {
-        case .Result(let char):
+        case .scalarValue(let char):
             return (char, reader)
-        case .EmptyInput, .Error:
+        case .emptyInput, .error:
             throw Error.InvalidSurrogatePair(high, low, reader)
         }
     }

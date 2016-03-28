@@ -32,19 +32,19 @@ extension String {
     }
 }
 
-extension CollectionType where Generator.Element == UInt8 {
+extension Collection where Iterator.Element == UInt8 {
     
     public func string() throws -> String {
         var utf = UTF8()
-        var gen = self.generate()
+        var gen = self.makeIterator()
         var str = String()
         while true {
             switch utf.decode(&gen) {
-            case .EmptyInput: //we're done
+            case .emptyInput: //we're done
                 return str
-            case .Error: //error, can't describe what however
+            case .error: //error, can't describe what however
                 throw Error.ParseStringFromCharsFailed(Array(self))
-            case .Result(let unicodeScalar):
+            case .scalarValue(let unicodeScalar):
                 str.append(unicodeScalar)
             }
         }

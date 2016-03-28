@@ -63,13 +63,13 @@ extension JsonValue: JsonFormattable {
             //if this is an escapable character, escape it
             //first check for specific rules
             if let replacement = Const.EscapingRulesInv[c] {
-                contents.appendContentsOf([Const.Escape, replacement])
+                contents.append(contentsOf: [Const.Escape, replacement])
                 continue
             }
             
             //simple escape, just prepend with the escape char
             if Const.SimpleEscaped.contains(c) {
-                contents.appendContentsOf([Const.Escape, c])
+                contents.append(contentsOf: [Const.Escape, c])
                 continue
             }
             
@@ -88,7 +88,7 @@ extension JsonValue: JsonFormattable {
         //join all converted elements and join them with value separator
         let conv = try array.map { try $0.format() }
         let contents = conv
-            .joinWithSeparator([Const.ValueSeparator])
+            .joined(separator: [Const.ValueSeparator])
             .flatMap { $0 }
         let out = [Const.BeginArray] + contents + [Const.EndArray]
         return out
@@ -98,13 +98,14 @@ extension JsonValue: JsonFormattable {
         
         //join all converted name/value pairs and join them with value separator
         //sort first however, to be good citizens
-        let pairs = object.sort { (a, b) -> Bool in a.0 <= b.0 }
+        let pairs = object.sorted { (a, b) -> Bool in a.0 <= b.0 }
+        
         let convPairs = try pairs.map { (pair) -> [JChar] in
             let val = try pair.1.format()
             return try self.formatSwiftString(pair.0) + [Const.NameSeparator] + val
         }
         let contents = convPairs
-            .joinWithSeparator([Const.ValueSeparator])
+            .joined(separator:[Const.ValueSeparator])
             .flatMap { $0 }
         let out = [Const.BeginObject] + contents + [Const.EndObject]
         return out

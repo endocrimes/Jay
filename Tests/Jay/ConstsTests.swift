@@ -10,8 +10,8 @@ import XCTest
 @testable import Jay
 
 #if os(Linux)
-    extension ConstsTests: XCTestCaseProvider {
-        var allTests : [(String, () throws -> Void)] {
+    extension ConstsTests {
+        static var allTests : [(String, ConstsTests -> () throws -> Void)] {
             return [
                 ("testConsts", testConsts),
                 ("testUnicodeTesting", testUnicodeTesting)

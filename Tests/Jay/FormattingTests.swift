@@ -11,8 +11,8 @@ import XCTest
 import Foundation
 
 #if os(Linux)
-    extension FormattingTests: XCTestCaseProvider {
-        var allTests : [(String, () throws -> Void)] {
+    extension FormattingTests {
+        static var allTests : [(String, FormattingTests -> () throws -> Void)] {
             return [
                        ("testObject_Empty", testObject_Empty),
                        ("testNSDictionary_Empty", testNSDictionary_Empty),

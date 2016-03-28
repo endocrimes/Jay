@@ -27,10 +27,14 @@ class PerformanceTests: XCTestCase {
     func urlForFixture(name: String) -> NSURL {
         let url: NSURL
         //if we're running from CLI, use SPM_INSTALL_PATH to find fixtures, otherwise bundle
-        if let path = NSProcessInfo().environment["SPM_INSTALL_PATH"] {
-            url = NSURL(string: "file://\(path)/../Tests/Jay/Fixtures/\(name).json")!
+        let cwdPtr = UnsafeMutablePointer<CChar>(calloc(Int(MAXPATHLEN), 1))
+        defer { free(cwdPtr) }
+        getcwd(cwdPtr, Int(MAXPATHLEN))
+        let cwd = String(cString: cwdPtr)
+        if cwd.contains("Jay") {
+            url = NSURL(string: "file://\(cwd)/Tests/Jay/Fixtures/\(name).json")!
         } else {
-            url = NSBundle(forClass: PerformanceTests.classForCoder()).URLForResource(name, withExtension: "json")!
+            url = NSBundle(for: PerformanceTests.classForCoder()).url(forResource: name, withExtension: "json")!
         }
         print("Loading fixture from url \(url)")
         return url
@@ -39,14 +43,14 @@ class PerformanceTests: XCTestCase {
     func loadFixture(name: String) -> [UInt8] {
         
         let url = self.urlForFixture(name)
-        let data = Array(try! String(contentsOfURL: url).utf8)
+        let data = Array(try! String(contentsOf: url).utf8)
         return data
     }
     
     func loadFixtureNSData(name: String) -> NSData {
         
         let url = self.urlForFixture(name)
-        let data = NSData(contentsOfURL: url)!
+        let data = NSData(contentsOf: url)!
         return data
     }
 
@@ -56,7 +60,7 @@ class PerformanceTests: XCTestCase {
         //(in release). but to be fair, it took me 2 evenings to write this parser.
         let data = self.loadFixture("large")
         let jay = Jay()
-        measureBlock {
+        measure {
             do {
                 _ = try jay.jsonFromData(data)
             } catch {
@@ -68,15 +72,15 @@ class PerformanceTests: XCTestCase {
     func testPerf_ParseLargeJson_Darwin() {
         
         let data = self.loadFixtureNSData("large")
-        measureBlock {
-            _ = try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
+        measure {
+            _ = try! NSJSONSerialization.jsonObject(with: data, options: [])
         }
     }
     
     func assertEqual(my: [UInt8], exp: [UInt8]) {
         
         //iterate over both and find the first difference
-        for (index, char) in exp.enumerate() {
+        for (index, char) in exp.enumerated() {
             
             guard index < my.endIndex else {
                 XCTFail("Ran out of my data at index \(index)")

@@ -10,8 +10,8 @@ import XCTest
 @testable import Jay
 
 #if os(Linux)
-    extension ReaderTests: XCTestCaseProvider {
-        var allTests : [(String, () throws -> Void)] {
+    extension ReaderTests {
+        static var allTests : [(String, ReaderTests -> () throws -> Void)] {
             return [
                 ("testConsumingWhitespace_Normal", testConsumingWhitespace_Normal),
                 ("testConsumingWhitespace_NoWhitespace", testConsumingWhitespace_NoWhitespace),

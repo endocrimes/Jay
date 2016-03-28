@@ -160,16 +160,16 @@ struct NativeTypeConverter {
         switch json {
 
             //boolean
-        case let bool as BooleanType:
+        case let bool as Boolean:
             return JsonValue.Boolean(bool.boolValue ? JsonBoolean.True : JsonBoolean.False)
             
             //number
-        case let dbl as FloatingPointType:
+        case let dbl as FloatingPoint:
             guard let double = Double(String(dbl)) else {
                 throw Error.UnsupportedFloatingPointType(dbl)
             }
             return JsonValue.Number(JsonNumber.JsonDbl(double))
-        case let int as IntegerType:
+        case let int as Integer:
             guard let integer = Int(String(int)) else {
                 throw Error.UnsupportedIntegerType(int)
             }
