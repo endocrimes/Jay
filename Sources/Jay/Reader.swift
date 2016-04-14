@@ -16,7 +16,7 @@ protocol Reader {
     
     // Returns the `next` next characters, if not enough chars, returns
     // less characters.
-    func peek(next: Int) -> [JChar]
+    func peek(_ next: Int) -> [JChar]
     
     // Returns `true` if all characters have been read 
     func isDone() -> Bool
@@ -24,7 +24,7 @@ protocol Reader {
 
 extension Reader {
     
-    mutating func readNext(next: Int) throws -> [JChar] {
+    mutating func readNext(_ next: Int) throws -> [JChar] {
         try self.ensureNotDone()
         var buff = [JChar]()
         while buff.count < next {
@@ -66,7 +66,7 @@ extension Reader {
     // a) expectedReader runs out of characters -> great! all match
     // b) self runs out of characters -> bad, no match!
     // c) we encounter a difference -> bad, no match!
-    mutating func stopAtFirstDifference(o: Reader) throws {
+    mutating func stopAtFirstDifference(_ o: Reader) throws {
         
         var other = o
         

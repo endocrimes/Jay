@@ -70,7 +70,7 @@ struct NumberParser: JsonParser {
         return (value, reader)
     }
     
-    private func generateNumber(negative negative: Bool, integer: Int, frac: Int, exp: Int?) -> JsonNumber {
+    private func generateNumber(negative: Bool, integer: Int, frac: Int, exp: Int?) -> JsonNumber {
         
         //form the int section
         var int = integer
@@ -102,7 +102,7 @@ struct NumberParser: JsonParser {
         return JsonNumber.JsonDbl(dbl)
     }
     
-    private func parseMinus(r: Reader) throws -> (Bool, Reader) {
+    private func parseMinus(_ r: Reader) throws -> (Bool, Reader) {
         var reader = r
         if reader.curr() == Const.Minus {
             try reader.nextAndCheckNotDone()
@@ -111,7 +111,7 @@ struct NumberParser: JsonParser {
         return (false, reader)
     }
     
-    private func parseInt(r: Reader) throws -> (Int, Reader) {
+    private func parseInt(_ r: Reader) throws -> (Int, Reader) {
         
         var reader = r
         var digs = [JChar]()
@@ -158,7 +158,7 @@ struct NumberParser: JsonParser {
         }
     }
     
-    private func parseFrac(r: Reader) throws -> (Int, Reader) {
+    private func parseFrac(_ r: Reader) throws -> (Int, Reader) {
         
         var reader = r
         
@@ -207,7 +207,7 @@ struct NumberParser: JsonParser {
         }
     }
     
-    private func parseOptionalExp(r: Reader) throws -> (Int?, Reader) {
+    private func parseOptionalExp(_ r: Reader) throws -> (Int?, Reader) {
         
         var reader = r
         

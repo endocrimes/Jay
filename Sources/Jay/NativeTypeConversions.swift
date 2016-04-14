@@ -61,22 +61,22 @@ struct NativeTypeConverter {
         return (key, value)
     }
     
-    func convertDict<T>(dict: [String: T]) throws -> JsonValue? {
+    func convertDict<T>(_ dict: [String: T]) throws -> JsonValue? {
         var obj = [String: JsonValue]()
         for i in dict { obj[i.0] = try self.toJayType(i.1) }
         return JsonValue.Object(obj)
     }
     
-    func convertArray<T>(array: [T]) throws -> JsonValue? {
+    func convertArray<T>(_ array: [T]) throws -> JsonValue? {
         let vals = try array.map { try self.toJayType($0) }
         return JsonValue.Array(vals)
     }
     
-    func parseNSArray(array: NSArray) throws -> JsonValue? {
+    func parseNSArray(_ array: NSArray) throws -> JsonValue? {
         return try self.convertArray(array.map { $0 as Any })
     }
     
-    func parseNSDictionary(dict: NSDictionary) throws -> JsonValue? {
+    func parseNSDictionary(_ dict: NSDictionary) throws -> JsonValue? {
         var dOut = [String: Any]()
         for i in dict {
             //for Linux reasons we must cast into CustomStringConvertible instead of String  
@@ -89,7 +89,7 @@ struct NativeTypeConverter {
         return try self.convertDict(dOut)
     }
     
-    func arrayToJayType(maybeArray: Any) throws -> JsonValue? {
+    func arrayToJayType(_ maybeArray: Any) throws -> JsonValue? {
         
         switch maybeArray {
             
@@ -117,7 +117,7 @@ struct NativeTypeConverter {
         }
     }
     
-    func dictionaryToJayType(maybeDictionary: Any) throws -> JsonValue? {
+    func dictionaryToJayType(_ maybeDictionary: Any) throws -> JsonValue? {
         
         switch maybeDictionary {
             
@@ -144,7 +144,7 @@ struct NativeTypeConverter {
         }
     }
     
-    func toJayType(js: Any?) throws -> JsonValue {
+    func toJayType(_ js: Any?) throws -> JsonValue {
         
         guard let json = js else { return JsonValue.Null }
         if json is NSNull { return JsonValue.Null }

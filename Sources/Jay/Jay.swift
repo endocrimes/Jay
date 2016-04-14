@@ -16,28 +16,28 @@ public struct Jay {
     //Does not allow fragments. Test by conditional
     //casting whether you received what you expected.
     //Throws a descriptive error in case of any problem.
-    public func jsonFromData(data: [UInt8]) throws -> Any {
+    public func jsonFromData(_ data: [UInt8]) throws -> Any {
         return try NativeParser().parse(data)
     }
     
     //Formats your JSON-compatible object into data or throws an error.
-    public func dataFromJson(json: JaySON) throws -> [UInt8] {
+    public func dataFromJson(_ json: JaySON) throws -> [UInt8] {
         return try self.dataFromAnyJson(json.json)
     }
 
-    public func dataFromJson(json: [String: Any]) throws -> [UInt8] {
+    public func dataFromJson(_ json: [String: Any]) throws -> [UInt8] {
         return try self.dataFromAnyJson(json)
     }
 
-    public func dataFromJson(json: [Any]) throws -> [UInt8] {
+    public func dataFromJson(_ json: [Any]) throws -> [UInt8] {
         return try self.dataFromAnyJson(json)
     }
     
-    public func dataFromJson(json: Any) throws -> [UInt8] {
+    public func dataFromJson(_ json: Any) throws -> [UInt8] {
         return try self.dataFromAnyJson(json)
     }
 
-    private func dataFromAnyJson(json: Any) throws -> [UInt8] {
+    private func dataFromAnyJson(_ json: Any) throws -> [UInt8] {
         
         let jayType = try NativeTypeConverter().toJayType(json)
         let data = try jayType.format()
@@ -52,7 +52,7 @@ extension Jay {
     //However these types are wrapped, so the user is responsible for
     //manually unwrapping each value recursively. If you just want
     //Swift types with less type-information, use `jsonFromData()` above.
-    public func typesafeJsonFromData(data: [UInt8]) throws -> JsonValue {
+    public func typesafeJsonFromData(_ data: [UInt8]) throws -> JsonValue {
         return try Parser().parseJsonFromData(data)
     }
 
