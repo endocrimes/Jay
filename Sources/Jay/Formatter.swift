@@ -51,11 +51,11 @@ extension JsonValue: JsonFormattable {
         }
     }
     
-    func formatString(string: JsonString) throws -> [JChar] {
+    func formatString(_ string: JsonString) throws -> [JChar] {
         return try self.formatSwiftString(string)
     }
     
-    func formatSwiftString(string: Swift.String) throws -> [JChar] {
+    func formatSwiftString(_ string: Swift.String) throws -> [JChar] {
         
         var contents = [JChar]()
         for c in string.utf8 {
@@ -83,7 +83,7 @@ extension JsonValue: JsonFormattable {
         return out
     }
     
-    func formatArray(array: JsonArray) throws -> [JChar] {
+    func formatArray(_ array: JsonArray) throws -> [JChar] {
         
         //join all converted elements and join them with value separator
         let conv = try array.map { try $0.format() }
@@ -94,7 +94,7 @@ extension JsonValue: JsonFormattable {
         return out
     }
     
-    func formatObject(object: JsonObject) throws -> [JChar] {
+    func formatObject(_ object: JsonObject) throws -> [JChar] {
         
         //join all converted name/value pairs and join them with value separator
         //sort first however, to be good citizens

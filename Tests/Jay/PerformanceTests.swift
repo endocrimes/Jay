@@ -24,30 +24,22 @@ import XCTest
 #else
 class PerformanceTests: XCTestCase {
 
-    func urlForFixture(name: String) -> NSURL {
-        let url: NSURL
-        //if we're running from CLI, use SPM_INSTALL_PATH to find fixtures, otherwise bundle
-        let cwdPtr = UnsafeMutablePointer<CChar>(calloc(Int(MAXPATHLEN), 1))
-        defer { free(cwdPtr) }
-        getcwd(cwdPtr, Int(MAXPATHLEN))
-        let cwd = String(cString: cwdPtr)
-        if cwd.contains("Jay") {
-            url = NSURL(string: "file://\(cwd)/Tests/Jay/Fixtures/\(name).json")!
-        } else {
-            url = NSBundle(for: PerformanceTests.classForCoder()).url(forResource: name, withExtension: "json")!
-        }
+    func urlForFixture(_ name: String) -> NSURL {
+        
+        let parent = (#file).components(separatedBy: "/").dropLast().joined(separator: "/")
+        let url = NSURL(string: "file://\(parent)/Fixtures/\(name).json")!
         print("Loading fixture from url \(url)")
         return url
     }
     
-    func loadFixture(name: String) -> [UInt8] {
+    func loadFixture(_ name: String) -> [UInt8] {
         
         let url = self.urlForFixture(name)
         let data = Array(try! String(contentsOf: url).utf8)
         return data
     }
     
-    func loadFixtureNSData(name: String) -> NSData {
+    func loadFixtureNSData(_ name: String) -> NSData {
         
         let url = self.urlForFixture(name)
         let data = NSData(contentsOf: url)!

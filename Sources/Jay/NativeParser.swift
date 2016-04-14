@@ -10,7 +10,7 @@
 
 struct NativeParser {
     
-    func parse(data: [UInt8]) throws -> Any {
+    func parse(_ data: [UInt8]) throws -> Any {
         
         let jsonValue = try Parser().parseJsonFromData(data)
         

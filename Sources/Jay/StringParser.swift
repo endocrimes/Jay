@@ -36,7 +36,7 @@ struct StringParser: JsonParser {
         return (obj, reader)
     }
     
-    func parseString(r: Reader) throws -> (String, Reader) {
+    func parseString(_ r: Reader) throws -> (String, Reader) {
         
         var str = ""
         var reader = r
@@ -68,7 +68,7 @@ struct StringParser: JsonParser {
         }
     }
     
-    func readUnicodeCharacter(r: Reader) throws -> (UnicodeScalar, Reader) {
+    func readUnicodeCharacter(_ r: Reader) throws -> (UnicodeScalar, Reader) {
         
         //we need to keep reading from the reader until either
         //- result is returned, at which point we parsed a valid char
@@ -104,7 +104,7 @@ struct StringParser: JsonParser {
         throw Error.UnicodeCharacterParsing(buffer, reader)
     }
     
-    func isValidUnicodeHexDigit(chars: [JChar]) -> Bool {
+    func isValidUnicodeHexDigit(_ chars: [JChar]) -> Bool {
         guard chars.count == 5 else { //uXXXX
             return false
         }
@@ -117,7 +117,7 @@ struct StringParser: JsonParser {
         return true
     }
     
-    func unescapedCharacter(r: Reader, expectingLowSurrogate: Bool = false) throws -> (UnicodeScalar, Reader) {
+    func unescapedCharacter(_ r: Reader, expectingLowSurrogate: Bool = false) throws -> (UnicodeScalar, Reader) {
         
         var reader = r
         
@@ -168,12 +168,12 @@ struct StringParser: JsonParser {
         return (char, reader)
     }
     
-    func fourBytesToUnicodeCode(last4: String) -> UInt16 {
+    func fourBytesToUnicodeCode(_ last4: String) -> UInt16 {
         return UInt16(strtoul("0x\(last4)", nil, 16))
     }
     
     //nil means no surrogate found, parse normally
-    func parseSurrogate(r: Reader, value: UInt16) throws -> (UnicodeScalar, Reader)? {
+    func parseSurrogate(_ r: Reader, value: UInt16) throws -> (UnicodeScalar, Reader)? {
         
         var reader = r
         

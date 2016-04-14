@@ -73,7 +73,7 @@ struct ObjectParser: JsonParser {
         } while true
     }
     
-    func exportArray(pairs: [(JsonString, JsonValue)]) -> [JsonString: JsonValue] {
+    func exportArray(_ pairs: [(JsonString, JsonValue)]) -> [JsonString: JsonValue] {
         
         var object = [JsonString: JsonValue]()
         for i in pairs {

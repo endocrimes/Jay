@@ -9,19 +9,19 @@
 import XCTest
 @testable import Jay
 
-func ensureNull(val: JsonValue) {
+func ensureNull(_ val: JsonValue) {
     XCTAssertEqual(val, JsonValue.Null)
 }
 
-func ensureBool(val: JsonValue, exp: JsonBoolean) {
+func ensureBool(_ val: JsonValue, exp: JsonBoolean) {
     XCTAssertEqual(val, JsonValue.Boolean(exp))
 }
 
-func ensureArray(val: JsonValue, exp: JsonArray) {
+func ensureArray(_ val: JsonValue, exp: JsonArray) {
     XCTAssertEqual(val, JsonValue.Array(exp))
 }
 
-func ensureNumber(val: JsonValue, exp: JsonNumber) {
+func ensureNumber(_ val: JsonValue, exp: JsonNumber) {
     switch val {
     case .Number(let num):
         
@@ -36,11 +36,11 @@ func ensureNumber(val: JsonValue, exp: JsonNumber) {
     }
 }
 
-func ensureString(val: JsonValue, exp: JsonString) {
+func ensureString(_ val: JsonValue, exp: JsonString) {
     XCTAssertEqual(val, JsonValue.String(exp))
 }
 
-func ensureObject(val: JsonValue, exp: JsonObject) {
+func ensureObject(_ val: JsonValue, exp: JsonObject) {
     XCTAssertEqual(val, JsonValue.Object(exp))
 }
 

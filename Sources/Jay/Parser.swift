@@ -9,7 +9,7 @@
 struct Parser {
     
     //assuming data [Int8]
-    func parseJsonFromData(data: [JChar]) throws -> JsonValue {
+    func parseJsonFromData(_ data: [JChar]) throws -> JsonValue {
         
         //create a reader for this data
         let reader = ByteReader(content: data)
