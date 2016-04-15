@@ -16,7 +16,7 @@ Jay conforms to the following specifications:
 # :question: Why?
 We all use JSON. Especially when writing server-side Swift that needs to run on Linux. `#0dependencies`
 
-`NSJSONSerialization` is not yet fully implemented in the Swift standard libraries, so this is my take on how parsers should work. *This is not another JSON mapping utility library.* This is an actual **JSON parser** and **formatter**. Check out the code, it was fun to write 😇
+This is my take on how a JSON parser should work. *This is not another JSON mapping utility library.* This is an actual **JSON parser** and **formatter**. Check out the code, it was fun to write 😇
 
 # Features
 - [x] Parsing: data -> JSON object
