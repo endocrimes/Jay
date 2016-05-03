@@ -71,7 +71,7 @@ extension Collection where Iterator.Element == UInt8 {
                 return (leading, trailing)
             } else {
                 //not found, move index down
-                index = index.successor()
+                index = index.advanced(by: 1)
             }
         }
         return (orig, nil)

@@ -18,7 +18,7 @@ struct ByteReader: Reader {
     
     mutating func next() {
         precondition(!self.isDone())
-        self.cursor = self.cursor.successor()
+        self.cursor = self.cursor.advanced(by: 1)
     }
     
     func peek(_ next: Int) -> [JChar] {
