@@ -8,11 +8,8 @@
 
 struct Parser {
     
-    //assuming data [Int8]
-    func parseJsonFromData(_ data: [JChar]) throws -> JsonValue {
-        
-        //create a reader for this data
-        let reader = ByteReader(content: data)
+    //give any Reader-conforming object
+    func parseJsonFromReader(_ reader: Reader) throws -> JsonValue {
         
         //delegate parsing
         let result = try RootParser().parse(withReader: reader)
@@ -26,6 +23,15 @@ struct Parser {
         }
         
         return json
+    }
+}
+
+extension Parser {
+    
+    //assuming data [Int8]
+    func parseJsonFromData(_ data: [JChar]) throws -> JsonValue {
+        
+        return try parseJsonFromReader(ByteReader(content: data))
     }
 }
 

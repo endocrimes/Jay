@@ -64,6 +64,7 @@ import Foundation
                        ("testString_SpecialCharacter_EmojiComplex", testString_SpecialCharacter_EmojiComplex),
                        ("testObject_Empty", testObject_Empty),
                        ("testObject_Example1", testObject_Example1),
+                       ("testObject_DirectReader_Example1", testObject_DirectReader_Example1),
                        ("testNative_Example1", testNative_Example1),
                        ("test_Example2", test_Example2)
             ]
@@ -465,6 +466,27 @@ class ParsingTests:XCTestCase {
             "name": JsonValue.Boolean(.True)
         ]
         ensureObject(ret.0, exp: exp)
+    }
+    
+    func testObject_DirectReader_Example1() {
+        let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, null, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
+        let reader = ByteReader(content: data)
+        let ret = try! Jay().typesafeJsonFromReader(reader)
+        let exp: JsonObject = [
+                                  "hello": JsonValue.String("wor🇨🇿ld"),
+                                  "val": JsonValue.Number(.JsonInt(1234)),
+                                  "many": JsonValue.Array([
+                                                              JsonValue.Number(.JsonDbl(-12.32)),
+                                                              JsonValue.Null,
+                                                              JsonValue.String("yo")
+                                    ]),
+                                  "emptyDict": JsonValue.Object([:]),
+                                  "dict": JsonValue.Object([
+                                                               "arr": JsonValue.Array([])
+                                    ]),
+                                  "name": JsonValue.Boolean(.True)
+        ]
+        ensureObject(ret, exp: exp)
     }
     
     func testNative_Example1() {

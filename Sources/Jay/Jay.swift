@@ -20,6 +20,10 @@ public struct Jay {
         return try NativeParser().parse(data)
     }
     
+    public func jsonFromReader(_ reader: Reader) throws -> Any {
+        return try NativeParser().parse(reader)
+    }
+    
     //Formats your JSON-compatible object into data or throws an error.
     public func dataFromJson(_ json: JaySON) throws -> [UInt8] {
         return try self.dataFromAnyJson(json.json)
@@ -54,6 +58,10 @@ extension Jay {
     //Swift types with less type-information, use `jsonFromData()` above.
     public func typesafeJsonFromData(_ data: [UInt8]) throws -> JsonValue {
         return try Parser().parseJsonFromData(data)
+    }
+    
+    public func typesafeJsonFromReader(_ reader: Reader) throws -> JsonValue {
+        return try Parser().parseJsonFromReader(reader)
     }
 
     //Formats your JSON-compatible object into data or throws an error.
