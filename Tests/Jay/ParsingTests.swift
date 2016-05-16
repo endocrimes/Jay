@@ -64,6 +64,7 @@ import Foundation
                        ("testString_SpecialCharacter_EmojiComplex", testString_SpecialCharacter_EmojiComplex),
                        ("testObject_Empty", testObject_Empty),
                        ("testObject_Example1", testObject_Example1),
+                       ("testObject_DirectReader_Example1", testObject_DirectReader_Example1),
                        ("testNative_Example1", testNative_Example1),
                        ("test_Example2", test_Example2)
             ]
