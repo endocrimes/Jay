@@ -6,17 +6,13 @@
 //  Copyright © 2016 Honza Dvorsky. All rights reserved.
 //
 
-protocol Reader {
+public protocol Reader {
     
     // Returns the currently pointed-at char
-    func curr() -> JChar
+    func curr() -> UInt8
 
     // Moves cursor to the next char
     mutating func next()
-    
-    // Returns the `next` next characters, if not enough chars, returns
-    // less characters.
-    func peek(_ next: Int) -> [JChar]
     
     // Returns `true` if all characters have been read 
     func isDone() -> Bool

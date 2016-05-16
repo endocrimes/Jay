@@ -20,9 +20,6 @@ import XCTest
                 ("testStopAtFirstDifference_EmptyMain", testStopAtFirstDifference_EmptyMain),
                 ("testStopAtFirstDifference_EmptyExpected", testStopAtFirstDifference_EmptyExpected),
                 ("testStopAtFirstDifference_Normal", testStopAtFirstDifference_Normal),
-                ("testPeek_EnoughAvailable", testPeek_EnoughAvailable),
-                ("testPeek_LessAvailable", testPeek_LessAvailable),
-                ("testPeek_NoAvailable", testPeek_NoAvailable),
                 ("testReadNext_EnoughAvailable", testReadNext_EnoughAvailable),
                 ("testReadNext_LessAvailable", testReadNext_LessAvailable)
             ]
@@ -118,28 +115,6 @@ class ReaderTests: XCTestCase {
         }
     }
     
-    func testPeek_EnoughAvailable() {
-        var mainReader = ByteReader(content: "hello world")
-        mainReader.next()
-        mainReader.next()
-        XCTAssert(mainReader.peek(5) == "llo w".chars())
-    }
-    
-    func testPeek_LessAvailable() {
-        var mainReader = ByteReader(content: "hello world")
-        mainReader.next()
-        mainReader.next()
-        XCTAssert(mainReader.peek(12) == "llo world".chars())
-    }
-    
-    func testPeek_NoAvailable() {
-        var mainReader = ByteReader(content: "hey")
-        mainReader.next()
-        mainReader.next()
-        mainReader.next()
-        XCTAssert(mainReader.peek(5) == [])
-    }
-
     func testReadNext_EnoughAvailable() {
         var mainReader = ByteReader(content: "hello world")
         try! mainReader.readNext(2)
