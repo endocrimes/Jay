@@ -30,6 +30,11 @@ struct ByteReader: Reader {
         return self.cursor == self.content.endIndex
     }
     
+    func finishParsingWhenValid() -> Bool {
+        //let's make sure no invalid trailing characters are present
+        return false
+    }
+    
     init(content: String) {
         self.init(content: content.chars())
     }

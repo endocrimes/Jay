@@ -16,10 +16,12 @@ struct Parser {
         let json = result.0
         var endReader = result.1
         
-        //skip whitespace and ensure no more tokens are present, otherwise throw
-        try endReader.consumeWhitespace()
-        guard endReader.isDone() else {
-            throw Error.ExtraTokensFound(endReader)
+        if !reader.finishParsingWhenValid() {
+            //skip whitespace and ensure no more tokens are present, otherwise throw
+            try endReader.consumeWhitespace()
+            guard endReader.isDone() else {
+                throw Error.ExtraTokensFound(endReader)
+            }
         }
         
         return json

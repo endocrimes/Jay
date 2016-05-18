@@ -16,6 +16,15 @@ public protocol Reader {
     
     // Returns `true` if all characters have been read 
     func isDone() -> Bool
+    
+    // Finish parsing when valid JSON object has been parsed?
+    // Return true: for streaming parsers that never end, so that we don't
+    //              hang on waiting for more data even though a valid JSON
+    //              object has been parsed.
+    // Return false: for parsers that already have all data in memory, stricter
+    //               mode that ensures that no invalid trailing bytes have been
+    //               sent after the valid JSON object.
+    func finishParsingWhenValid() -> Bool
 }
 
 extension Reader {
