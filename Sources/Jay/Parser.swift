@@ -17,7 +17,7 @@ struct Parser {
         var endReader = result.1
         
         //skip whitespace and ensure no more tokens are present, otherwise throw
-        endReader.consumeWhitespace()
+        try endReader.consumeWhitespace()
         guard endReader.isDone() else {
             throw Error.ExtraTokensFound(endReader)
         }
@@ -48,7 +48,7 @@ extension JsonParser {
         var reader = r
         
         //ensure no leading whitespace
-        reader.consumeWhitespace()
+        try reader.consumeWhitespace()
         
         //if no more chars, then we encountered an unexpected end
         try reader.ensureNotDone()

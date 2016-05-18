@@ -12,7 +12,7 @@ public protocol Reader {
     func curr() -> UInt8
 
     // Moves cursor to the next char
-    mutating func next()
+    mutating func next() throws
     
     // Returns `true` if all characters have been read 
     func isDone() -> Bool
@@ -37,19 +37,19 @@ extension Reader {
     }
     
     mutating func nextAndCheckNotDone() throws {
-        self.next()
+        try self.next()
         try self.ensureNotDone()
     }
     
     // Consumes all contiguous whitespace and returns # of consumed chars
-    mutating func consumeWhitespace() -> Int {
+    mutating func consumeWhitespace() throws -> Int {
         var counter = 0
         while !self.isDone() {
             let char = self.curr()
             if Const.Whitespace.contains(char) {
                 //consume
                 counter += 1
-                self.next()
+                try self.next()
             } else {
                 //non-whitespace, return
                 break
@@ -85,8 +85,8 @@ extension Reader {
                 throw Error.Mismatch(self, other)
             }
             
-            self.next()
-            other.next()
+            try self.next()
+            try other.next()
         }
     }
 }
