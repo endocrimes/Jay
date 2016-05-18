@@ -29,26 +29,26 @@ import XCTest
 
 class ReaderTests: XCTestCase {
 
-    func testConsumingWhitespace_Normal() {
+    func testConsumingWhitespace_Normal() throws {
         
         var reader = ByteReader(content: " \n  \t \r  lala ")
-        let consumed = reader.consumeWhitespace()
+        let consumed = try reader.consumeWhitespace()
         XCTAssertEqual(consumed, 9)
         XCTAssert(reader.curr() == "l".char())
     }
     
-    func testConsumingWhitespace_NoWhitespace() {
+    func testConsumingWhitespace_NoWhitespace() throws {
         
         var reader = ByteReader(content: "lala ")
-        let consumed = reader.consumeWhitespace()
+        let consumed = try reader.consumeWhitespace()
         XCTAssertEqual(consumed, 0)
         XCTAssert(reader.curr() == "l".char())
     }
     
-    func testConsumingWhitespace_Empty() {
+    func testConsumingWhitespace_Empty() throws {
         
         var reader = ByteReader(content: "")
-        let consumed = reader.consumeWhitespace()
+        let consumed = try reader.consumeWhitespace()
         XCTAssertEqual(consumed, 0)
         XCTAssertTrue(reader.isDone())
     }

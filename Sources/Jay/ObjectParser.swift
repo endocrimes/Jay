@@ -24,7 +24,7 @@ struct ObjectParser: JsonParser {
         //check curr value for closing bracket, to handle empty object
         if reader.curr() == Const.EndObject {
             //empty object
-            reader.next()
+            try reader.next()
             return (JsonValue.Object([:]), reader)
         }
 
@@ -61,12 +61,12 @@ struct ObjectParser: JsonParser {
             reader = try self.prepareForReading(withReader: reader)
             switch reader.curr() {
             case Const.EndObject:
-                reader.next()
+                try reader.next()
                 let exported = self.exportArray(pairs)
                 return (JsonValue.Object(exported), reader)
             case Const.ValueSeparator:
                 //comma, so another value must come. let the loop repeat.
-                reader.next()
+                try reader.next()
                 continue
             default: throw Error.UnexpectedCharacter(reader)
             }
