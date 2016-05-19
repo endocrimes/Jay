@@ -12,7 +12,7 @@ import Foundation
 
 #if os(Linux)
     extension FormattingTests {
-        static var allTests : [(String, FormattingTests -> () throws -> Void)] {
+        static var allTests : [(String, (FormattingTests) -> () throws -> Void)] {
             return [
                        ("testObject_Empty", testObject_Empty),
                        ("testNSDictionary_Empty", testNSDictionary_Empty),
@@ -213,7 +213,7 @@ class FormattingTests: XCTestCase {
                     "name": "Vapor",
                     "lang": [
                         "new": 1,
-                        "name": ["swift", 5]
+                        "name": NSArray(arrayLiteral: "swift", 5)
                     ]
                 ]
             ]
