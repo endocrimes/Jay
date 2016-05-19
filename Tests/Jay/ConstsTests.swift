@@ -11,7 +11,7 @@ import XCTest
 
 #if os(Linux)
     extension ConstsTests {
-        static var allTests : [(String, ConstsTests -> () throws -> Void)] {
+        static var allTests : [(String, (ConstsTests) -> () throws -> Void)] {
             return [
                 ("testConsts", testConsts),
                 ("testUnicodeTesting", testUnicodeTesting)

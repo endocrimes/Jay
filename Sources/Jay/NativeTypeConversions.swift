@@ -61,13 +61,7 @@ struct NativeTypeConverter {
         return (key, value)
     }
     
-    func convertDict<T>(_ dict: [String: T]) throws -> JsonValue? {
-        var obj = [String: JsonValue]()
-        for i in dict { obj[i.0] = try self.toJayType(i.1) }
-        return JsonValue.Object(obj)
-    }
-    
-    func convertArray<T>(_ array: [T]) throws -> JsonValue? {
+    func convertArray(_ array: [Any]) throws -> JsonValue? {
         let vals = try array.map { try self.toJayType($0) }
         return JsonValue.Array(vals)
     }
@@ -79,86 +73,83 @@ struct NativeTypeConverter {
     func parseNSDictionary(_ dict: NSDictionary) throws -> JsonValue? {
         var dOut = [String: Any]()
         for i in dict {
-            //for Linux reasons we must cast into CustomStringConvertible instead of String  
+            //for Linux reasons we must cast into CustomStringConvertible instead of String
             //revert once bridging works.
             // guard let key = i.key as? String else { throw Error.KeyIsNotString(i.key) }
             guard let key = i.key as? CustomStringConvertible else { throw Error.KeyIsNotString(i.key) }
             let value = i.value as Any
             dOut[key.description] = value
         }
-        return try self.convertDict(dOut)
+        return try self.dictionaryToJayType(dOut)
     }
     
     func arrayToJayType(_ maybeArray: Any) throws -> JsonValue? {
         
-        switch maybeArray {
-            
-        case let a as [Any]: return try self.convertArray(a)
-        case let a as [[Any]]: return try self.convertArray(a)
-        case let a as [[String: Any]]: return try self.convertArray(a)
-            
-            //whenever bridging works properly, we can just keep the above [Any]
-            
-        case let a as [AnyObject]: return try self.convertArray(a)
-        case let a as [String]: return try self.convertArray(a)
-        case let a as [Double]: return try self.convertArray(a)
-        case let a as [Float]: return try self.convertArray(a)
-        case let a as [Int]: return try self.convertArray(a)
-        case let a as [Bool]: return try self.convertArray(a)
-
-        case let a as [NSArray]: return try self.convertArray(a)
-        case let a as [NSDictionary]: return try self.convertArray(a)
-        case let a as [NSNumber]: return try self.convertArray(a)
-        case let a as [NSString]: return try self.convertArray(a)
-        case let a as [NSNull]: return try self.convertArray(a)
-        case let a as [NSObject]: return try self.convertArray(a)
-
-        case let a as NSArray: return try self.parseNSArray(a)
-            
-        default: return nil
-        }
+        let mirror = Mirror(reflecting: maybeArray)
+        let childrenValues = mirror.children.map { $0.value }
+        return try self.convertArray(childrenValues)
     }
     
     func dictionaryToJayType(_ maybeDictionary: Any) throws -> JsonValue? {
         
-        switch maybeDictionary {
+        let mirror = Mirror(reflecting: maybeDictionary)
+        let childrenValues = mirror.children.map { $0.value }
+        
+        var obj = [String: JsonValue]()
+        for i in childrenValues {
             
-        case let d as [String: Any]: return try self.convertDict(d)
-            
-            //whenever bridging works properly, we can just keep the above [Any]
-        case let d as [String: AnyObject]: return try self.convertDict(d)
-        case let d as [String: String]: return try self.convertDict(d)
-        case let d as [String: Double]: return try self.convertDict(d)
-        case let d as [String: Float]: return try self.convertDict(d)
-        case let d as [String: Int]: return try self.convertDict(d)
-        case let d as [String: Bool]: return try self.convertDict(d)
-            
-        case let d as [String: NSArray]: return try self.convertDict(d)
-        case let d as [String: NSDictionary]: return try self.convertDict(d)
-        case let d as [String: NSNumber]: return try self.convertDict(d)
-        case let d as [String: NSString]: return try self.convertDict(d)
-        case let d as [String: NSNull]: return try self.convertDict(d)
-        case let d as [String: NSObject]: return try self.convertDict(d)
-
-        case let d as NSDictionary: return try self.parseNSDictionary(d)
-
-        default: return nil
+            let childMirror = Mirror(reflecting: i)
+            let children = childMirror.children
+            if childMirror.displayStyle == .tuple && children.count == 2 {
+                let it = children.makeIterator()
+                let maybeKey = it.next()!.value
+                guard let key = maybeKey as? String else {
+                    throw Error.KeyIsNotString(maybeKey)
+                }
+                let value = it.next()!.value
+                obj[key] = try self.toJayType(value)
+            } else {
+                throw Error.UnsupportedType(childMirror)
+            }
         }
+        return JsonValue.Object(obj)
     }
     
     func toJayType(_ js: Any?) throws -> JsonValue {
         
         guard let json = js else { return JsonValue.Null }
         if json is NSNull { return JsonValue.Null }
-        
-        if let dict = try self.dictionaryToJayType(json) {
+
+        if let nsdict = json as? NSDictionary {
+            guard let dict = try self.parseNSDictionary(nsdict) else {
+                throw Error.UnsupportedType(nsdict)
+            }
             return dict
         }
         
-        if let array = try self.arrayToJayType(json) {
+        if let nsarray = json as? NSArray {
+            guard let array = try self.parseNSArray(nsarray) else {
+                throw Error.UnsupportedType(nsarray)
+            }
             return array
         }
-
+        
+        let mirror = Mirror(reflecting: json)
+        
+        if mirror.displayStyle == .dictionary {
+            guard let dict = try self.dictionaryToJayType(json) else {
+                throw Error.UnsupportedType(json)
+            }
+            return dict
+        }
+        
+        if mirror.displayStyle == .collection {
+            guard let array = try self.arrayToJayType(json) else {
+                throw Error.UnsupportedType(json)
+            }
+            return array
+        }
+        
         switch json {
 
             //boolean

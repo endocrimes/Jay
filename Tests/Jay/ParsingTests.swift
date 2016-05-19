@@ -12,7 +12,7 @@ import Foundation
 
 #if os(Linux)
     extension ParsingTests {
-        static var allTests : [(String, ParsingTests -> () throws -> Void)] {
+        static var allTests : [(String, (ParsingTests) -> () throws -> Void)] {
             return [
                        ("testPrepareForReading_FailOnEmpty", testPrepareForReading_FailOnEmpty),
                        ("testExtraTokensThrow", testExtraTokensThrow),
@@ -527,6 +527,5 @@ class ParsingTests:XCTestCase {
         ]
         ensureArray(ret, exp: exp)
     }
-
-    
+        
 }

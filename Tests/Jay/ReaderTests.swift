@@ -11,7 +11,7 @@ import XCTest
 
 #if os(Linux)
     extension ReaderTests {
-        static var allTests : [(String, ReaderTests -> () throws -> Void)] {
+        static var allTests : [(String, (ReaderTests) -> () throws -> Void)] {
             return [
                 ("testConsumingWhitespace_Normal", testConsumingWhitespace_Normal),
                 ("testConsumingWhitespace_NoWhitespace", testConsumingWhitespace_NoWhitespace),

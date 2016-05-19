@@ -12,7 +12,7 @@ import Foundation
 
 #if os(Linux)
     extension FormattingTests {
-        static var allTests : [(String, FormattingTests -> () throws -> Void)] {
+        static var allTests : [(String, (FormattingTests) -> () throws -> Void)] {
             return [
                        ("testObject_Empty", testObject_Empty),
                        ("testNSDictionary_Empty", testNSDictionary_Empty),
@@ -29,7 +29,8 @@ import Foundation
                        ("testString_Escaping", testString_Escaping),
                        ("testVaporExample_Dict", testVaporExample_Dict),
                        ("testVaporExample_Array", testVaporExample_Array),
-                       ("test_Example2", test_Example2)
+                       ("test_Example2", test_Example2),
+                       ("test_Example3_VeryNested", test_Example3_VeryNested)
             ]
         }
     }
@@ -197,5 +198,34 @@ class FormattingTests: XCTestCase {
         let data = try! Jay().dataFromJson(json)
         XCTAssertEqual(data, "[1,[2,[3]]]".chars())
     }
+    
+    func test_Example3_VeryNested() {
+        let int: [Any] = ["swift", 5]
+        let lang: [String: Any] = [
+                       "new": 1,
+                       "name": int
+        ]
+        let arr: [String: Any] = [
+                      "name": "Vapor",
+                      "lang": lang
+        ]
+        let json = JaySON(
+            [
+                "number",
+                123,
+                "string",
+                "test",
+                "array",
+                [0, 1, 2, 3],
+                "dict",
+                arr
+            ]
+        )
+        let data = try! Jay().dataFromJson(json)
+        let exp = "[\"number\",123,\"string\",\"test\",\"array\",[0,1,2,3],\"dict\",{\"lang\":{\"name\":[\"swift\",5],\"new\":1},\"name\":\"Vapor\"}]"
+        XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
+    }
+    
+
     
 }
