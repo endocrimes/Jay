@@ -94,6 +94,8 @@ struct NativeTypeConverter {
         switch maybeArray {
             
         case let a as [Any]: return try self.convertArray(a)
+        case let a as [[Any]]: return try self.convertArray(a)
+        case let a as [[String: Any]]: return try self.convertArray(a)
             
             //whenever bridging works properly, we can just keep the above [Any]
             
