@@ -200,6 +200,15 @@ class FormattingTests: XCTestCase {
     }
     
     func test_Example3_VeryNested() {
+        let int: [Any] = ["swift", 5]
+        let lang: [String: Any] = [
+                       "new": 1,
+                       "name": int
+        ]
+        let arr: [String: Any] = [
+                      "name": "Vapor",
+                      "lang": lang
+        ]
         let json = JaySON(
             [
                 "number",
@@ -209,13 +218,7 @@ class FormattingTests: XCTestCase {
                 "array",
                 [0, 1, 2, 3],
                 "dict",
-                [
-                    "name": "Vapor",
-                    "lang": [
-                        "new": 1,
-                        "name": NSArray(arrayLiteral: "swift", 5)
-                    ]
-                ]
+                arr
             ]
         )
         let data = try! Jay().dataFromJson(json)
