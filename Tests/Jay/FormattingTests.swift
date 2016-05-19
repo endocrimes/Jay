@@ -29,7 +29,8 @@ import Foundation
                        ("testString_Escaping", testString_Escaping),
                        ("testVaporExample_Dict", testVaporExample_Dict),
                        ("testVaporExample_Array", testVaporExample_Array),
-                       ("test_Example2", test_Example2)
+                       ("test_Example2", test_Example2),
+                       ("test_Example3_VeryNested", test_Example3_VeryNested)
             ]
         }
     }
@@ -197,5 +198,31 @@ class FormattingTests: XCTestCase {
         let data = try! Jay().dataFromJson(json)
         XCTAssertEqual(data, "[1,[2,[3]]]".chars())
     }
+    
+    func test_Example3_VeryNested() {
+        let json = JaySON(
+            [
+                "number",
+                123,
+                "string",
+                "test",
+                "array",
+                [0, 1, 2, 3],
+                "dict",
+                [
+                    "name": "Vapor",
+                    "lang": [
+                        "new": 1,
+                        "name": ["swift", 5]
+                    ]
+                ]
+            ]
+        )
+        let data = try! Jay().dataFromJson(json)
+        let exp = "[\"number\",123,\"string\",\"test\",\"array\",[0,1,2,3],\"dict\",{\"lang\":{\"name\":[\"swift\",5],\"new\":1},\"name\":\"Vapor\"}]"
+        XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
+    }
+    
+
     
 }
