@@ -66,6 +66,23 @@ struct NativeTypeConverter {
         return JsonValue.Array(vals)
     }
     
+    func parseNSArray(_ array: NSArray) throws -> JsonValue? {
+        return try self.convertArray(array.map { $0 as Any })
+    }
+    
+    func parseNSDictionary(_ dict: NSDictionary) throws -> JsonValue? {
+        var dOut = [String: Any]()
+        for i in dict {
+            //for Linux reasons we must cast into CustomStringConvertible instead of String
+            //revert once bridging works.
+            // guard let key = i.key as? String else { throw Error.KeyIsNotString(i.key) }
+            guard let key = i.key as? CustomStringConvertible else { throw Error.KeyIsNotString(i.key) }
+            let value = i.value as Any
+            dOut[key.description] = value
+        }
+        return try self.dictionaryToJayType(dOut)
+    }
+    
     func arrayToJayType(_ maybeArray: Any) throws -> JsonValue? {
         
         let mirror = Mirror(reflecting: maybeArray)
@@ -103,6 +120,20 @@ struct NativeTypeConverter {
         guard let json = js else { return JsonValue.Null }
         if json is NSNull { return JsonValue.Null }
 
+        if let nsdict = json as? NSDictionary {
+            guard let dict = try self.parseNSDictionary(nsdict) else {
+                throw Error.UnsupportedType(nsdict)
+            }
+            return dict
+        }
+        
+        if let nsarray = json as? NSArray {
+            guard let array = try self.parseNSArray(nsarray) else {
+                throw Error.UnsupportedType(nsarray)
+            }
+            return array
+        }
+        
         let mirror = Mirror(reflecting: json)
         
         if mirror.displayStyle == .dictionary {
