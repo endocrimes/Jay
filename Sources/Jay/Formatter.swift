@@ -7,12 +7,12 @@
 //
 
 protocol JsonFormattable {
-    func format() throws -> [JChar]
+    func format(with formatter: Formatter) throws -> [JChar]
 }
 
 extension JsonValue: JsonFormattable {
     
-    func format() throws -> [JChar] {
+    func format(with formatter: Formatter) throws -> [JChar] {
         switch self {
             
             //null
@@ -38,11 +38,11 @@ extension JsonValue: JsonFormattable {
             
             //array
         case .array(let arr):
-            return try self.formatArray(arr)
+            return try self.formatArray(arr, with: formatter)
             
             //object
         case .object(let obj):
-            return try self.formatObject(obj)
+            return try self.formatObject(obj, with: formatter)
         }
     }
     
@@ -74,31 +74,66 @@ extension JsonValue: JsonFormattable {
         return out
     }
     
-    func formatArray(_ array: [JsonValue]) throws -> [JChar] {
+    func formatArray(_ array: [JsonValue], with formatter: Formatter) throws -> [JChar] {
         
+        if array.count == 0 {
+            return [Const.BeginArray, Const.EndArray]
+        }
+
+        let nested = formatter.nextLevel()
+
         //join all converted elements and join them with value separator
-        let conv = try array.map { try $0.format() }
+        let conv = try array.map { (item) -> [JChar] in
+            var out: [JChar] = []
+            out += nested.indent()
+            out += try item.format(with: nested)
+            return out
+        }
+        let separator = [Const.ValueSeparator] + nested.newline()
         let contents = conv
-            .joined(separator: [Const.ValueSeparator])
+            .joined(separator: separator)
             .flatMap { $0 }
-        let out = [Const.BeginArray] + contents + [Const.EndArray]
+        var out: [JChar] = []
+        out += [Const.BeginArray]
+        out += formatter.newline()
+        out += contents
+        out += formatter.newlineAndIndent()
+        out += [Const.EndArray]
         return out
     }
     
-    func formatObject(_ object: [String: JsonValue]) throws -> [JChar] {
+    func formatObject(_ object: [String: JsonValue], with formatter: Formatter) throws -> [JChar] {
+        
+        if object.count == 0 {
+            return [Const.BeginObject, Const.EndObject]
+        }
         
         //join all converted name/value pairs and join them with value separator
         //sort first however, to be good citizens
         let pairs = object.sorted { (a, b) -> Bool in a.0 <= b.0 }
         
+        let nested = formatter.nextLevel()
         let convPairs = try pairs.map { (pair) -> [JChar] in
-            let val = try pair.1.format()
-            return try self.formatString(pair.0) + [Const.NameSeparator] + val
+            let key = try self.formatString(pair.0)
+            let val = try pair.1.format(with: nested)
+            var out: [JChar] = []
+            out += nested.indent()
+            out += key
+            out += [Const.NameSeparator]
+            out += nested.separator()
+            out += val
+            return out
         }
+        let separator = [Const.ValueSeparator] + nested.newline()
         let contents = convPairs
-            .joined(separator:[Const.ValueSeparator])
+            .joined(separator: separator)
             .flatMap { $0 }
-        let out = [Const.BeginObject] + contents + [Const.EndObject]
+        var out: [JChar] = []
+        out += [Const.BeginObject]
+        out += formatter.newline()
+        out += contents
+        out += formatter.newlineAndIndent()
+        out += [Const.EndObject]
         return out
     }
     

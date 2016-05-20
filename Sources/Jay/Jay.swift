@@ -10,7 +10,16 @@
 
 public struct Jay {
     
-    public init() { }
+    public enum Formatting {
+        case minified
+        case prettified
+    }
+    
+    public let formatting: Formatting
+    
+    public init(formatting: Formatting = .minified) {
+        self.formatting = formatting
+    }
     
     //Parses data into a dictionary [String: Any] or array [Any].
     //Does not allow fragments. Test by conditional
@@ -44,8 +53,46 @@ public struct Jay {
     private func dataFromAnyJson(_ json: Any) throws -> [UInt8] {
         
         let jayType = try NativeTypeConverter().toJayType(json)
-        let data = try jayType.format()
+        let data = try jayType.format(with: formatting.formatter())
         return data
+    }
+}
+
+struct Formatter {
+    let indentStep: Int
+    var indentation: Int = 0
+    
+    func nextLevel() -> Formatter {
+        return Formatter(indentStep: indentStep, indentation: indentation + indentStep)
+    }
+    
+    func clean() -> Formatter {
+        return Formatter(indentStep: indentStep, indentation: 0)
+    }
+    
+    func indent() -> [JChar] {
+        return Array(repeating: Const.Space, count: indentation)
+    }
+    
+    func newline() -> [JChar] {
+        return indentStep > 0 ? [Const.NewLine] : []
+    }
+    
+    func newlineAndIndent() -> [JChar] {
+        return newline() + indent()
+    }
+    
+    func separator() -> [JChar] {
+        return indentStep > 0 ? [Const.Space] : []
+    }
+}
+
+extension Jay.Formatting {
+    func formatter() -> Formatter {
+        switch self {
+        case .minified: return Formatter(indentStep: 0, indentation: 0)
+        case .prettified: return Formatter(indentStep: 4, indentation: 0)
+        }
     }
 }
 
@@ -66,7 +113,7 @@ extension Jay {
 
     //Formats your JSON-compatible object into data or throws an error.
     public func dataFromJson(json: JsonValue) throws -> [UInt8] {
-        return try json.format()
+        return try json.format(with: formatting.formatter())
     }
 }
 
