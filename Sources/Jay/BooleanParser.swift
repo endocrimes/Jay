@@ -14,14 +14,14 @@ struct BooleanParser: JsonParser {
             var rd = rr
             //try to read the "true" literal, throw if anything goes wrong
             try rd.stopAtFirstDifference(ByteReader(content: Const.True))
-            return (JsonValue.Boolean(JsonBoolean.True), rd)
+            return (.boolean(true), rd)
         }
         
         func parseFalse(_ rr: Reader) throws -> (JsonValue, Reader) {
             var rd = rr
             //try to read the "false" literal, throw if anything goes wrong
             try rd.stopAtFirstDifference(ByteReader(content: Const.False))
-            return (JsonValue.Boolean(JsonBoolean.False), rd)
+            return (.boolean(false), rd)
         }
         
         let reader = try self.prepareForReading(withReader: r)

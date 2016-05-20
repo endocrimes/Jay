@@ -27,12 +27,12 @@ struct StringParser: JsonParser {
         //if another quote, it's just an empty string
         if reader.curr() == Const.QuotationMark {
             try reader.nextAndCheckNotDone()
-            return (JsonValue.String(""), reader)
+            return (JsonValue.string(""), reader)
         }
         
         let str: String
         (str, reader) = try self.parseString(reader)
-        let obj = JsonValue.String(str)
+        let obj = JsonValue.string(str)
         return (obj, reader)
     }
     

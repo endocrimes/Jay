@@ -97,6 +97,10 @@ struct Const {
         Const.EndObject,
         Const.ValueSeparator
     ])
+    
+    static let TrueString = "true"
+    static let FalseString = "false"
+    static let NullString = "null"
 }
 
 struct StartChars {

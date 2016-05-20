@@ -25,7 +25,7 @@ struct ArrayParser: JsonParser {
         if reader.curr() == Const.EndArray {
             //empty array
             try reader.next()
-            return (JsonValue.Array([]), reader)
+            return (.array([]), reader)
         }
         
         //now start scanning for values
@@ -41,7 +41,7 @@ struct ArrayParser: JsonParser {
             //value OR for a closing bracket
             reader = try self.prepareForReading(withReader: reader)
             switch reader.curr() {
-            case Const.EndArray: try reader.next(); return (JsonValue.Array(values), reader)
+            case Const.EndArray: try reader.next(); return (.array(values), reader)
             case Const.ValueSeparator: try reader.next(); break //comma, so another value must come. let the loop repeat.
             default: throw Error.UnexpectedCharacter(reader)
             }

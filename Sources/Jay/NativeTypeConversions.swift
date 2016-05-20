@@ -24,30 +24,27 @@ extension JsonValue {
     func toNative() -> Any {
         switch self {
             
-        case .Object(let obj):
+        case .object(let obj):
             var out: [Swift.String: Any] = [:]
             for i in obj { out[i.0] = i.1.toNative() }
             return out
             
-        case .Array(let arr):
+        case .array(let arr):
             return arr.map { $0.toNative() }
             
-        case .Number(let num):
+        case .number(let num):
             switch num {
-            case .JsonDbl(let dbl): return dbl
-            case .JsonInt(let int): return int
+            case .double(let dbl): return dbl
+            case .integer(let int): return int
             }
             
-        case .String(let str):
+        case .string(let str):
             return str
             
-        case .Boolean(let bool):
-            switch bool {
-            case .True: return true
-            case .False: return false
-            }
+        case .boolean(let bool):
+            return bool
             
-        case .Null:
+        case .null:
             return NSNull()
         }
     }
@@ -63,7 +60,7 @@ struct NativeTypeConverter {
     
     func convertArray(_ array: [Any]) throws -> JsonValue? {
         let vals = try array.map { try self.toJayType($0) }
-        return JsonValue.Array(vals)
+        return .array(vals)
     }
     
     func parseNSArray(_ array: NSArray) throws -> JsonValue? {
@@ -112,13 +109,13 @@ struct NativeTypeConverter {
                 throw Error.UnsupportedType(childMirror)
             }
         }
-        return JsonValue.Object(obj)
+        return .object(obj)
     }
     
     func toJayType(_ js: Any?) throws -> JsonValue {
         
-        guard let json = js else { return JsonValue.Null }
-        if json is NSNull { return JsonValue.Null }
+        guard let json = js else { return .null }
+        if json is NSNull { return .null }
 
         if let nsdict = json as? NSDictionary {
             guard let dict = try self.parseNSDictionary(nsdict) else {
@@ -154,32 +151,32 @@ struct NativeTypeConverter {
 
             //boolean
         case let bool as Boolean:
-            return JsonValue.Boolean(bool.boolValue ? JsonBoolean.True : JsonBoolean.False)
+            return .boolean(bool.boolValue)
             
             //number
         case let dbl as FloatingPoint:
             guard let double = Double(String(dbl)) else {
                 throw Error.UnsupportedFloatingPointType(dbl)
             }
-            return JsonValue.Number(JsonNumber.JsonDbl(double))
+            return .number(.double(double))
         case let int as Integer:
             guard let integer = Int(String(int)) else {
                 throw Error.UnsupportedIntegerType(int)
             }
-            return JsonValue.Number(JsonNumber.JsonInt(integer))
+            return .number(.integer(integer))
         case let num as NSNumber:
             //if the double value equals the int->double value, let's call it
             //an int. otherwise call it a value.
             if Double(num.intValue) == num.doubleValue {
-                return JsonValue.Number(JsonNumber.JsonInt(Int(num.intValue)))
+                return .number(.integer(Int(num.intValue)))
             }
-            return JsonValue.Number(JsonNumber.JsonDbl(num.doubleValue))
+            return .number(.double(num.doubleValue))
             
         //string (or anything representable as string that didn't match above)
         case let string as String:
-            return JsonValue.String(string)
+            return .string(string)
         case let string as CustomStringConvertible:
-            return JsonValue.String(string.description)
+            return .string(string.description)
             
         default: break
         }
