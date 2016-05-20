@@ -44,7 +44,7 @@ struct NumberParser: JsonParser {
             
             //now if any number terminator is here, finish up with 0
             if Const.NumberTerminators.contains(reader.curr()) {
-                return (JsonValue.Number(JsonNumber.JsonInt(0)), reader)
+                return (.number(.integer(0)), reader)
             }
             
             //else there MUST be a frac part
@@ -66,11 +66,11 @@ struct NumberParser: JsonParser {
         
         //Generate the final number
         let number = self.generateNumber(negative: negative, integer: integer, frac: frac, exp: exp)
-        let value = JsonValue.Number(number)
+        let value: JsonValue = .number(number)
         return (value, reader)
     }
     
-    private func generateNumber(negative: Bool, integer: Int, frac: Int, exp: Int?) -> JsonNumber {
+    private func generateNumber(negative: Bool, integer: Int, frac: Int, exp: Int?) -> JsonValue.Number {
         
         //form the int section
         var int = integer
@@ -79,7 +79,7 @@ struct NumberParser: JsonParser {
         
         //if that's it, let's call it an integer
         if frac == 0 && exp == nil {
-            return JsonNumber.JsonInt(int)
+            return .integer(int)
         }
         
         //now we're using double
@@ -99,7 +99,7 @@ struct NumberParser: JsonParser {
             dbl *= multi
         }
         
-        return JsonNumber.JsonDbl(dbl)
+        return .double(dbl)
     }
     
     private func parseMinus(_ r: Reader) throws -> (Bool, Reader) {

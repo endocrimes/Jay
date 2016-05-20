@@ -25,19 +25,19 @@ struct ObjectParser: JsonParser {
         if reader.curr() == Const.EndObject {
             //empty object
             try reader.next()
-            return (JsonValue.Object([:]), reader)
+            return (JsonValue.object([:]), reader)
         }
 
         //now start scanning for name/value pairs
-        var pairs = [(JsonString, JsonValue)]()
+        var pairs = [(String, JsonValue)]()
         repeat {
             
             //scan for name
             let nameRet = try StringParser().parse(withReader: reader)
             reader = nameRet.1
-            let name: JsonString
+            let name: String
             switch nameRet.0 {
-            case .String(let n): name = n; break
+            case .string(let n): name = n; break
             default: fatalError("Logic error: Should have returned a dictionary")
             }
             
@@ -63,7 +63,7 @@ struct ObjectParser: JsonParser {
             case Const.EndObject:
                 try reader.next()
                 let exported = self.exportArray(pairs)
-                return (JsonValue.Object(exported), reader)
+                return (JsonValue.object(exported), reader)
             case Const.ValueSeparator:
                 //comma, so another value must come. let the loop repeat.
                 try reader.next()
@@ -73,9 +73,9 @@ struct ObjectParser: JsonParser {
         } while true
     }
     
-    func exportArray(_ pairs: [(JsonString, JsonValue)]) -> [JsonString: JsonValue] {
+    func exportArray(_ pairs: [(String, JsonValue)]) -> [String: JsonValue] {
         
-        var object = [JsonString: JsonValue]()
+        var object = [String: JsonValue]()
         for i in pairs {
             object[i.0] = i.1
         }

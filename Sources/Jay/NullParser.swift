@@ -14,6 +14,6 @@ struct NullParser: JsonParser {
         
         //try to read the "null" literal, throw if anything goes wrong
         try reader.stopAtFirstDifference(ByteReader(content: Const.Null))
-        return (JsonValue.Null, reader)
+        return (.null, reader)
     }
 }

@@ -16,46 +16,37 @@ extension JsonValue: JsonFormattable {
         switch self {
             
             //null
-        case .Null:
+        case .null:
             return Const.Null
             
             //number
-        case .Number(let num):
+        case .number(let num):
             switch num {
-            case .JsonInt(let i):
-                return Swift.String(i).chars()
-            case .JsonDbl(let d):
-                return Swift.String(d).chars()
+            case .integer(let i):
+                return String(i).chars()
+            case .double(let d):
+                return String(d).chars()
             }
             
             //boolean
-        case .Boolean(let bool):
-            switch bool {
-            case .True:
-                return Const.True
-            case .False:
-                return Const.False
-            }
+        case .boolean(let bool):
+            return bool ? Const.True : Const.False
             
             //string
-        case .String(let str):
+        case .string(let str):
             return try self.formatString(str)
             
             //array
-        case .Array(let arr):
+        case .array(let arr):
             return try self.formatArray(arr)
             
             //object
-        case.Object(let obj):
+        case .object(let obj):
             return try self.formatObject(obj)
         }
     }
     
-    func formatString(_ string: JsonString) throws -> [JChar] {
-        return try self.formatSwiftString(string)
-    }
-    
-    func formatSwiftString(_ string: Swift.String) throws -> [JChar] {
+    func formatString(_ string: String) throws -> [JChar] {
         
         var contents = [JChar]()
         for c in string.utf8 {
@@ -83,7 +74,7 @@ extension JsonValue: JsonFormattable {
         return out
     }
     
-    func formatArray(_ array: JsonArray) throws -> [JChar] {
+    func formatArray(_ array: [JsonValue]) throws -> [JChar] {
         
         //join all converted elements and join them with value separator
         let conv = try array.map { try $0.format() }
@@ -94,7 +85,7 @@ extension JsonValue: JsonFormattable {
         return out
     }
     
-    func formatObject(_ object: JsonObject) throws -> [JChar] {
+    func formatObject(_ object: [String: JsonValue]) throws -> [JChar] {
         
         //join all converted name/value pairs and join them with value separator
         //sort first however, to be good citizens
@@ -102,7 +93,7 @@ extension JsonValue: JsonFormattable {
         
         let convPairs = try pairs.map { (pair) -> [JChar] in
             let val = try pair.1.format()
-            return try self.formatSwiftString(pair.0) + [Const.NameSeparator] + val
+            return try self.formatString(pair.0) + [Const.NameSeparator] + val
         }
         let contents = convPairs
             .joined(separator:[Const.ValueSeparator])
