@@ -8,7 +8,7 @@
 [![Blog](https://img.shields.io/badge/blog-honzadvorsky.com-green.svg)](http://honzadvorsky.com)
 [![Twitter Czechboy0](https://img.shields.io/badge/twitter-czechboy0-green.svg)](http://twitter.com/czechboy0)
 
-> Pure-Swift JSON parser & formatter. Linux &amp; OS X ready. Replacement for NSJSONSerialization.
+> Pure-Swift JSON parser & formatter. Fully streamable input and output. Linux &amp; OS X ready. Replacement for NSJSONSerialization.
 
 Jay conforms to the following specifications:
 - JSON [RFC4627](http://www.ietf.org/rfc/rfc4627.txt)
@@ -21,34 +21,35 @@ This is my take on how a JSON parser should work. *This is not another JSON mapp
 # Features
 - [x] Parsing: data -> JSON object
 - [x] Formatting: JSON object -> data
+- [x] Pretty printing
+- [x] Streaming input and output, low memory footprint
 
 # Usage
 
-## Parsing from data
+## Parsing from data (deserialization)
 ```swift
 do {
 	//get data from disk/network
 	let data: [UInt8] = ...
 
 	//ask Jay to parse your data
-	let json = try Jay().jsonFromData(data) // Any
+	let json = try Jay().typesafeJsonFromData(data) // JsonValue
 
 	//if it doesn't throw an error, all went well
-	if let dictionary = json as? [String: Any] {
-		//you have a dictionary root object
-	} else if let array = json as? [Any] {
-		//you have an array root object
-	}
+	if let tasks = json.dictionary?["today"]?.array {
+	    //you have a dictionary root object, with an array under the key "today"
+	    print(tasks) //["laundry", "cook dinner for gf"]
+	} 
 } catch {
 	print("Parsing error: \(error)")
 }
 ```
 
-## Formatting into data
+## Formatting into data (serialization)
 ```swift
 do {
-	//get a json object
-	let json: [String: Any] = ... // [String: Any] or [Any]
+	//get a json object (works for both [String: Any] and typesafe versions - JsonValue)
+	let json: [String: Any] = ... // [String: Any] or [Any] or JsonValue
 
 	//ask Jay to generate data
 	let data = try Jay().dataFromJson(json) // [UInt8]
