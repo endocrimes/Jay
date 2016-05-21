@@ -7,46 +7,46 @@
 //
 
 protocol JsonFormattable {
-    func format(with formatter: Formatter) throws -> [JChar]
+    func format(to stream: JsonOutputStream, with formatter: Formatter) throws
 }
 
 extension JsonValue: JsonFormattable {
     
-    func format(with formatter: Formatter) throws -> [JChar] {
+    func format(to stream: JsonOutputStream, with formatter: Formatter) throws {
         switch self {
             
             //null
         case .null:
-            return Const.Null
+            stream <<< Const.Null
             
             //number
         case .number(let num):
             switch num {
             case .integer(let i):
-                return String(i).chars()
+                stream <<< String(i).chars()
             case .double(let d):
-                return String(d).chars()
+                stream <<< String(d).chars()
             }
             
             //boolean
         case .boolean(let bool):
-            return bool ? Const.True : Const.False
+            stream <<< (bool ? Const.True : Const.False)
             
             //string
         case .string(let str):
-            return try self.formatString(str)
+            try self.format(to: stream, string: str)
             
             //array
         case .array(let arr):
-            return try self.formatArray(arr, with: formatter)
+            try self.format(to: stream, array: arr, with: formatter)
             
             //object
         case .object(let obj):
-            return try self.formatObject(obj, with: formatter)
+            return try self.format(to: stream, object: obj, with: formatter)
         }
     }
     
-    func formatString(_ string: String) throws -> [JChar] {
+    func format(to stream: JsonOutputStream, string: String) throws {
         
         var contents = [JChar]()
         for c in string.utf8 {
@@ -70,71 +70,50 @@ extension JsonValue: JsonFormattable {
         
         //now we have the contents of the string, we need to add
         //quotes before and after
-        let out = [Const.QuotationMark] + contents + [Const.QuotationMark]
-        return out
+        stream <<< Const.QuotationMark
+        stream <<< contents
+        stream <<< Const.QuotationMark
     }
     
-    func formatArray(_ array: [JsonValue], with formatter: Formatter) throws -> [JChar] {
+    func format(to stream: JsonOutputStream, array: [JsonValue], with formatter: Formatter) throws {
         
-        if array.count == 0 {
-            return [Const.BeginArray, Const.EndArray]
+        guard array.count > 0 else {
+            stream <<< Const.BeginArray <<< Const.EndArray
+            return
         }
 
         let nested = formatter.nextLevel()
-
-        //join all converted elements and join them with value separator
-        let conv = try array.map { (item) -> [JChar] in
-            var out: [JChar] = []
-            out += nested.indent()
-            out += try item.format(with: nested)
-            return out
+        stream <<< Const.BeginArray <<< formatter.newline()
+        for (idx, item) in array.enumerated() {
+            if idx > 0 { stream <<< Const.ValueSeparator <<< nested.newline() }
+            stream <<< nested.indent()
+            try item.format(to: stream, with: nested)
         }
-        let separator = [Const.ValueSeparator] + nested.newline()
-        let contents = conv
-            .joined(separator: separator)
-            .flatMap { $0 }
-        var out: [JChar] = []
-        out += [Const.BeginArray]
-        out += formatter.newline()
-        out += contents
-        out += formatter.newlineAndIndent()
-        out += [Const.EndArray]
-        return out
+        stream <<< formatter.newlineAndIndent() <<< Const.EndArray
     }
     
-    func formatObject(_ object: [String: JsonValue], with formatter: Formatter) throws -> [JChar] {
+    func format(to stream: JsonOutputStream, object: [String: JsonValue], with formatter: Formatter) throws {
         
         if object.count == 0 {
-            return [Const.BeginObject, Const.EndObject]
+            stream <<< Const.BeginObject <<< Const.EndObject
+            return
         }
         
-        //join all converted name/value pairs and join them with value separator
         //sort first however, to be good citizens
         let pairs = object.sorted { (a, b) -> Bool in a.0 <= b.0 }
-        
         let nested = formatter.nextLevel()
-        let convPairs = try pairs.map { (pair) -> [JChar] in
-            let key = try self.formatString(pair.0)
-            let val = try pair.1.format(with: nested)
-            var out: [JChar] = []
-            out += nested.indent()
-            out += key
-            out += [Const.NameSeparator]
-            out += nested.separator()
-            out += val
-            return out
+
+        stream <<< Const.BeginObject <<< formatter.newline()
+        
+        for (idx, pair) in pairs.enumerated() {
+            if idx > 0 { stream <<< Const.ValueSeparator <<< nested.newline() }
+            stream <<< nested.indent()
+            try self.format(to: stream, string: pair.0)
+            stream <<< Const.NameSeparator <<< nested.separator()
+            try pair.1.format(to: stream, with: nested)
         }
-        let separator = [Const.ValueSeparator] + nested.newline()
-        let contents = convPairs
-            .joined(separator: separator)
-            .flatMap { $0 }
-        var out: [JChar] = []
-        out += [Const.BeginObject]
-        out += formatter.newline()
-        out += contents
-        out += formatter.newlineAndIndent()
-        out += [Const.EndObject]
-        return out
+        
+        stream <<< formatter.newlineAndIndent() <<< Const.EndObject
     }
     
 }

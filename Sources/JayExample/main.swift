@@ -54,9 +54,33 @@ func tryFormatting() {
     print("Formatting works:")
 }
 
+func tryFormattingToConsole() {
+    
+    let inObj: [String: Any] = ["hola": 9.23, "nums": [1,2,3]]
+    let obj: [String: Any] = [
+                                 "hello": "wor🇨🇿ld",
+                                 "val": 1234,
+                                 "many": [
+                                             -12.32,
+                                             NSNull(),
+                                             "yo",
+                                             inObj
+                                    ] as [Any],
+                                 "emptyDict": [String: Any](),
+                                 "dict": [
+                                             "arr": [Int]()
+                                    ] as [String: Any],
+                                 "name": true
+    ]
+    
+    let output = ConsoleOutputStream()
+    print("Dumping to console:")
+    try! Jay(formatting: .prettified).dataFromJson(obj, output: output)
+}
+
 tryFormatting()
 tryParsing()
-
+tryFormattingToConsole()
 
 
 
