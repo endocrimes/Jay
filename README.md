@@ -52,7 +52,7 @@ do {
 	let json: [String: Any] = ... // [String: Any] or [Any] or JsonValue
 
 	//ask Jay to generate data
-	let data = try Jay().dataFromJson(json) // [UInt8]
+	let data = try Jay(formatting: .prettified).dataFromJson(json) // [UInt8]
 
 	//send data over network, save to disk
 } catch {
