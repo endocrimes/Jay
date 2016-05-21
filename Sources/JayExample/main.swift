@@ -29,14 +29,16 @@ func tryParsing() {
 
 func tryFormatting() {
 
-    let origStr = "{\"dict\":{\"arr\":[]},\"emptyDict\":{},\"hello\":\"wor🇨🇿ld\",\"many\":[-12.32,null,\"yo\"],\"name\":true,\"val\":1234}"
+    let origStr = "{\"dict\":{\"arr\":[]},\"emptyDict\":{},\"hello\":\"wor🇨🇿ld\",\"many\":[-12.32,null,\"yo\",{\"hola\":9.23,\"nums\":[1,2,3]}],\"name\":true,\"val\":1234}"
+    let inObj: [String: Any] = ["hola": 9.23, "nums": [1,2,3]]
     let obj: [String: Any] = [
         "hello": "wor🇨🇿ld",
         "val": 1234,
         "many": [
             -12.32,
             NSNull(),
-            "yo"
+            "yo",
+            inObj
         ] as [Any],
         "emptyDict": [String: Any](),
         "dict": [
@@ -45,11 +47,11 @@ func tryFormatting() {
         "name": true
     ]
 
-    let dataOut = try! Jay().dataFromJson(obj)
+    let dataOut = try! Jay(formatting: .minified).dataFromJson(obj)
     let retStr = try! dataOut.string()
 
     assert(origStr == retStr, "Mismatch: Expected:\n\(origStr)\nReturned:\n\(retStr)")
-    print("Formatting works")
+    print("Formatting works:")
 }
 
 tryFormatting()

@@ -15,6 +15,7 @@ import Foundation
         static var allTests : [(String, (FormattingTests) -> () throws -> Void)] {
             return [
                        ("testObject_Empty", testObject_Empty),
+                       ("testObject_Empty_Pretty", testObject_Empty_Pretty),
                        ("testNSDictionary_Empty", testNSDictionary_Empty),
                        ("testNSDictionary_Simple", testNSDictionary_Simple),
                        ("testObject_Simple", testObject_Simple),
@@ -22,6 +23,7 @@ import Foundation
                        ("testObject_Nested", testObject_Nested),
                        ("testObject_AllTypes", testObject_AllTypes),
                        ("testArray_Empty", testArray_Empty),
+                       ("testArray_Empty_Pretty", testArray_Empty_Pretty),
                        ("testNSArray_Empty", testNSArray_Empty),
                        ("testArray_Simple", testArray_Simple),
                        ("testArray_Nested", testArray_Nested),
@@ -30,7 +32,8 @@ import Foundation
                        ("testVaporExample_Dict", testVaporExample_Dict),
                        ("testVaporExample_Array", testVaporExample_Array),
                        ("test_Example2", test_Example2),
-                       ("test_Example3_VeryNested", test_Example3_VeryNested)
+                       ("test_Example3_VeryNested", test_Example3_VeryNested),
+                       ("test_Example3_VeryNested_Pretty", test_Example3_VeryNested_Pretty)
             ]
         }
     }
@@ -49,7 +52,13 @@ class FormattingTests: XCTestCase {
         let data = try! Jay().dataFromJson(json)
         XCTAssertEqual(data, "{}".chars())
     }
-
+    
+    func testObject_Empty_Pretty() {
+        let json = [String: Int]()
+        let data = try! Jay(formatting: .prettified).dataFromJson(json)
+        XCTAssertEqual(data, "{}".chars())
+    }
+    
     func testNSDictionary_Simple() {
     #if os(Linux)
         let json = ["hello": "world"].bridge()
@@ -106,6 +115,12 @@ class FormattingTests: XCTestCase {
     func testArray_Empty() {
         let json = [Int]()
         let data = try! Jay().dataFromJson(json)
+        XCTAssertEqual(data, "[]".chars())
+    }
+    
+    func testArray_Empty_Pretty() {
+        let json = [Int]()
+        let data = try! Jay(formatting: .prettified).dataFromJson(json)
         XCTAssertEqual(data, "[]".chars())
     }
     
@@ -226,6 +241,30 @@ class FormattingTests: XCTestCase {
         XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
     }
     
-
-    
+    func test_Example3_VeryNested_Pretty() {
+        let int: [Any] = ["swift", 5]
+        let lang: [String: Any] = [
+                                      "new": 1,
+                                      "name": int
+        ]
+        let arr: [String: Any] = [
+                                     "name": "Vapor",
+                                     "lang": lang
+        ]
+        let json = JaySON(
+            [
+                "number",
+                123,
+                "string",
+                "test",
+                "array",
+                [0, 1, 2, 3],
+                "dict",
+                arr
+            ]
+        )
+        let data = try! Jay(formatting: .prettified).dataFromJson(json)
+        let exp = "[\n    \"number\",\n    123,\n    \"string\",\n    \"test\",\n    \"array\",\n    [\n        0,\n        1,\n        2,\n        3\n    ],\n    \"dict\",\n    {\n        \"lang\": {\n            \"name\": [\n                \"swift\",\n                5\n            ],\n            \"new\": 1\n        },\n        \"name\": \"Vapor\"\n    }\n]"
+        XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
+    }
 }
