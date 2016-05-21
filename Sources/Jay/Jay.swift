@@ -37,24 +37,46 @@ public struct Jay {
     public func dataFromJson(_ json: JaySON) throws -> [UInt8] {
         return try self.dataFromAnyJson(json.json)
     }
+    
+    public func dataFromJson(_ json: JaySON, output: JsonOutputStream) throws {
+        try self.dataFromAnyJson(json.json, output: output)
+    }
 
     public func dataFromJson(_ json: [String: Any]) throws -> [UInt8] {
         return try self.dataFromAnyJson(json)
     }
 
+    public func dataFromJson(_ json: [String: Any], output: JsonOutputStream) throws {
+        try self.dataFromAnyJson(json, output: output)
+    }
+
     public func dataFromJson(_ json: [Any]) throws -> [UInt8] {
         return try self.dataFromAnyJson(json)
     }
-    
+
+    public func dataFromJson(_ json: [Any], output: JsonOutputStream) throws {
+        try self.dataFromAnyJson(json, output: output)
+    }
+
     public func dataFromJson(_ json: Any) throws -> [UInt8] {
         return try self.dataFromAnyJson(json)
     }
 
+    public func dataFromJson(_ json: Any, output: JsonOutputStream) throws {
+        try self.dataFromAnyJson(json, output: output)
+    }
+
     private func dataFromAnyJson(_ json: Any) throws -> [UInt8] {
         
+        let output = ByteArrayOutputStream()
+        try dataFromAnyJson(json, output: output)
+        return output.bytes
+    }
+    
+    func dataFromAnyJson(_ json: Any, output: JsonOutputStream) throws {
+        
         let jayType = try NativeTypeConverter().toJayType(json)
-        let data = try jayType.format(with: formatting.formatter())
-        return data
+        try jayType.format(to: output, with: formatting.formatter())
     }
 }
 
@@ -113,7 +135,13 @@ extension Jay {
 
     //Formats your JSON-compatible object into data or throws an error.
     public func dataFromJson(json: JsonValue) throws -> [UInt8] {
-        return try json.format(with: formatting.formatter())
+        let output = ByteArrayOutputStream()
+        try dataFromJson(json: json, output: output)
+        return output.bytes
+    }
+    
+    public func dataFromJson(json: JsonValue, output: JsonOutputStream) throws {
+        try json.format(to: output, with: formatting.formatter())
     }
 }
 
