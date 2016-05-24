@@ -34,7 +34,7 @@ do {
 	let data: [UInt8] = ...
 
 	//ask Jay to parse your data
-	let json = try Jay().typesafeJsonFromData(data) // JsonValue
+	let json = try Jay().typesafeJsonFromData(data) // JSON
 
 	//if it doesn't throw an error, all went well
 	if let tasks = json.dictionary?["today"]?.array {
@@ -49,8 +49,8 @@ do {
 ## Formatting into data (serialization)
 ```swift
 do {
-	//get a json object (works for both [String: Any] and typesafe versions - JsonValue)
-	let json: [String: Any] = ... // [String: Any] or [Any] or JsonValue
+	//get a json object (works for both [String: Any] and typesafe versions - JSON)
+	let json: [String: Any] = ... // [String: Any] or [Any] or JSON
 
 	//ask Jay to generate data
 	let data = try Jay(formatting: .prettified).dataFromJson(json) // [UInt8]
