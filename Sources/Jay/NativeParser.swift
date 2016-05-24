@@ -18,7 +18,7 @@ struct NativeParser {
         return _postProcess(try Parser().parseJsonFromReader(reader))
     }
     
-    private func _postProcess(_ jsonValue: JsonValue) -> Any {
+    private func _postProcess(_ jsonValue: JSON) -> Any {
         //recursively convert into native types
         let native = jsonValue.toNative()
         return native

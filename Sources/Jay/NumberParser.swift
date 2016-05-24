@@ -20,7 +20,7 @@ struct NumberParser: JsonParser {
     //frac = decimal-point 1*DIGIT
     //int = zero / ( digit1-9 *DIGIT )
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (JSON, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
         
@@ -44,7 +44,7 @@ struct NumberParser: JsonParser {
             
             //now if any number terminator is here, finish up with 0
             if Const.NumberTerminators.contains(reader.curr()) {
-                return (.number(.integer(0)), reader)
+                return (.number(.unsignedInteger(0)), reader)
             }
             
             //else there MUST be a frac part
@@ -66,11 +66,11 @@ struct NumberParser: JsonParser {
         
         //Generate the final number
         let number = self.generateNumber(negative: negative, integer: integer, frac: frac, exp: exp)
-        let value: JsonValue = .number(number)
+        let value: JSON = .number(number)
         return (value, reader)
     }
     
-    private func generateNumber(negative: Bool, integer: Int, frac: Int, exp: Int?) -> JsonValue.Number {
+    private func generateNumber(negative: Bool, integer: Int, frac: Int, exp: Int?) -> JSON.Number {
         
         //form the int section
         var int = integer
@@ -79,7 +79,13 @@ struct NumberParser: JsonParser {
         
         //if that's it, let's call it an integer
         if frac == 0 && exp == nil {
-            return .integer(int)
+            if negative {
+                //if it's negative, make it a signed integer
+                return .integer(int)
+            } else {
+                //if it's positive, make it a uint
+                return .unsignedInteger(UInt(int))
+            }
         }
         
         //now we're using double

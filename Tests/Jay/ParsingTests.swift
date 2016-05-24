@@ -133,15 +133,16 @@ class ParsingTests:XCTestCase {
 
     func testArray_NullsBoolsNums_Normal_Minimal_RootParser() {
         
-        let reader = ByteReader(content: "[null,true,false,12,-24.3,18.2e9]")
+        let reader = ByteReader(content: "[null,true,false,12,-10,-24.3,18.2e9]")
         let ret = try! RootParser().parse(withReader: reader)
-        let exp: [JsonValue] = [
-            JsonValue.null,
-            JsonValue.boolean(true),
-            JsonValue.boolean(false),
-            JsonValue.number(.integer(12)),
-            JsonValue.number(.double(-24.3)),
-            JsonValue.number(.double(18200000000)),
+        let exp: [JSON] = [
+            JSON.null,
+            JSON.boolean(true),
+            JSON.boolean(false),
+            JSON.number(.unsignedInteger(12)),
+            JSON.number(.integer(-10)),
+            JSON.number(.double(-24.3)),
+            JSON.number(.double(18200000000)),
         ]
         ensureArray(ret.0, exp: exp)
         XCTAssert(ret.1.isDone())
@@ -151,11 +152,11 @@ class ParsingTests:XCTestCase {
         
         let reader = ByteReader(content: " \t[\n  null ,true, \n-12.3 , false\r\n]\n  ")
         let ret = try! ValueParser().parse(withReader: reader)
-        let exp: [JsonValue] = [
-            JsonValue.null,
-            JsonValue.boolean(true),
-            JsonValue.number(.double(-12.3)),
-            JsonValue.boolean(false)
+        let exp: [JSON] = [
+            JSON.null,
+            JSON.boolean(true),
+            JSON.number(.double(-12.3)),
+            JSON.boolean(false)
         ]
         ensureArray(ret.0, exp: exp)
         XCTAssert(ret.1.curr() == "\n".char())
@@ -192,43 +193,43 @@ class ParsingTests:XCTestCase {
     func testNumber_Int_Zero() {
         let reader = ByteReader(content: "0  ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.integer(0))
+        ensureNumber(ret.0, exp: JSON.Number.unsignedInteger(0))
     }
     
     func testNumber_Int_One() {
         let reader = ByteReader(content: "1  ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.integer(1))
+        ensureNumber(ret.0, exp: JSON.Number.unsignedInteger(1))
     }
 
     func testNumber_Int_Basic() {
         let reader = ByteReader(content: "24  ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.integer(24))
+        ensureNumber(ret.0, exp: JSON.Number.unsignedInteger(24))
     }
     
     func testNumber_Int_Negative() {
         let reader = ByteReader(content: "24 , ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.integer(24))
+        ensureNumber(ret.0, exp: JSON.Number.unsignedInteger(24))
     }
     
     func testNumber_Dbl_Basic() {
         let reader = ByteReader(content: "24.34, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.double(24.34))
+        ensureNumber(ret.0, exp: JSON.Number.double(24.34))
     }
     
     func testNumber_Dbl_ZeroSomething() {
         let reader = ByteReader(content: "0.34, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.double(0.34))
+        ensureNumber(ret.0, exp: JSON.Number.double(0.34))
     }
     
     func testNumber_Dbl_MinusZeroSomething() {
         let reader = ByteReader(content: "-0.34, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.double(-0.34))
+        ensureNumber(ret.0, exp: JSON.Number.double(-0.34))
     }
     
     func testNumber_Dbl_Incomplete() {
@@ -240,7 +241,7 @@ class ParsingTests:XCTestCase {
     func testNumber_Dbl_Negative() {
         let reader = ByteReader(content: "-24.34]")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.double(-24.34))
+        ensureNumber(ret.0, exp: JSON.Number.double(-24.34))
     }
     
     func testNumber_Dbl_Negative_WrongChar() {
@@ -264,25 +265,25 @@ class ParsingTests:XCTestCase {
     func testNumber_Double_Exp_Normal() {
         let reader = ByteReader(content: "-24.3245e2, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.double(-2432.45))
+        ensureNumber(ret.0, exp: JSON.Number.double(-2432.45))
     }
     
     func testNumber_Double_Exp_Positive() {
         let reader = ByteReader(content: "-24.3245e+2, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.double(-2432.45))
+        ensureNumber(ret.0, exp: JSON.Number.double(-2432.45))
     }
     
     func testNumber_Double_Exp_Negative() {
         let reader = ByteReader(content: "-24.3245e-2, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.double(-0.243245))
+        ensureNumber(ret.0, exp: JSON.Number.double(-0.243245))
     }
     
     func testNumber_Double_Exp_NoFrac() {
         let reader = ByteReader(content: "24E2, ")
         let ret = try! ValueParser().parse(withReader: reader)
-        ensureNumber(ret.0, exp: JsonValue.Number.double(2400))
+        ensureNumber(ret.0, exp: JSON.Number.double(2400))
     }
 
     func testNumber_Double_Exp_TwoEs() {
@@ -443,7 +444,7 @@ class ParsingTests:XCTestCase {
     func testObject_Empty() {
         let reader = ByteReader(content: "{}")
         let ret = try! ValueParser().parse(withReader: reader)
-        let exp: [String: JsonValue] = [:]
+        let exp: [String: JSON] = [:]
         ensureObject(ret.0, exp: exp)
     }
     
@@ -451,19 +452,19 @@ class ParsingTests:XCTestCase {
         let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, null, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
         let reader = ByteReader(content: data)
         let ret = try! ValueParser().parse(withReader: reader)
-        let exp: [String: JsonValue] = [
-            "hello": JsonValue.string("wor🇨🇿ld"),
-            "val": JsonValue.number(.integer(1234)),
-            "many": JsonValue.array([
-                JsonValue.number(.double(-12.32)),
-                JsonValue.null,
-                JsonValue.string("yo")
+        let exp: [String: JSON] = [
+            "hello": JSON.string("wor🇨🇿ld"),
+            "val": JSON.number(.unsignedInteger(1234)),
+            "many": JSON.array([
+                JSON.number(.double(-12.32)),
+                JSON.null,
+                JSON.string("yo")
             ]),
-            "emptyDict": JsonValue.object([:]),
-            "dict": JsonValue.object([
-                    "arr": JsonValue.array([])
+            "emptyDict": JSON.object([:]),
+            "dict": JSON.object([
+                    "arr": JSON.array([])
                 ]),
-            "name": JsonValue.boolean(true)
+            "name": JSON.boolean(true)
         ]
         ensureObject(ret.0, exp: exp)
     }
@@ -472,19 +473,19 @@ class ParsingTests:XCTestCase {
         let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, null, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
         let reader = ByteReader(content: data)
         let ret = try! Jay().typesafeJsonFromReader(reader)
-        let exp: [String: JsonValue] = [
-                                  "hello": JsonValue.string("wor🇨🇿ld"),
-                                  "val": JsonValue.number(.integer(1234)),
-                                  "many": JsonValue.array([
-                                                              JsonValue.number(.double(-12.32)),
-                                                              JsonValue.null,
-                                                              JsonValue.string("yo")
+        let exp: [String: JSON] = [
+                                  "hello": JSON.string("wor🇨🇿ld"),
+                                  "val": JSON.number(.unsignedInteger(1234)),
+                                  "many": JSON.array([
+                                                              JSON.number(.double(-12.32)),
+                                                              JSON.null,
+                                                              JSON.string("yo")
                                     ]),
-                                  "emptyDict": JsonValue.object([:]),
-                                  "dict": JsonValue.object([
-                                                               "arr": JsonValue.array([])
+                                  "emptyDict": JSON.object([:]),
+                                  "dict": JSON.object([
+                                                               "arr": JSON.array([])
                                     ]),
-                                  "name": JsonValue.boolean(true)
+                                  "name": JSON.boolean(true)
         ]
         ensureObject(ret, exp: exp)
     }
@@ -516,12 +517,12 @@ class ParsingTests:XCTestCase {
     func test_Example2() {
         let data = "[1,[2,[3]]]".chars()
         let ret = try! Jay().typesafeJsonFromData(data)
-        let exp: [JsonValue] = [
-            JsonValue.number(.integer(1)),
-            JsonValue.array([
-                JsonValue.number(.integer(2)),
-                JsonValue.array([
-                    JsonValue.number(.integer(3))
+        let exp: [JSON] = [
+            JSON.number(.unsignedInteger(1)),
+            JSON.array([
+                JSON.number(.unsignedInteger(2)),
+                JSON.array([
+                    JSON.number(.unsignedInteger(3))
                 ])
             ])
         ]

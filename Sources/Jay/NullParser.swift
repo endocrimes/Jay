@@ -8,7 +8,7 @@
 
 struct NullParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (JSON, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
         

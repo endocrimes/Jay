@@ -8,8 +8,6 @@
 
 import Foundation
 
-public typealias JSON = JsonValue
-
 //Useful methods for easier manipulation of type-safe JSON
 
 extension JSON {
@@ -30,11 +28,21 @@ extension JSON {
         return jsonInt
     }
     
+    public var uint: UInt? {
+        guard case .number(let number) = self else { return nil }
+        switch number {
+        case .integer(let int): return UInt(int)
+        case .unsignedInteger(let uint): return uint
+        default: return nil
+        }
+    }
+    
     public var double: Double? {
         guard case .number(let number) = self else { return nil }
         switch number {
         case .double(let dbl): return dbl
         case .integer(let int): return Double(int)
+        case .unsignedInteger(let uint): return Double(uint)
         }
     }
     

@@ -9,19 +9,19 @@
 import XCTest
 @testable import Jay
 
-func ensureNull(_ val: JsonValue) {
-    XCTAssertEqual(val, JsonValue.null)
+func ensureNull(_ val: JSON) {
+    XCTAssertEqual(val, JSON.null)
 }
 
-func ensureBool(_ val: JsonValue, exp: Bool, file: StaticString = #file, line: UInt = #line) {
-    XCTAssertEqual(val, JsonValue.boolean(exp))
+func ensureBool(_ val: JSON, exp: Bool, file: StaticString = #file, line: UInt = #line) {
+    XCTAssertEqual(val, JSON.boolean(exp))
 }
 
-func ensureArray(_ val: JsonValue, exp: [JsonValue], file: StaticString = #file, line: UInt = #line) {
-    XCTAssertEqual(val, JsonValue.array(exp))
+func ensureArray(_ val: JSON, exp: [JSON], file: StaticString = #file, line: UInt = #line) {
+    XCTAssertEqual(val, JSON.array(exp))
 }
 
-func ensureNumber(_ val: JsonValue, exp: JsonValue.Number, file: StaticString = #file, line: UInt = #line) {
+func ensureNumber(_ val: JSON, exp: JSON.Number, file: StaticString = #file, line: UInt = #line) {
     switch val {
     case .number(let num):
         
@@ -30,17 +30,19 @@ func ensureNumber(_ val: JsonValue, exp: JsonValue.Number, file: StaticString = 
             XCTAssertEqualWithAccuracy(r, l, accuracy: 1e-10)
         case (.integer(let l), .integer(let r)):
             XCTAssertEqual(l, r)
+        case (.unsignedInteger(let l), .unsignedInteger(let r)):
+            XCTAssertEqual(l, r)
         default: XCTFail()
         }
     default: XCTFail()
     }
 }
 
-func ensureString(_ val: JsonValue, exp: String, file: StaticString = #file, line: UInt = #line) {
-    XCTAssertEqual(val, JsonValue.string(exp))
+func ensureString(_ val: JSON, exp: String, file: StaticString = #file, line: UInt = #line) {
+    XCTAssertEqual(val, JSON.string(exp))
 }
 
-func ensureObject(_ val: JsonValue, exp: [String: JsonValue], file: StaticString = #file, line: UInt = #line) {
-    XCTAssertEqual(val, JsonValue.object(exp))
+func ensureObject(_ val: JSON, exp: [String: JSON], file: StaticString = #file, line: UInt = #line) {
+    XCTAssertEqual(val, JSON.object(exp))
 }
 

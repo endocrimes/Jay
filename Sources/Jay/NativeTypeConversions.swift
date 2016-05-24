@@ -19,7 +19,7 @@ extension JaySON {
     public init(_ array: [Any]) { self.json = array }
 }
 
-extension JsonValue {
+extension JSON {
 
     func toNative() -> Any {
         switch self {
@@ -36,6 +36,7 @@ extension JsonValue {
             switch num {
             case .double(let dbl): return dbl
             case .integer(let int): return int
+            case .unsignedInteger(let uint): return uint
             }
             
         case .string(let str):
@@ -52,22 +53,22 @@ extension JsonValue {
 
 struct NativeTypeConverter {
     
-    func convertPair(k: Any, v: Any) throws -> (String, JsonValue) {
+    func convertPair(k: Any, v: Any) throws -> (String, JSON) {
         guard let key = k as? String else { throw Error.KeyIsNotString(k) }
         let value = try self.toJayType(v as Any)
         return (key, value)
     }
     
-    func convertArray(_ array: [Any]) throws -> JsonValue? {
+    func convertArray(_ array: [Any]) throws -> JSON? {
         let vals = try array.map { try self.toJayType($0) }
         return .array(vals)
     }
     
-    func parseNSArray(_ array: NSArray) throws -> JsonValue? {
+    func parseNSArray(_ array: NSArray) throws -> JSON? {
         return try self.convertArray(array.map { $0 as Any })
     }
     
-    func parseNSDictionary(_ dict: NSDictionary) throws -> JsonValue? {
+    func parseNSDictionary(_ dict: NSDictionary) throws -> JSON? {
         var dOut = [String: Any]()
         for i in dict {
             //for Linux reasons we must cast into CustomStringConvertible instead of String
@@ -80,19 +81,19 @@ struct NativeTypeConverter {
         return try self.dictionaryToJayType(dOut)
     }
     
-    func arrayToJayType(_ maybeArray: Any) throws -> JsonValue? {
+    func arrayToJayType(_ maybeArray: Any) throws -> JSON? {
         
         let mirror = Mirror(reflecting: maybeArray)
         let childrenValues = mirror.children.map { $0.value }
         return try self.convertArray(childrenValues)
     }
     
-    func dictionaryToJayType(_ maybeDictionary: Any) throws -> JsonValue? {
+    func dictionaryToJayType(_ maybeDictionary: Any) throws -> JSON? {
         
         let mirror = Mirror(reflecting: maybeDictionary)
         let childrenValues = mirror.children.map { $0.value }
         
-        var obj = [String: JsonValue]()
+        var obj = [String: JSON]()
         for i in childrenValues {
             
             let childMirror = Mirror(reflecting: i)
@@ -112,7 +113,7 @@ struct NativeTypeConverter {
         return .object(obj)
     }
     
-    func toJayType(_ js: Any?) throws -> JsonValue {
+    func toJayType(_ js: Any?) throws -> JSON {
         
         guard let json = js else { return .null }
         if json is NSNull { return .null }

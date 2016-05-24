@@ -10,7 +10,7 @@ protocol JsonFormattable {
     func format(to stream: JsonOutputStream, with formatter: Formatter) throws
 }
 
-extension JsonValue: JsonFormattable {
+extension JSON: JsonFormattable {
     
     func format(to stream: JsonOutputStream, with formatter: Formatter) throws {
         switch self {
@@ -24,6 +24,8 @@ extension JsonValue: JsonFormattable {
             switch num {
             case .integer(let i):
                 stream <<< String(i).chars()
+            case .unsignedInteger(let ui):
+                stream <<< String(ui).chars()
             case .double(let d):
                 stream <<< String(d).chars()
             }
@@ -75,7 +77,7 @@ extension JsonValue: JsonFormattable {
         stream <<< Const.QuotationMark
     }
     
-    func format(to stream: JsonOutputStream, array: [JsonValue], with formatter: Formatter) throws {
+    func format(to stream: JsonOutputStream, array: [JSON], with formatter: Formatter) throws {
         
         guard array.count > 0 else {
             stream <<< Const.BeginArray <<< Const.EndArray
@@ -92,7 +94,7 @@ extension JsonValue: JsonFormattable {
         stream <<< formatter.newlineAndIndent() <<< Const.EndArray
     }
     
-    func format(to stream: JsonOutputStream, object: [String: JsonValue], with formatter: Formatter) throws {
+    func format(to stream: JsonOutputStream, object: [String: JSON], with formatter: Formatter) throws {
         
         if object.count == 0 {
             stream <<< Const.BeginObject <<< Const.EndObject

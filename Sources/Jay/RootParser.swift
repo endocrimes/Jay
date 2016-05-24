@@ -8,13 +8,13 @@
 
 struct RootParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (JSON, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
         
         //the standard doesn't require handling of fragments, so here
         //we'll assume we're only parsing valid structured types (object/array)
-        let root: JsonValue
+        let root: JSON
         switch reader.curr() {
         case Const.BeginObject:
             (root, reader) = try ObjectParser().parse(withReader: reader)

@@ -8,7 +8,7 @@
 
 struct ArrayParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (JSON, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
         
@@ -29,7 +29,7 @@ struct ArrayParser: JsonParser {
         }
         
         //now start scanning for values
-        var values = [JsonValue]()
+        var values = [JSON]()
         repeat {
             
             //scan for value
