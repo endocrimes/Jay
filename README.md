@@ -12,6 +12,7 @@
 
 Jay conforms to the following specifications:
 - JSON [RFC4627](http://www.ietf.org/rfc/rfc4627.txt)
+- [Open Swift C7 JSON](https://github.com/open-swift/C7/blob/master/Sources/JSON.swift)
 
 # :question: Why?
 We all use JSON. Especially when writing server-side Swift that needs to run on Linux. `#0dependencies`
