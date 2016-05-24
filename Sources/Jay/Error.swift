@@ -19,7 +19,7 @@ enum Error: ErrorProtocol {
     case UnicodeCharacterParsing([JChar], Reader)
     case InvalidSurrogatePair(UInt16, UInt16, Reader)
     case ObjectNameSeparatorMissing(Reader)
-    case FailedToConvertIntoNativeType(JsonValue)
+    case FailedToConvertIntoNativeType(JSON)
     case UnsupportedType(Any)
     case UnsupportedFloatingPointType(Any)
     case UnsupportedIntegerType(Any)

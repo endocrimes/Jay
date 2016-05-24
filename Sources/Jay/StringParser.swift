@@ -14,7 +14,7 @@
 
 struct StringParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (JSON, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
         
@@ -27,12 +27,12 @@ struct StringParser: JsonParser {
         //if another quote, it's just an empty string
         if reader.curr() == Const.QuotationMark {
             try reader.nextAndCheckNotDone()
-            return (JsonValue.string(""), reader)
+            return (JSON.string(""), reader)
         }
         
         let str: String
         (str, reader) = try self.parseString(reader)
-        let obj = JsonValue.string(str)
+        let obj = JSON.string(str)
         return (obj, reader)
     }
     

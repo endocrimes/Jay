@@ -125,22 +125,22 @@ extension Jay {
     //However these types are wrapped, so the user is responsible for
     //manually unwrapping each value recursively. If you just want
     //Swift types with less type-information, use `jsonFromData()` above.
-    public func typesafeJsonFromData(_ data: [UInt8]) throws -> JsonValue {
+    public func typesafeJsonFromData(_ data: [UInt8]) throws -> JSON {
         return try Parser().parseJsonFromData(data)
     }
     
-    public func typesafeJsonFromReader(_ reader: Reader) throws -> JsonValue {
+    public func typesafeJsonFromReader(_ reader: Reader) throws -> JSON {
         return try Parser().parseJsonFromReader(reader)
     }
 
     //Formats your JSON-compatible object into data or throws an error.
-    public func dataFromJson(json: JsonValue) throws -> [UInt8] {
+    public func dataFromJson(json: JSON) throws -> [UInt8] {
         let output = ByteArrayOutputStream()
         try dataFromJson(json: json, output: output)
         return output.bytes
     }
     
-    public func dataFromJson(json: JsonValue, output: JsonOutputStream) throws {
+    public func dataFromJson(json: JSON, output: JsonOutputStream) throws {
         try json.format(to: output, with: formatting.formatter())
     }
 }

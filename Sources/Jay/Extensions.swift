@@ -78,8 +78,8 @@ extension Collection where Iterator.Element == UInt8 {
     }
 }
 
-extension JsonValue: Equatable { }
-public func ==(lhs: JsonValue, rhs: JsonValue) -> Bool {
+extension JSON: Equatable { }
+public func ==(lhs: JSON, rhs: JSON) -> Bool {
     switch (lhs, rhs) {
     case (.null, .null): return true
     case (.boolean(let l), .boolean(let r)): return l == r
@@ -89,6 +89,7 @@ public func ==(lhs: JsonValue, rhs: JsonValue) -> Bool {
     case (.number(let l), .number(let r)):
         switch (l, r) {
         case (.integer(let ll), .integer(let rr)): return ll == rr
+        case (.unsignedInteger(let ll), .unsignedInteger(let rr)): return ll == rr
         case (.double(let ll), .double(let rr)): return ll == rr
         default: return false
         }

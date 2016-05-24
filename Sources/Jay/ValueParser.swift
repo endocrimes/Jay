@@ -8,7 +8,7 @@
 
 struct ValueParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JsonValue, Reader) {
+    func parse(withReader r: Reader) throws -> (JSON, Reader) {
         
         var reader = try self.prepareForReading(withReader: r)
         
@@ -30,7 +30,7 @@ struct ValueParser: JsonParser {
             throw Error.UnexpectedCharacter(reader)
         }
         
-        let val: JsonValue
+        let val: JSON
         (val, reader) = try parser.parse(withReader: reader)
         return (val, reader)
     }
