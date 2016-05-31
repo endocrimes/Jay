@@ -13,9 +13,17 @@ public struct JaySON {
 }
 
 extension JaySON {
+  
+    /// Construct an instance representing the provided `NSDictionary`.
     public init(_ dict: NSDictionary) { self.json = dict }
+  
+    /// Construct an instance representing the provided `NSArray`.
     public init(_ array: NSArray) { self.json = array }
+  
+    /// Construct an instance representing the provided `[String: Any]`-dictionary.
     public init(_ dict: [String: Any]) { self.json = dict }
+  
+    /// Construct an instance representing the provided `[Any]`-array.
     public init(_ array: [Any]) { self.json = array }
 }
 

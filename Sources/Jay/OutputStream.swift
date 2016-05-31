@@ -28,6 +28,7 @@ public class ConsoleOutputStream: JsonOutputStream {
     
     public init() { }
 
+    /// Writes the textual representation of the provided bytes into the standard output.
     public func print(_ bytes: [UInt8]) {
         let str = try? bytes.string()
         Swift.print(str ?? "UNFORMATTABLE DATA", terminator: "")
