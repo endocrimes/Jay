@@ -13,6 +13,9 @@
 #endif
 
 extension JChar {
+  
+    /// Returns a `String` from an array of `JChar`s.
+    /// - Throws: `Error` when parsing the string fails.
     public func string() throws -> String {
         return try [self].string()
     }
@@ -33,7 +36,9 @@ extension String {
 }
 
 extension Collection where Iterator.Element == UInt8 {
-    
+  
+    /// Returns a `String` from a collection with element `UInt8`.
+    /// - Throws: `Error` when parsing the string fails.
     public func string() throws -> String {
         var utf = UTF8()
         var gen = self.makeIterator()
