@@ -51,6 +51,7 @@ extension Reader {
     }
     
     // Consumes all contiguous whitespace and returns # of consumed chars
+    @discardableResult
     mutating func consumeWhitespace() throws -> Int {
         var counter = 0
         while !self.isDone() {
