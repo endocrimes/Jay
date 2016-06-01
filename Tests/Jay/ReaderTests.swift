@@ -117,7 +117,7 @@ class ReaderTests: XCTestCase {
     
     func testReadNext_EnoughAvailable() {
         var mainReader = ByteReader(content: "hello world")
-        try! mainReader.readNext(2)
+        _ = try! mainReader.readNext(2)
         let next = try! mainReader.readNext(5)
         XCTAssert(next == "llo w".chars())
         XCTAssert(mainReader.curr() == "o".char())

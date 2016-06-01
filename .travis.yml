@@ -10,7 +10,6 @@ install:
 script:
   - swift build
   - swift test
-  - make example
 notifications:
   email:
     on_success: never
