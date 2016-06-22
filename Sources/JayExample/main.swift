@@ -47,7 +47,7 @@ func tryFormatting() {
         "name": true
     ]
 
-    let dataOut = try! Jay(formatting: .minified).dataFromJson(obj)
+    let dataOut = try! Jay(formatting: .minified).dataFromJson(anyDictionary: obj)
     let retStr = try! dataOut.string()
 
     assert(origStr == retStr, "Mismatch: Expected:\n\(origStr)\nReturned:\n\(retStr)")
@@ -75,7 +75,7 @@ func tryFormattingToConsole() {
     
     let output = ConsoleOutputStream()
     print("Dumping to console:")
-    try! Jay(formatting: .prettified).dataFromJson(obj, output: output)
+    try! Jay(formatting: .prettified).dataFromJson(anyDictionary: obj, output: output)
 }
 
 tryFormatting()
