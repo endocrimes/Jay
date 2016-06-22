@@ -43,7 +43,7 @@ class FormattingTests: XCTestCase {
 
     func testObject_Empty() {
         let json = [String: Int]()
-        let data = try! Jay().dataFromJson(anyDictionary: json)
+        let data = try! Jay().dataFromJson(any: json)
         XCTAssertEqual(data, "{}".chars())
     }
     
@@ -55,7 +55,7 @@ class FormattingTests: XCTestCase {
     
     func testObject_Empty_Pretty() {
         let json = [String: Int]()
-        let data = try! Jay(formatting: .prettified).dataFromJson(anyDictionary: json)
+        let data = try! Jay(formatting: .prettified).dataFromJson(any: json)
         XCTAssertEqual(data, "{}".chars())
     }
     
@@ -114,13 +114,13 @@ class FormattingTests: XCTestCase {
 
     func testArray_Empty() {
         let json = [Int]()
-        let data = try! Jay().dataFromJson(anyArray: json)
+        let data = try! Jay().dataFromJson(any: json)
         XCTAssertEqual(data, "[]".chars())
     }
     
     func testArray_Empty_Pretty() {
         let json = [Int]()
-        let data = try! Jay(formatting: .prettified).dataFromJson(anyArray: json)
+        let data = try! Jay(formatting: .prettified).dataFromJson(any: json)
         XCTAssertEqual(data, "[]".chars())
     }
     
