@@ -66,6 +66,7 @@ import Foundation
                        ("testObject_Example1", testObject_Example1),
                        ("testObject_DirectReader_Example1", testObject_DirectReader_Example1),
                        ("testNative_Example1", testNative_Example1),
+                       ("testTypesafe_Example1", testTypesafe_Example1),
                        ("test_Example2", test_Example2)
             ]
         }
