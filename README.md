@@ -34,7 +34,9 @@ do {
 	let data: [UInt8] = ...
 
 	//ask Jay to parse your data
-	let json = try Jay().typesafeJsonFromData(data) // JSON
+	let json = try Jay().jsonFromData(data) // C7.JSON
+	//or
+	let json = try Jay().anyJsonFromData(data) // [String: Any] or [Any]
 
 	//if it doesn't throw an error, all went well
 	if let tasks = json.dictionary?["today"]?.array {
@@ -50,10 +52,13 @@ do {
 ```swift
 do {
 	//get a json object (works for both [String: Any] and typesafe versions - JSON)
-	let json: [String: Any] = ... // [String: Any] or [Any] or JSON
 
 	//ask Jay to generate data
-	let data = try Jay(formatting: .prettified).dataFromJson(json) // [UInt8]
+	let anyContainer = ... // [String: Any] or [Any]
+	let data = try Jay(formatting: .prettified).dataFromJson(any: json) // [UInt8]
+	//or
+	let json: JSON = ... // C7.JSON
+	let data = try Jay(formatting: .prettified).dataFromJson(json: json) // [UInt8]
 
 	//send data over network, save to disk
 } catch {
@@ -68,9 +73,6 @@ do {
 ```swift
 .Package(url: "https://github.com/czechboy0/Jay.git", majorVersion: 0, minor: 12)
 ```
-
-## Swift Versions
-This project was originally created for a Swift server running on Linux, so it's always built (and assumes) the latest Swift and SwiftPM versions. To manage Swift versions easily, I recommend you use [swiftenv](https://github.com/kylef/swiftenv#installation). You can see which Swift version Jay requires at the moment in the [`.swift-version`](https://github.com/czechboy0/Jay/blob/master/.swift-version) file in the root of the repository. Please make sure you're always running at least that version if you want to use Jay in your project.
 
 :blue_heart: Code of Conduct
 ------------

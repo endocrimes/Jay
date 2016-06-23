@@ -66,6 +66,7 @@ import Foundation
                        ("testObject_Example1", testObject_Example1),
                        ("testObject_DirectReader_Example1", testObject_DirectReader_Example1),
                        ("testNative_Example1", testNative_Example1),
+                       ("testTypesafe_Example1", testTypesafe_Example1),
                        ("test_Example2", test_Example2)
             ]
         }
@@ -472,7 +473,7 @@ class ParsingTests:XCTestCase {
     func testObject_DirectReader_Example1() {
         let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, null, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
         let reader = ByteReader(content: data)
-        let ret = try! Jay().typesafeJsonFromReader(reader)
+        let ret = try! Jay().jsonFromReader(reader)
         let exp: [String: JSON] = [
                                   "hello": JSON.string("wor🇨🇿ld"),
                                   "val": JSON.number(.unsignedInteger(1234)),
@@ -493,7 +494,7 @@ class ParsingTests:XCTestCase {
     func testNative_Example1() {
         let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
         
-        let ret = try! Jay().jsonFromData(data)
+        let ret = try! Jay().anyJsonFromData(data)
         let exp: [String: Any] = [
             "hello": "wor🇨🇿ld",
             "val": 1234,
@@ -513,10 +514,31 @@ class ParsingTests:XCTestCase {
         XCTAssertEqual(expStr, retStr)
     }
     
+    func testTypesafe_Example1() {
+        let data = "{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, null, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".chars()
+        
+        let ret = try! Jay().jsonFromData(data)
+        let exp: JSON = .object([
+            "hello": .string("wor🇨🇿ld"),
+            "val": .number(.unsignedInteger(1234)),
+            "many": .array([
+                -12.32,
+                .null,
+                "yo"
+                ]),
+            "emptyDict": .object([:]),
+            "dict": .object([
+                "arr": .array([])
+            ]),
+            "name": .boolean(true)
+        ])
+        XCTAssertEqual(exp, ret)
+    }
+
     //https://twitter.com/schwa/status/706765578631979008
     func test_Example2() {
         let data = "[1,[2,[3]]]".chars()
-        let ret = try! Jay().typesafeJsonFromData(data)
+        let ret = try! Jay().jsonFromData(data)
         let exp: [JSON] = [
             JSON.number(.unsignedInteger(1)),
             JSON.array([

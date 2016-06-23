@@ -29,73 +29,71 @@ public struct Jay {
     /// - Note: Does not allow fragments. Test by conditional
     /// casting whether you received what you expected.
     /// - Throws: A descriptive error in case of any problem.
-    public func jsonFromData(_ data: [UInt8]) throws -> Any {
+    public func anyJsonFromData(_ data: [UInt8]) throws -> Any {
         return try NativeParser().parse(data)
     }
   
     /// Parses the reader to `Any`.
     /// - Throws: A descriptive error in case of any problem.
-    public func jsonFromReader(_ reader: Reader) throws -> Any {
+    public func anyJsonFromReader(_ reader: Reader) throws -> Any {
         return try NativeParser().parse(reader)
     }
     
     /// Formats your JSON-compatible object into data.
     /// - Throws: A descriptive error in case of any problem.
-    public func dataFromJson(_ json: JaySON) throws -> [UInt8] {
-        return try self.dataFromAnyJson(json.json)
+    public func dataFromJson(jsonWrapper: JaySON) throws -> [UInt8] {
+        return try self.dataFromAnyJson(jsonWrapper.json)
     }
 
     /// Outputs the data from json to the provided stream.
     /// - Throws: A descriptive error in case of any problem.
-    public func dataFromJson(_ json: JaySON, output: JsonOutputStream) throws {
-        try self.dataFromAnyJson(json.json, output: output)
+    public func dataFromJson(jsonWrapper: JaySON, output: JsonOutputStream) throws {
+        try self.dataFromAnyJson(jsonWrapper.json, output: output)
     }
 
     /// Parses the json to data.
     /// - Throws: A descriptive error in case of any problem.
-    public func dataFromJson(_ json: [String: Any]) throws -> [UInt8] {
-        return try self.dataFromAnyJson(json)
+    public func dataFromJson(anyDictionary: [String: Any]) throws -> [UInt8] {
+        return try self.dataFromAnyJson(anyDictionary)
     }
 
     /// Outputs the data from json to the provided stream.
     /// - Throws: A descriptive error in case of any problem.
-    public func dataFromJson(_ json: [String: Any], output: JsonOutputStream) throws {
-        try self.dataFromAnyJson(json, output: output)
+    public func dataFromJson(anyDictionary: [String: Any], output: JsonOutputStream) throws {
+        try self.dataFromAnyJson(anyDictionary, output: output)
     }
 
     /// Parses the json to data.
     /// - Throws: A descriptive error in case of any problem.
-    public func dataFromJson(_ json: [Any]) throws -> [UInt8] {
-        return try self.dataFromAnyJson(json)
+    public func dataFromJson(anyArray: [Any]) throws -> [UInt8] {
+        return try self.dataFromAnyJson(anyArray)
     }
 
     /// Outputs the data from json to the provided stream.
     /// - Throws: A descriptive error in case of any problem.
-    public func dataFromJson(_ json: [Any], output: JsonOutputStream) throws {
-        try self.dataFromAnyJson(json, output: output)
+    public func dataFromJson(anyArray: [Any], output: JsonOutputStream) throws {
+        try self.dataFromAnyJson(anyArray, output: output)
     }
 
     /// Parses the json to data.
     /// - Throws: A descriptive error in case of any problem.
-    public func dataFromJson(_ json: Any) throws -> [UInt8] {
-        return try self.dataFromAnyJson(json)
+    public func dataFromJson(any: Any) throws -> [UInt8] {
+        return try self.dataFromAnyJson(any)
     }
 
     /// Outputs the data from json to the provided stream.
     /// - Throws: A descriptive error in case of any problem.
-    public func dataFromJson(_ json: Any, output: JsonOutputStream) throws {
-        try self.dataFromAnyJson(json, output: output)
+    public func dataFromJson(any: Any, output: JsonOutputStream) throws {
+        try self.dataFromAnyJson(any, output: output)
     }
 
     private func dataFromAnyJson(_ json: Any) throws -> [UInt8] {
-        
         let output = ByteArrayOutputStream()
         try dataFromAnyJson(json, output: output)
         return output.bytes
     }
     
     func dataFromAnyJson(_ json: Any, output: JsonOutputStream) throws {
-        
         let jayType = try NativeTypeConverter().toJayType(json)
         try jayType.format(to: output, with: formatting.formatter())
     }
@@ -147,7 +145,7 @@ extension Jay {
     /// manually unwrapping each value recursively.
     /// - SeeAlso: If you just want Swift types with less
     /// type-information, use `jsonFromData()` above.
-    public func typesafeJsonFromData(_ data: [UInt8]) throws -> JSON {
+    public func jsonFromData(_ data: [UInt8]) throws -> JSON {
         return try Parser().parseJsonFromData(data)
     }
   
@@ -156,7 +154,7 @@ extension Jay {
     /// manually unwrapping each value recursively.
     /// - SeeAlso: If you just want Swift types with less
     /// type-information, use `jsonFromReader()` above.
-    public func typesafeJsonFromReader(_ reader: Reader) throws -> JSON {
+    public func jsonFromReader(_ reader: Reader) throws -> JSON {
         return try Parser().parseJsonFromReader(reader)
     }
 
