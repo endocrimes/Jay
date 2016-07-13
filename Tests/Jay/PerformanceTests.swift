@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Foundation
 @testable import Jay
 
 //#if os(Linux)
@@ -15,6 +16,8 @@ import XCTest
 //            return [
 //                ("testPerf_ParseLargeJson", testPerf_ParseLargeJson),
 //                ("testPerf_ParseLargeJson_Darwin", testPerf_ParseLargeJson_Darwin)
+//                testPerf_FormatLargeJson_Darwin
+//                testPerf_FormatLargeJson
 //            ]
 //        }
 //    }
@@ -24,33 +27,31 @@ import XCTest
 #else
 class PerformanceTests: XCTestCase {
 
-    func urlForFixture(_ name: String) -> NSURL {
+    func urlForFixture(_ name: String) -> URL {
         
         let parent = (#file).components(separatedBy: "/").dropLast().joined(separator: "/")
-        let url = NSURL(string: "file://\(parent)/Fixtures/\(name).json")!
+        let url = URL(string: "file://\(parent)/Fixtures/\(name).json")!
         print("Loading fixture from url \(url)")
         return url
     }
     
-    func loadFixture(_ name: String) -> [UInt8] {
+    func loadFixture(_ name: String) throws -> [UInt8] {
         
         let url = self.urlForFixture(name)
-        let data = Array(try! String(contentsOf: url).utf8)
+        let data = Array(try String(contentsOf: url).utf8)
         return data
     }
     
-    func loadFixtureNSData(_ name: String) -> NSData {
+    func loadFixtureNSData(_ name: String) throws -> Data {
         
         let url = self.urlForFixture(name)
-        let data = NSData(contentsOf: url)!
+        let data = try Data(contentsOf: url)
         return data
     }
 
-    func testPerf_ParseLargeJson() {
+    func testPerf_ParseLargeJson() throws {
         
-        //at the moment we're 39x slower in parsing than NSJSONSerialization :D
-        //(in release). but to be fair, it took me 2 evenings to write this parser.
-        let data = self.loadFixture("large")
+        let data = try self.loadFixture("large")
         let jay = Jay()
         measure {
             do {
@@ -61,11 +62,34 @@ class PerformanceTests: XCTestCase {
         }
     }
     
-    func testPerf_ParseLargeJson_Darwin() {
+    func testPerf_ParseLargeJson_Darwin() throws {
         
-        let data = self.loadFixtureNSData("large")
+        let data = try self.loadFixtureNSData("large")
         measure {
-            _ = try! NSJSONSerialization.jsonObject(with: data, options: [])
+            _ = try! JSONSerialization.jsonObject(with: data, options: [])
+        }
+    }
+    
+    func testPerf_FormatLargeJson() throws {
+        
+        let data = try self.loadFixture("large")
+        let jay = Jay()
+        let json = try jay.jsonFromData(data)
+        measure {
+            do {
+                _ = try jay.dataFromJson(json: json)
+            } catch {
+                XCTFail("\(error)")
+            }
+        }
+    }
+    
+    func testPerf_FormatLargeJson_Darwin() throws {
+        
+        let data = try self.loadFixtureNSData("large")
+        let json = try! JSONSerialization.jsonObject(with: data, options: [])
+        measure {
+            _ = try! JSONSerialization.data(withJSONObject: json, options: [])
         }
     }
     

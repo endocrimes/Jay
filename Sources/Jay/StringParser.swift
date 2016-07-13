@@ -20,7 +20,7 @@ struct StringParser: JsonParser {
         
         //ensure we're starting with a quote
         guard reader.curr() == Const.QuotationMark else {
-            throw Error.UnexpectedCharacter(reader)
+            throw Error.unexpectedCharacter(reader)
         }
         try reader.nextAndCheckNotDone()
         
@@ -46,7 +46,7 @@ struct StringParser: JsonParser {
                 
             case 0x00...0x1F:
                 //unescaped control chars, invalid
-                throw Error.UnescapedControlCharacterInString(reader)
+                throw Error.unescapedControlCharacterInString(reader)
                 
             case Const.QuotationMark:
                 //end of string, return what we have
@@ -101,7 +101,7 @@ struct StringParser: JsonParser {
             }
         }
         //we ran out of parsing attempts and we've read 4 8bit chars, error out
-        throw Error.UnicodeCharacterParsing(buffer, reader)
+        throw Error.unicodeCharacterParsing(buffer, reader)
     }
     
     func isValidUnicodeHexDigit(_ chars: [JChar]) -> Bool {
@@ -123,7 +123,7 @@ struct StringParser: JsonParser {
         
         //this MUST start with escape
         guard reader.curr() == Const.Escape else {
-            throw Error.InvalidEscape(reader)
+            throw Error.invalidEscape(reader)
         }
         try reader.nextAndCheckNotDone()
         
@@ -146,13 +146,13 @@ struct StringParser: JsonParser {
         
         //now the char must be 'u', otherwise this is invalid escaping
         guard reader.curr() == Const.UnicodeStart else {
-            throw Error.InvalidEscape(reader)
+            throw Error.invalidEscape(reader)
         }
         
         //validate the current + next 4 digits (total of 5)
         let unicode = try reader.readNext(5)
         guard self.isValidUnicodeHexDigit(unicode) else {
-            throw Error.InvalidUnicodeSpecifier(reader)
+            throw Error.invalidUnicodeSpecifier(reader)
         }
         
         let last4 = try Array(unicode.suffix(4)).string()
@@ -182,7 +182,7 @@ struct StringParser: JsonParser {
         
         //this MUST start with escape - the low surrogate
         guard reader.curr() == Const.Escape else {
-            throw Error.InvalidEscape(reader)
+            throw Error.invalidEscape(reader)
         }
         try reader.nextAndCheckNotDone()
 
@@ -191,14 +191,14 @@ struct StringParser: JsonParser {
         //validate u + next 4 digits (total of 5)
         let unicode = try reader.readNext(5)
         guard self.isValidUnicodeHexDigit(unicode) else {
-            throw Error.InvalidUnicodeSpecifier(reader)
+            throw Error.invalidUnicodeSpecifier(reader)
         }
         let last4 = try Array(unicode.suffix(4)).string()
         let low = self.fourBytesToUnicodeCode(last4)
         
         //must be a low, otherwise invalid
         guard UTF16.isTrailSurrogate(low) else {
-            throw Error.InvalidSurrogatePair(high, low, reader)
+            throw Error.invalidSurrogatePair(high, low, reader)
         }
         
         //we have a high and a low surrogate, both as UTF-16
@@ -210,7 +210,7 @@ struct StringParser: JsonParser {
         case .scalarValue(let char):
             return (char, reader)
         case .emptyInput, .error:
-            throw Error.InvalidSurrogatePair(high, low, reader)
+            throw Error.invalidSurrogatePair(high, low, reader)
         }
     }
     

@@ -48,7 +48,7 @@ extension Collection where Iterator.Element == UInt8 {
             case .emptyInput: //we're done
                 return str
             case .error: //error, can't describe what however
-                throw Error.ParseStringFromCharsFailed(Array(self))
+                throw Error.parseStringFromCharsFailed(Array(self))
             case .scalarValue(let unicodeScalar):
                 str.append(unicodeScalar)
             }

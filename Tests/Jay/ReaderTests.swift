@@ -61,7 +61,7 @@ class ReaderTests: XCTestCase {
         do {
             try mainReader.stopAtFirstDifference(expectedReader)
             XCTFail()
-        } catch Error.Mismatch(let main, let other) {
+        } catch Error.mismatch(let main, let other) {
             
             XCTAssert(!main.isDone())
             XCTAssert(!other.isDone())
@@ -80,7 +80,7 @@ class ReaderTests: XCTestCase {
         do {
             try mainReader.stopAtFirstDifference(expectedReader)
             XCTFail()
-        } catch Error.Mismatch(let main, let other) {
+        } catch Error.mismatch(let main, let other) {
             XCTAssert(main.isDone())
             XCTAssert(!other.isDone())
             XCTAssert(other.curr() == "h".char())

@@ -41,7 +41,7 @@ extension Reader {
     
     func ensureNotDone() throws {
         if self.isDone() {
-            throw Error.UnexpectedEnd(self)
+            throw Error.unexpectedEnd(self)
         }
     }
     
@@ -85,14 +85,14 @@ extension Reader {
             
             if self.isDone() {
                 //b) no match
-                throw Error.Mismatch(self, other)
+                throw Error.mismatch(self, other)
             }
 
             let charSelf = self.curr()
             let charOther = other.curr()
             guard charSelf == charOther else {
                 //c) no match
-                throw Error.Mismatch(self, other)
+                throw Error.mismatch(self, other)
             }
             
             try self.next()

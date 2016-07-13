@@ -20,7 +20,7 @@ struct Parser {
             //skip whitespace and ensure no more tokens are present, otherwise throw
             try endReader.consumeWhitespace()
             guard endReader.isDone() else {
-                throw Error.ExtraTokensFound(endReader)
+                throw Error.extraTokensFound(endReader)
             }
         }
         
