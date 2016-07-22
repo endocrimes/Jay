@@ -14,6 +14,8 @@ Jay conforms to the following specifications:
 - JSON [RFC4627](http://www.ietf.org/rfc/rfc4627.txt)
 - [Open Swift C7 JSON](https://github.com/open-swift/C7/blob/master/Sources/JSON.swift) with the use of [Jay-C7](https://github.com/czechboy0/Jay-C7)
 
+For extra convenience functions when working with the JSON enum, check out [Jay-Extras](https://github.com/czechboy0/Jay-Extras).
+
 # :question: Why?
 We all use JSON. Especially when writing server-side Swift that needs to run on Linux. `#0dependencies`
 
@@ -71,7 +73,7 @@ do {
 ## Swift Package Manager
 
 ```swift
-.Package(url: "https://github.com/czechboy0/Jay.git", majorVersion: 0, minor: 14)
+.Package(url: "https://github.com/czechboy0/Jay.git", majorVersion: 0, minor: 15)
 ```
 
 :blue_heart: Code of Conduct
