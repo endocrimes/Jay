@@ -24,10 +24,10 @@ import XCTest
 #else
 class PerformanceTests: XCTestCase {
 
-    func urlForFixture(_ name: String) -> NSURL {
+    func urlForFixture(_ name: String) -> URL {
         
         let parent = (#file).components(separatedBy: "/").dropLast().joined(separator: "/")
-        let url = NSURL(string: "file://\(parent)/Fixtures/\(name).json")!
+        let url = URL(string: "file://\(parent)/Fixtures/\(name).json")!
         print("Loading fixture from url \(url)")
         return url
     }
@@ -39,10 +39,10 @@ class PerformanceTests: XCTestCase {
         return data
     }
     
-    func loadFixtureNSData(_ name: String) -> NSData {
+    func loadFixtureNSData(_ name: String) throws -> Data {
         
         let url = self.urlForFixture(name)
-        let data = NSData(contentsOf: url)!
+        let data = try Data(contentsOf: url)
         return data
     }
 
@@ -61,11 +61,11 @@ class PerformanceTests: XCTestCase {
         }
     }
     
-    func testPerf_ParseLargeJson_Darwin() {
+    func testPerf_ParseLargeJson_Darwin() throws {
         
-        let data = self.loadFixtureNSData("large")
+        let data = try self.loadFixtureNSData("large")
         measure {
-            _ = try! NSJSONSerialization.jsonObject(with: data, options: [])
+            _ = try! JSONSerialization.jsonObject(with: data, options: [])
         }
     }
     
