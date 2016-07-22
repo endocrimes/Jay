@@ -522,9 +522,9 @@ class ParsingTests:XCTestCase {
             "hello": .string("wor🇨🇿ld"),
             "val": .number(.unsignedInteger(1234)),
             "many": .array([
-                -12.32,
+                .number(.double(-12.32)),
                 .null,
-                "yo"
+                .string("yo")
                 ]),
             "emptyDict": .object([:]),
             "dict": .object([
