@@ -14,7 +14,7 @@ struct ArrayParser: JsonParser {
         
         //detect opening bracket
         guard reader.curr() == Const.BeginArray else {
-            throw Error.UnexpectedCharacter(reader)
+            throw JayError.unexpectedCharacter(reader)
         }
         try reader.nextAndCheckNotDone()
         
@@ -43,7 +43,7 @@ struct ArrayParser: JsonParser {
             switch reader.curr() {
             case Const.EndArray: try reader.next(); return (.array(values), reader)
             case Const.ValueSeparator: try reader.next(); break //comma, so another value must come. let the loop repeat.
-            default: throw Error.UnexpectedCharacter(reader)
+            default: throw JayError.unexpectedCharacter(reader)
             }
         } while true
     }

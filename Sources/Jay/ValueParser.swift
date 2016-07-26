@@ -27,7 +27,7 @@ struct ValueParser: JsonParser {
         case let x where StartChars.Null.contains(x):
             parser = NullParser()
         default:
-            throw Error.UnexpectedCharacter(reader)
+            throw JayError.unexpectedCharacter(reader)
         }
         
         let val: JSON

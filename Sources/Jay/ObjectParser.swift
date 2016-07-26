@@ -14,7 +14,7 @@ struct ObjectParser: JsonParser {
         
         //detect opening brace
         guard reader.curr() == Const.BeginObject else {
-            throw Error.UnexpectedCharacter(reader)
+            throw JayError.unexpectedCharacter(reader)
         }
         try reader.nextAndCheckNotDone()
         
@@ -44,7 +44,7 @@ struct ObjectParser: JsonParser {
             //scan for name separator :
             reader = try self.prepareForReading(withReader: reader)
             guard reader.curr() == Const.NameSeparator else {
-                throw Error.ObjectNameSeparatorMissing(reader)
+                throw JayError.objectNameSeparatorMissing(reader)
             }
             try reader.nextAndCheckNotDone()
             
@@ -68,7 +68,7 @@ struct ObjectParser: JsonParser {
                 //comma, so another value must come. let the loop repeat.
                 try reader.next()
                 continue
-            default: throw Error.UnexpectedCharacter(reader)
+            default: throw JayError.unexpectedCharacter(reader)
             }
         } while true
     }

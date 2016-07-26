@@ -7,21 +7,16 @@
 //
 
 import XCTest
+import Foundation
 @testable import Jay
 
-//#if os(Linux)
-//    extension PerformanceTests: XCTestCaseProvider {
-//        var allTests : [(String, () throws -> Void)] {
-//            return [
-//                ("testPerf_ParseLargeJson", testPerf_ParseLargeJson),
-//                ("testPerf_ParseLargeJson_Darwin", testPerf_ParseLargeJson_Darwin)
-//            ]
-//        }
-//    }
-//#endif
+extension PerformanceTests {
+    static var allTests = [ 
+        ("testPerf_ParseLargeJson", testPerf_ParseLargeJson),
+        ("testPerf_ParseLargeJson_Darwin", testPerf_ParseLargeJson_Darwin)
+    ]
+}
 
-#if os(Linux)
-#else
 class PerformanceTests: XCTestCase {
 
     func urlForFixture(_ name: String) -> URL {
@@ -33,14 +28,11 @@ class PerformanceTests: XCTestCase {
     }
     
     func loadFixture(_ name: String) -> [UInt8] {
-        
-        let url = self.urlForFixture(name)
-        let data = Array(try! String(contentsOf: url).utf8)
+        let data = Array(try! loadFixtureData(name))
         return data
     }
     
-    func loadFixtureNSData(_ name: String) throws -> Data {
-        
+    func loadFixtureData(_ name: String) throws -> Data {
         let url = self.urlForFixture(name)
         let data = try Data(contentsOf: url)
         return data
@@ -48,8 +40,6 @@ class PerformanceTests: XCTestCase {
 
     func testPerf_ParseLargeJson() {
         
-        //at the moment we're 39x slower in parsing than NSJSONSerialization :D
-        //(in release). but to be fair, it took me 2 evenings to write this parser.
         let data = self.loadFixture("large")
         let jay = Jay()
         measure {
@@ -63,7 +53,7 @@ class PerformanceTests: XCTestCase {
     
     func testPerf_ParseLargeJson_Darwin() throws {
         
-        let data = try self.loadFixtureNSData("large")
+        let data = try loadFixtureData("large")
         measure {
             _ = try! JSONSerialization.jsonObject(with: data, options: [])
         }
@@ -145,5 +135,4 @@ class PerformanceTests: XCTestCase {
 //        print(eq)
 //    }
 }
-#endif
 

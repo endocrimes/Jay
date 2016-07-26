@@ -21,7 +21,7 @@ struct RootParser: JsonParser {
         case Const.BeginArray:
             (root, reader) = try ArrayParser().parse(withReader: reader)
         default:
-            throw Error.Unimplemented("ParseRoot")
+            throw JayError.unimplemented("ParseRoot")
         }
         return (root, reader)
     }
