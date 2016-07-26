@@ -9,19 +9,17 @@
 import XCTest
 @testable import Jay
 
-//#if os(Linux)
-//    extension PerformanceTests: XCTestCaseProvider {
-//        var allTests : [(String, () throws -> Void)] {
-//            return [
-//                ("testPerf_ParseLargeJson", testPerf_ParseLargeJson),
-//                ("testPerf_ParseLargeJson_Darwin", testPerf_ParseLargeJson_Darwin)
-//            ]
-//        }
-//    }
-//#endif
-
 #if os(Linux)
-#else
+    extension PerformanceTests: XCTestCaseProvider {
+        var allTests : [(String, () throws -> Void)] {
+            return [
+                ("testPerf_ParseLargeJson", testPerf_ParseLargeJson),
+                ("testPerf_ParseLargeJson_Darwin", testPerf_ParseLargeJson_Darwin)
+            ]
+        }
+    }
+#endif
+
 class PerformanceTests: XCTestCase {
 
     func urlForFixture(_ name: String) -> URL {
@@ -48,8 +46,6 @@ class PerformanceTests: XCTestCase {
 
     func testPerf_ParseLargeJson() {
         
-        //at the moment we're 39x slower in parsing than NSJSONSerialization :D
-        //(in release). but to be fair, it took me 2 evenings to write this parser.
         let data = self.loadFixture("large")
         let jay = Jay()
         measure {
@@ -145,5 +141,4 @@ class PerformanceTests: XCTestCase {
 //        print(eq)
 //    }
 }
-#endif
 
