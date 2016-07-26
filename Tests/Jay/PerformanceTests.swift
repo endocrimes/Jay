@@ -31,14 +31,11 @@ class PerformanceTests: XCTestCase {
     }
     
     func loadFixture(_ name: String) -> [UInt8] {
-        
-        let url = self.urlForFixture(name)
-        let data = Array(try! String(contentsOf: url).utf8)
+        let data = Array(try! loadFixtureData(name))
         return data
     }
     
-    func loadFixtureNSData(_ name: String) throws -> Data {
-        
+    func loadFixtureData(_ name: String) throws -> Data {
         let url = self.urlForFixture(name)
         let data = try Data(contentsOf: url)
         return data
@@ -59,7 +56,7 @@ class PerformanceTests: XCTestCase {
     
     func testPerf_ParseLargeJson_Darwin() throws {
         
-        let data = try self.loadFixtureNSData("large")
+        let data = try loadFixtureData("large")
         measure {
             _ = try! JSONSerialization.jsonObject(with: data, options: [])
         }
