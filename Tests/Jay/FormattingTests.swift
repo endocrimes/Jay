@@ -108,7 +108,7 @@ class FormattingTests: XCTestCase {
             "int" : 123,
             "string" : "abcde"
         ]
-        let data = try! Jay().dataFromJson(anyDictionary: json)
+        let data = try! Jay().dataFromJson(json: json)
         XCTAssertEqual(data, "{\"array double\":[1.2,2.3,3.4],\"array int\":[0,1,2,-1],\"array str\":[\"s1\",\"s2\",\"s3\"],\"double\":1.0,\"int\":123,\"string\":\"abcde\"}".chars())
     }
 
@@ -166,104 +166,92 @@ class FormattingTests: XCTestCase {
     
     func testVaporExample_Dict() {
         
-        let json = JaySON(
-            [
+        let json: JSON = [
                 "number": 123,
                 "string": "test",
                 "array": [
                     0, 1, 2, 3
-                ] as [Int],
+                    ],
                 "dict": [
                     "name": "Vapor",
                     "lang": "Swift"
                 ]
-            ]
-        )
-        let data = try! Jay().dataFromJson(jsonWrapper: json)
+        ]
+        
+        let data = try! Jay().dataFromJson(json: json)
         let exp = "{\"array\":[0,1,2,3],\"dict\":{\"lang\":\"Swift\",\"name\":\"Vapor\"},\"number\":123,\"string\":\"test\"}"
         XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
     }
     
     func testVaporExample_Array() {
         
-        let json = JaySON(
+        let json: JSON = [
+            "number",
+            123,
+            "string",
+            "test",
+            "array",
+            [0, 1, 2, 3],
+            "dict",
             [
-                "number",
-                123,
-                "string",
-                "test",
-                "array",
-                [0, 1, 2, 3],
-                "dict",
-                [
-                    "name": "Vapor",
-                    "lang": "Swift"
-                ]
+                "name": "Vapor",
+                "lang": "Swift"
             ]
-        )
-        let data = try! Jay().dataFromJson(jsonWrapper: json)
+        ]
+        let data = try! Jay().dataFromJson(json: json)
         let exp = "[\"number\",123,\"string\",\"test\",\"array\",[0,1,2,3],\"dict\",{\"lang\":\"Swift\",\"name\":\"Vapor\"}]"
         XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
     }
-
+    
     //https://twitter.com/schwa/status/706765578631979008
     func test_Example2() {
         //this 'as [Any]' ugliness is here bc on Linux w/out automatic bridging to NSArray, the compiler considers it ambiguous instead of assuming [Any] for some reason. probably reportable as a bug.
-        let json = JaySON([1,[2,[3]]])
-        let data = try! Jay().dataFromJson(jsonWrapper: json)
+        let json: JSON = [1,[2,[3]]]
+        let data = try! Jay().dataFromJson(json: json)
         XCTAssertEqual(data, "[1,[2,[3]]]".chars())
     }
     
     func test_Example3_VeryNested() {
-        let int: [Any] = ["swift", 5]
-        let lang: [String: Any] = [
-                       "new": 1,
-                       "name": int
-        ]
-        let arr: [String: Any] = [
-                      "name": "Vapor",
-                      "lang": lang
-        ]
-        let json = JaySON(
+        let json: JSON = [
+            "number",
+            123,
+            "string",
+            "test",
+            "array",
+            [0, 1, 2, 3],
+            "dict",
             [
-                "number",
-                123,
-                "string",
-                "test",
-                "array",
-                [0, 1, 2, 3],
-                "dict",
-                arr
+                "name": "Vapor",
+                "lang": [
+                    "new": 1,
+                    "name": ["swift", 5]
+                ]
             ]
-        )
-        let data = try! Jay().dataFromJson(jsonWrapper: json)
+        ]
+        let data = try! Jay().dataFromJson(json: json)
         let exp = "[\"number\",123,\"string\",\"test\",\"array\",[0,1,2,3],\"dict\",{\"lang\":{\"name\":[\"swift\",5],\"new\":1},\"name\":\"Vapor\"}]"
         XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
     }
     
     func test_Example3_VeryNested_Pretty() {
-        let int: [Any] = ["swift", 5]
-        let lang: [String: Any] = [
-                                      "new": 1,
-                                      "name": int
-        ]
-        let arr: [String: Any] = [
-                                     "name": "Vapor",
-                                     "lang": lang
-        ]
-        let json = JaySON(
+        let json: JSON = [
+            "number",
+            123,
+            "string",
+            "test",
+            "array",
+            [0, 1, 2, 3],
+            "dict",
             [
-                "number",
-                123,
-                "string",
-                "test",
-                "array",
-                [0, 1, 2, 3],
-                "dict",
-                arr
+                "name": "Vapor",
+                "lang": [
+                    "new": 1,
+                    "name": ["swift", 5]
+                ]
             ]
-        )
-        let data = try! Jay(formatting: .prettified).dataFromJson(jsonWrapper: json)
+        ]
+        
+        let data = try! Jay(formatting: .prettified).dataFromJson(json: json)
         let exp = "[\n    \"number\",\n    123,\n    \"string\",\n    \"test\",\n    \"array\",\n    [\n        0,\n        1,\n        2,\n        3\n    ],\n    \"dict\",\n    {\n        \"lang\": {\n            \"name\": [\n                \"swift\",\n                5\n            ],\n            \"new\": 1\n        },\n        \"name\": \"Vapor\"\n    }\n]"
         XCTAssertEqual(data, exp.chars(), "Expected: \n\(exp)\ngot\n\(try! data.string())\n")
     }
