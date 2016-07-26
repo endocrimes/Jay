@@ -7,18 +7,15 @@
 //
 
 import XCTest
+import Foundation
 @testable import Jay
 
-#if os(Linux)
-    extension PerformanceTests: XCTestCaseProvider {
-        var allTests : [(String, () throws -> Void)] {
-            return [
-                ("testPerf_ParseLargeJson", testPerf_ParseLargeJson),
-                ("testPerf_ParseLargeJson_Darwin", testPerf_ParseLargeJson_Darwin)
-            ]
-        }
-    }
-#endif
+extension PerformanceTests {
+    static var allTests = [ 
+        ("testPerf_ParseLargeJson", testPerf_ParseLargeJson),
+        ("testPerf_ParseLargeJson_Darwin", testPerf_ParseLargeJson_Darwin)
+    ]
+}
 
 class PerformanceTests: XCTestCase {
 

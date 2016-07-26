@@ -9,23 +9,19 @@
 import XCTest
 @testable import Jay
 
-#if os(Linux)
-    extension ReaderTests {
-        static var allTests : [(String, (ReaderTests) -> () throws -> Void)] {
-            return [
-                ("testConsumingWhitespace_Normal", testConsumingWhitespace_Normal),
-                ("testConsumingWhitespace_NoWhitespace", testConsumingWhitespace_NoWhitespace),
-                ("testConsumingWhitespace_Empty", testConsumingWhitespace_Empty),
-                ("testStopAtFirstDifference_RegularMismatch", testStopAtFirstDifference_RegularMismatch),
-                ("testStopAtFirstDifference_EmptyMain", testStopAtFirstDifference_EmptyMain),
-                ("testStopAtFirstDifference_EmptyExpected", testStopAtFirstDifference_EmptyExpected),
-                ("testStopAtFirstDifference_Normal", testStopAtFirstDifference_Normal),
-                ("testReadNext_EnoughAvailable", testReadNext_EnoughAvailable),
-                ("testReadNext_LessAvailable", testReadNext_LessAvailable)
-            ]
-        }
-    }
-#endif
+extension ReaderTests {
+    static var allTests = [
+        ("testConsumingWhitespace_Normal", testConsumingWhitespace_Normal),
+        ("testConsumingWhitespace_NoWhitespace", testConsumingWhitespace_NoWhitespace),
+        ("testConsumingWhitespace_Empty", testConsumingWhitespace_Empty),
+        ("testStopAtFirstDifference_RegularMismatch", testStopAtFirstDifference_RegularMismatch),
+        ("testStopAtFirstDifference_EmptyMain", testStopAtFirstDifference_EmptyMain),
+        ("testStopAtFirstDifference_EmptyExpected", testStopAtFirstDifference_EmptyExpected),
+        ("testStopAtFirstDifference_Normal", testStopAtFirstDifference_Normal),
+        ("testReadNext_EnoughAvailable", testReadNext_EnoughAvailable),
+        ("testReadNext_LessAvailable", testReadNext_LessAvailable)
+    ]
+}
 
 class ReaderTests: XCTestCase {
 

@@ -10,34 +10,30 @@ import XCTest
 @testable import Jay
 import Foundation
 
-#if os(Linux)
-    extension FormattingTests {
-        static var allTests : [(String, (FormattingTests) -> () throws -> Void)] {
-            return [
-                       ("testObject_Empty", testObject_Empty),
-                       ("testObject_Empty_Pretty", testObject_Empty_Pretty),
-                       ("testNSDictionary_Empty", testNSDictionary_Empty),
-                       ("testNSDictionary_Simple", testNSDictionary_Simple),
-                       ("testObject_Simple", testObject_Simple),
-                       ("testObject_Normal", testObject_Normal),
-                       ("testObject_Nested", testObject_Nested),
-                       ("testObject_AllTypes", testObject_AllTypes),
-                       ("testArray_Empty", testArray_Empty),
-                       ("testArray_Empty_Pretty", testArray_Empty_Pretty),
-                       ("testNSArray_Empty", testNSArray_Empty),
-                       ("testArray_Simple", testArray_Simple),
-                       ("testArray_Nested", testArray_Nested),
-                       ("testNSArray_Simple", testNSArray_Simple),
-                       ("testString_Escaping", testString_Escaping),
-                       ("testVaporExample_Dict", testVaporExample_Dict),
-                       ("testVaporExample_Array", testVaporExample_Array),
-                       ("test_Example2", test_Example2),
-                       ("test_Example3_VeryNested", test_Example3_VeryNested),
-                       ("test_Example3_VeryNested_Pretty", test_Example3_VeryNested_Pretty)
-            ]
-        }
-    }
-#endif
+extension FormattingTests {
+    static var allTests = [
+        ("testObject_Empty", testObject_Empty),
+        ("testObject_Empty_Pretty", testObject_Empty_Pretty),
+        ("testNSDictionary_Empty", testNSDictionary_Empty),
+        ("testNSDictionary_Simple", testNSDictionary_Simple),
+        ("testObject_Simple", testObject_Simple),
+        ("testObject_Normal", testObject_Normal),
+        ("testObject_Nested", testObject_Nested),
+        ("testObject_AllTypes", testObject_AllTypes),
+        ("testArray_Empty", testArray_Empty),
+        ("testArray_Empty_Pretty", testArray_Empty_Pretty),
+        ("testNSArray_Empty", testNSArray_Empty),
+        ("testArray_Simple", testArray_Simple),
+        ("testArray_Nested", testArray_Nested),
+        ("testNSArray_Simple", testNSArray_Simple),
+        ("testString_Escaping", testString_Escaping),
+        ("testVaporExample_Dict", testVaporExample_Dict),
+        ("testVaporExample_Array", testVaporExample_Array),
+        ("test_Example2", test_Example2),
+        ("test_Example3_VeryNested", test_Example3_VeryNested),
+        ("test_Example3_VeryNested_Pretty", test_Example3_VeryNested_Pretty)
+    ]
+}
 
 class FormattingTests: XCTestCase {
 
