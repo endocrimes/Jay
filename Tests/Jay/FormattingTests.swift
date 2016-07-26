@@ -100,8 +100,8 @@ class FormattingTests: XCTestCase {
     
     func testObject_AllTypes() {
         //testing this works in Jay: https://github.com/Zewo/JSON/pull/4
-        let json: [String : Any] = [
-            "array double" : [1.2, 2.3, 3.4],
+        let json: JSON = [
+            "array double": [1.2, 2.3, 3.4],
             "array int" : [0, 1, 2, -1],
             "array str" : ["s1", "s2", "s3"],
             "double" : 1.0,
@@ -172,7 +172,7 @@ class FormattingTests: XCTestCase {
                 "string": "test",
                 "array": [
                     0, 1, 2, 3
-                ],
+                ] as [Int],
                 "dict": [
                     "name": "Vapor",
                     "lang": "Swift"
@@ -209,7 +209,7 @@ class FormattingTests: XCTestCase {
     //https://twitter.com/schwa/status/706765578631979008
     func test_Example2() {
         //this 'as [Any]' ugliness is here bc on Linux w/out automatic bridging to NSArray, the compiler considers it ambiguous instead of assuming [Any] for some reason. probably reportable as a bug.
-        let json = JaySON([1,[2,[3]] as [Any]])
+        let json = JaySON([1,[2,[3]]])
         let data = try! Jay().dataFromJson(jsonWrapper: json)
         XCTAssertEqual(data, "[1,[2,[3]]]".chars())
     }

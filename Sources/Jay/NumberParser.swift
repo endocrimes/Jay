@@ -125,7 +125,7 @@ struct NumberParser: JsonParser {
         //take first digit, which can only be 1...9
         var digits = Const.Digits1to9
         guard digits.contains(reader.curr()) else {
-            throw Error.NumberParsingFailed(reader)
+            throw JayError.numberParsingFailed(reader)
         }
         digs.append(reader.curr())
         try reader.nextAndCheckNotDone()
@@ -160,7 +160,7 @@ struct NumberParser: JsonParser {
             }
             
             //okay, we encountered an illegal character, error out
-            throw Error.NumberParsingFailed(reader)
+            throw JayError.numberParsingFailed(reader)
         }
     }
     
@@ -170,7 +170,7 @@ struct NumberParser: JsonParser {
         
         //frac part MUST start with decimal point!
         guard reader.curr() == Const.DecimalPoint else {
-            throw Error.NumberParsingFailed(reader)
+            throw JayError.numberParsingFailed(reader)
         }
         try reader.nextAndCheckNotDone()
         
@@ -178,7 +178,7 @@ struct NumberParser: JsonParser {
         
         //at least one digit 0...9 must follow
         guard Const.Digits0to9.contains(reader.curr()) else {
-            throw Error.NumberParsingFailed(reader)
+            throw JayError.numberParsingFailed(reader)
         }
         digs.append(reader.curr())
         try reader.nextAndCheckNotDone()
@@ -209,7 +209,7 @@ struct NumberParser: JsonParser {
             }
             
             //okay, we encountered an illegal character, error out
-            throw Error.NumberParsingFailed(reader)
+            throw JayError.numberParsingFailed(reader)
         }
     }
     
@@ -239,7 +239,7 @@ struct NumberParser: JsonParser {
         
         //at least one digit 1...9 must follow
         guard Const.Digits1to9.contains(reader.curr()) else {
-            throw Error.NumberParsingFailed(reader)
+            throw JayError.numberParsingFailed(reader)
         }
         digs.append(reader.curr())
         try reader.nextAndCheckNotDone()
@@ -269,7 +269,7 @@ struct NumberParser: JsonParser {
             }
             
             //okay, we encountered an illegal character, error out
-            throw Error.NumberParsingFailed(reader)
+            throw JayError.numberParsingFailed(reader)
         }
     }
 }

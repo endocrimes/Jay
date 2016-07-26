@@ -6,24 +6,24 @@
 //  Copyright © 2016 Honza Dvorsky. All rights reserved.
 //
 
-enum Error: ErrorProtocol {
-    case UnexpectedEnd(Reader)
-    case Unimplemented(String)
-    case ParseStringFromCharsFailed([JChar])
-    case UnexpectedCharacter(Reader)
-    case Mismatch(Reader, Reader)
-    case NumberParsingFailed(Reader)
-    case InvalidUnicodeSpecifier(Reader)
-    case InvalidEscape(Reader)
-    case UnescapedControlCharacterInString(Reader)
-    case UnicodeCharacterParsing([JChar], Reader)
-    case InvalidSurrogatePair(UInt16, UInt16, Reader)
-    case ObjectNameSeparatorMissing(Reader)
-    case FailedToConvertIntoNativeType(JSON)
-    case UnsupportedType(Any)
-    case UnsupportedFloatingPointType(Any)
-    case UnsupportedIntegerType(Any)
-    case KeyIsNotString(Any)
-    case ExtraTokensFound(Reader)
+enum JayError: Swift.Error {
+    case unexpectedEnd(Reader)
+    case unimplemented(String)
+    case parseStringFromCharsFailed([JChar])
+    case unexpectedCharacter(Reader)
+    case mismatch(Reader, Reader)
+    case numberParsingFailed(Reader)
+    case invalidUnicodeSpecifier(Reader)
+    case invalidEscape(Reader)
+    case unescapedControlCharacterInString(Reader)
+    case unicodeCharacterParsing([JChar], Reader)
+    case invalidSurrogatePair(UInt16, UInt16, Reader)
+    case objectNameSeparatorMissing(Reader)
+    case failedToConvertIntoNativeType(JSON)
+    case unsupportedType(Any)
+    case unsupportedFloatingPointType(Any)
+    case unsupportedIntegerType(Any)
+    case keyIsNotString(Any)
+    case extraTokensFound(Reader)
 }
 

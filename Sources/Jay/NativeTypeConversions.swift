@@ -62,7 +62,7 @@ extension JSON {
 struct NativeTypeConverter {
     
     func convertPair(k: Any, v: Any) throws -> (String, JSON) {
-        guard let key = k as? String else { throw Error.KeyIsNotString(k) }
+        guard let key = k as? String else { throw JayError.keyIsNotString(k) }
         let value = try self.toJayType(v as Any)
         return (key, value)
     }
@@ -82,7 +82,7 @@ struct NativeTypeConverter {
             //for Linux reasons we must cast into CustomStringConvertible instead of String
             //revert once bridging works.
             // guard let key = i.key as? String else { throw Error.KeyIsNotString(i.key) }
-            guard let key = i.key as? CustomStringConvertible else { throw Error.KeyIsNotString(i.key) }
+            guard let key = i.key as? CustomStringConvertible else { throw JayError.keyIsNotString(i.key) }
             let value = i.value as Any
             dOut[key.description] = value
         }
@@ -110,12 +110,12 @@ struct NativeTypeConverter {
                 let it = children.makeIterator()
                 let maybeKey = it.next()!.value
                 guard let key = maybeKey as? String else {
-                    throw Error.KeyIsNotString(maybeKey)
+                    throw JayError.keyIsNotString(maybeKey)
                 }
                 let value = it.next()!.value
                 obj[key] = try self.toJayType(value)
             } else {
-                throw Error.UnsupportedType(childMirror)
+                throw JayError.unsupportedType(childMirror)
             }
         }
         return .object(obj)
@@ -128,14 +128,14 @@ struct NativeTypeConverter {
 
         if let nsdict = json as? NSDictionary {
             guard let dict = try self.parseNSDictionary(nsdict) else {
-                throw Error.UnsupportedType(nsdict)
+                throw JayError.unsupportedType(nsdict)
             }
             return dict
         }
         
         if let nsarray = json as? NSArray {
             guard let array = try self.parseNSArray(nsarray) else {
-                throw Error.UnsupportedType(nsarray)
+                throw JayError.unsupportedType(nsarray)
             }
             return array
         }
@@ -144,14 +144,14 @@ struct NativeTypeConverter {
         
         if mirror.displayStyle == .dictionary {
             guard let dict = try self.dictionaryToJayType(json) else {
-                throw Error.UnsupportedType(json)
+                throw JayError.unsupportedType(json)
             }
             return dict
         }
         
         if mirror.displayStyle == .collection {
             guard let array = try self.arrayToJayType(json) else {
-                throw Error.UnsupportedType(json)
+                throw JayError.unsupportedType(json)
             }
             return array
         }
@@ -159,18 +159,17 @@ struct NativeTypeConverter {
         switch json {
 
             //boolean
-        case let bool as Boolean:
-            return .boolean(bool.boolValue)
-            
+        case let bool as Bool:
+            return .boolean(bool)
             //number
         case let dbl as FloatingPoint:
             guard let double = Double(String(dbl)) else {
-                throw Error.UnsupportedFloatingPointType(dbl)
+                throw JayError.unsupportedFloatingPointType(dbl)
             }
             return .number(.double(double))
-        case let int as Integer:
+        case let int as Int:
             guard let integer = Int(String(int)) else {
-                throw Error.UnsupportedIntegerType(int)
+                throw JayError.unsupportedIntegerType(int)
             }
             return .number(.integer(integer))
         case let num as NSNumber:
@@ -180,7 +179,6 @@ struct NativeTypeConverter {
                 return .number(.integer(Int(num.intValue)))
             }
             return .number(.double(num.doubleValue))
-            
         //string (or anything representable as string that didn't match above)
         case let string as String:
             return .string(string)
@@ -190,7 +188,7 @@ struct NativeTypeConverter {
         default: break
         }
         //nothing matched
-        throw Error.UnsupportedType("\(Mirror(reflecting: json))")
+        throw JayError.unsupportedType("\(Mirror(reflecting: json))")
     }
 }
 

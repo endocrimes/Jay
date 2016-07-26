@@ -31,7 +31,7 @@ struct BooleanParser: JsonParser {
         switch char {
         case Const.True[0]: return try parseTrue(reader)
         case Const.False[0]: return try parseFalse(reader)
-        default: throw Error.UnexpectedCharacter(reader)
+        default: throw JayError.unexpectedCharacter(reader)
         }
     }
 }
