@@ -6,7 +6,7 @@
 //  Copyright © 2016 Honza Dvorsky. All rights reserved.
 //
 
-enum JayError: Swift.Error {
+enum JayError: ErrorProtocol {
     case unexpectedEnd(Reader)
     case unimplemented(String)
     case parseStringFromCharsFailed([JChar])
@@ -26,4 +26,3 @@ enum JayError: Swift.Error {
     case keyIsNotString(Any)
     case extraTokensFound(Reader)
 }
-
