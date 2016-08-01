@@ -38,7 +38,7 @@ struct StringParser: JsonParser {
     
     func parseString(_ r: Reader) throws -> (String, Reader) {
         
-        var str = ""
+        var chars = String.UnicodeScalarView()
         var reader = r
         while true {
             
@@ -51,19 +51,19 @@ struct StringParser: JsonParser {
             case Const.QuotationMark:
                 //end of string, return what we have
                 try reader.nextAndCheckNotDone()
-                return (str, reader)
+                return (String(chars), reader)
                 
             case Const.Escape:
                 //something that needs escaping, delegate
                 var char: UnicodeScalar
                 (char, reader) = try self.unescapedCharacter(reader)
-                str.append(char)
+                chars.append(char)
                 
             default:
                 //nothing special, just append a regular unicode character
                 var char: UnicodeScalar
                 (char, reader) = try self.readUnicodeCharacter(reader)
-                str.append(char)
+                chars.append(char)
             }
         }
     }
@@ -164,7 +164,9 @@ struct StringParser: JsonParser {
         }
         
         //nope, normal unicode char
-        let char = UnicodeScalar(value)
+        guard let char = UnicodeScalar(value) else {
+            throw JayError.invalidUnicodeScalar(value)
+        }
         return (char, reader)
     }
     

@@ -3,7 +3,7 @@ import Foundation
 
 func urlForFixture(_ name: String) -> URL {
     let parent = (#file).components(separatedBy: "/").dropLast(3).joined(separator: "/")
-    let url = URL(string: "file://\(parent)/Tests/Jay/Fixtures/\(name).json")!
+    let url = URL(string: "file://\(parent)/Tests/JayTests/Fixtures/\(name).json")!
     print("Loading fixture from url \(url)")
     return url
 }
