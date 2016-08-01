@@ -8,7 +8,7 @@
 
 struct ObjectParser: JsonParser {
     
-    func parse(with reader: Reader) throws -> JSON {
+    static func parse<R: Reader>(with reader: R) throws -> JSON {
         
         try self.prepareForReading(with: reader)
         
@@ -33,7 +33,7 @@ struct ObjectParser: JsonParser {
         repeat {
             
             //scan for name
-            let nameRet = try StringParser().parse(with: reader)
+            let nameRet = try StringParser.parse(with: reader)
             let name: String
             switch nameRet {
             case .string(let n): name = n; break
@@ -48,7 +48,7 @@ struct ObjectParser: JsonParser {
             try reader.nextAndCheckNotDone()
             
             //scan for value
-            let value = try ValueParser().parse(with: reader)
+            let value = try ValueParser.parse(with: reader)
             
             //append name/value pair
             pairs.append((name, value))
@@ -70,7 +70,7 @@ struct ObjectParser: JsonParser {
         } while true
     }
     
-    func exportArray(_ pairs: [(String, JSON)]) -> [String: JSON] {
+    static func exportArray(_ pairs: [(String, JSON)]) -> [String: JSON] {
         var object: [String: JSON] = [:]
         for i in pairs {
             object[i.0] = i.1

@@ -9,10 +9,10 @@
 struct Parser {
     
     //give any Reader-conforming object
-    func parseJsonFromReader(_ reader: Reader) throws -> JSON {
+    static func parseJsonFromReader<R: Reader>(_ reader: R) throws -> JSON {
         
         //delegate parsing
-        let json = try RootParser().parse(with: reader)
+        let json = try RootParser.parse(with: reader)
         
         if !reader.finishParsingWhenValid() {
             //skip whitespace and ensure no more tokens are present, otherwise throw
@@ -29,21 +29,22 @@ struct Parser {
 extension Parser {
     
     //assuming data [Int8]
-    func parseJsonFromData(_ data: [JChar]) throws -> JSON {
-        
-        return try parseJsonFromReader(ByteReader(content: data))
+    static func parseJsonFromData(_ data: [JChar]) throws -> JSON {
+        let reader = ByteReader(content: data)
+        let json = try parseJsonFromReader(reader)
+        return json
     }
 }
 
 protocol JsonParser {
-    func parse(with reader: Reader) throws -> JSON
+    static func parse<R: Reader>(with reader: R) throws -> JSON
 }
 
 extension JsonParser {
 
     //MARK: Utils
     
-    func prepareForReading(with reader: Reader) throws {
+    static func prepareForReading(with reader: Reader) throws {
         
         //ensure no leading whitespace
         try reader.consumeWhitespace()

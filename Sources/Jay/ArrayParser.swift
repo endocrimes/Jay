@@ -8,7 +8,7 @@
 
 struct ArrayParser: JsonParser {
     
-    func parse(with reader: Reader) throws -> JSON {
+    static func parse<R: Reader>(with reader: R) throws -> JSON {
         
         try self.prepareForReading(with: reader)
         
@@ -33,7 +33,7 @@ struct ArrayParser: JsonParser {
         repeat {
             
             //scan for value
-            let val = try ValueParser().parse(with: reader)
+            let val = try ValueParser.parse(with: reader)
             values.append(val)
             
             //scan for either a comma, in which case there must be another

@@ -50,7 +50,7 @@ extension Collection where Iterator.Element == UInt8 {
             case .error: //error, can't describe what however
                 throw JayError.parseStringFromCharsFailed(Array(self))
             case .scalarValue(let unicodeScalar):
-                str.append(unicodeScalar)
+                str.append(String(unicodeScalar))
             }
         }
     }

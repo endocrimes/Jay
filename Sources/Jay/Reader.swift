@@ -72,7 +72,7 @@ extension Reader {
     // a) expectedReader runs out of characters -> great! all match
     // b) self runs out of characters -> bad, no match!
     // c) we encounter a difference -> bad, no match!
-    func stopAtFirstDifference(_ other: Reader) throws {
+    func stopAtFirstDifference<R: Reader>(_ other: R) throws {
         
         while true {
             

@@ -11,11 +11,11 @@
 struct NativeParser {
     
     func parse(_ data: [UInt8]) throws -> Any {
-        return _postProcess(try Parser().parseJsonFromData(data))
+        return _postProcess(try Parser.parseJsonFromData(data))
     }
     
-    func parse(_ reader: Reader) throws -> Any {
-        return _postProcess(try Parser().parseJsonFromReader(reader))
+    func parse<R: Reader>(_ reader: R) throws -> Any {
+        return _postProcess(try Parser.parseJsonFromReader(reader))
     }
     
     private func _postProcess(_ jsonValue: JSON) -> Any {
