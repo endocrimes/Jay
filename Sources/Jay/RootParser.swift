@@ -8,21 +8,21 @@
 
 struct RootParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JSON, Reader) {
+    func parse(with reader: Reader) throws -> JSON {
         
-        var reader = try self.prepareForReading(withReader: r)
+        try self.prepareForReading(with: reader)
         
         //the standard doesn't require handling of fragments, so here
         //we'll assume we're only parsing valid structured types (object/array)
         let root: JSON
         switch reader.curr() {
         case Const.BeginObject:
-            (root, reader) = try ObjectParser().parse(withReader: reader)
+            root = try ObjectParser().parse(with: reader)
         case Const.BeginArray:
-            (root, reader) = try ArrayParser().parse(withReader: reader)
+            root = try ArrayParser().parse(with: reader)
         default:
             throw JayError.unimplemented("ParseRoot")
         }
-        return (root, reader)
+        return root
     }
 }

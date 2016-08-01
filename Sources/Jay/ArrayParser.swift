@@ -8,9 +8,9 @@
 
 struct ArrayParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JSON, Reader) {
+    func parse(with reader: Reader) throws -> JSON {
         
-        var reader = try self.prepareForReading(withReader: r)
+        try self.prepareForReading(with: reader)
         
         //detect opening bracket
         guard reader.curr() == Const.BeginArray else {
@@ -19,13 +19,13 @@ struct ArrayParser: JsonParser {
         try reader.nextAndCheckNotDone()
         
         //move along, now start looking for values
-        reader = try self.prepareForReading(withReader: reader)
+        try self.prepareForReading(with: reader)
         
         //check curr value for closing bracket, to handle empty array
         if reader.curr() == Const.EndArray {
             //empty array
             try reader.next()
-            return (.array([]), reader)
+            return .array([])
         }
         
         //now start scanning for values
@@ -33,15 +33,14 @@ struct ArrayParser: JsonParser {
         repeat {
             
             //scan for value
-            let ret = try ValueParser().parse(withReader: reader)
-            values.append(ret.0)
-            reader = ret.1
+            let val = try ValueParser().parse(with: reader)
+            values.append(val)
             
             //scan for either a comma, in which case there must be another
             //value OR for a closing bracket
-            reader = try self.prepareForReading(withReader: reader)
+            try self.prepareForReading(with: reader)
             switch reader.curr() {
-            case Const.EndArray: try reader.next(); return (.array(values), reader)
+            case Const.EndArray: try reader.next(); return .array(values)
             case Const.ValueSeparator: try reader.next(); break //comma, so another value must come. let the loop repeat.
             default: throw JayError.unexpectedCharacter(reader)
             }

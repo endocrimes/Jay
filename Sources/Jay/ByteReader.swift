@@ -6,7 +6,7 @@
 //  Copyright © 2016 Honza Dvorsky. All rights reserved.
 //
 
-struct ByteReader: Reader {
+class ByteReader: Reader {
     
     private let content: [JChar]
     private var cursor: Array<JChar>.Index
@@ -16,7 +16,7 @@ struct ByteReader: Reader {
         self.cursor = self.content.startIndex
     }
     
-    mutating func next() {
+    func next() {
         precondition(!self.isDone())
         self.cursor = self.cursor.advanced(by: 1)
     }
@@ -35,7 +35,7 @@ struct ByteReader: Reader {
         return false
     }
     
-    init(content: String) {
+    convenience init(content: String) {
         self.init(content: content.chars())
     }
 }
