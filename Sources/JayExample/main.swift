@@ -1,20 +1,18 @@
 import Jay
-import Foundation
 
 func tryParsing() {
 
     let data = Array("{\t\"hello\" : \"wor🇨🇿ld\", \n\t \"val\": 1234, \"many\": [\n-12.32, \"yo\"\r], \"emptyDict\": {}, \"dict\": {\"arr\":[]}, \"name\": true}".utf8)
-    let exp: [String: Any] = [
+    let exp: JSON = [
         "hello": "wor🇨🇿ld",
-        "val": 1234,
+        "val": .number(.unsignedInteger(1234)),
         "many": [
             -12.32,
-            // null, add NSNull back once we can reliably compare object hierarchies
             "yo"
-        ] as [Any],
-        "emptyDict": [String:Any](),
+        ],
+        "emptyDict": [:],
         "dict": [
-            "arr": [Any]()
+            "arr": []
         ],
         "name": true
     ]
@@ -30,24 +28,23 @@ func tryParsing() {
 func tryFormatting() {
 
     let origStr = "{\"dict\":{\"arr\":[]},\"emptyDict\":{},\"hello\":\"wor🇨🇿ld\",\"many\":[-12.32,null,\"yo\",{\"hola\":9.23,\"nums\":[1,2,3]}],\"name\":true,\"val\":1234}"
-    let inObj: [String: Any] = ["hola": 9.23, "nums": [1,2,3]]
-    let obj: [String: Any] = [
+    let obj: JSON = [
         "hello": "wor🇨🇿ld",
         "val": 1234,
         "many": [
             -12.32,
-            NSNull(),
+            nil,
             "yo",
-            inObj
-        ] as [Any],
-        "emptyDict": [String: Any](),
+            ["hola": 9.23, "nums": [1,2,3]]
+        ],
+        "emptyDict": [:],
         "dict": [
-            "arr": [Int]()
-        ] as [String: Any],
+            "arr": []
+        ],
         "name": true
     ]
 
-    let dataOut = try! Jay(formatting: .minified).dataFromJson(anyDictionary: obj)
+    let dataOut = try! Jay(formatting: .minified).dataFromJson(json: obj)
     let retStr = try! dataOut.string()
 
     assert(origStr == retStr, "Mismatch: Expected:\n\(origStr)\nReturned:\n\(retStr)")
@@ -56,26 +53,25 @@ func tryFormatting() {
 
 func tryFormattingToConsole() {
     
-    let inObj: [String: Any] = ["hola": 9.23, "nums": [1,2,3]]
-    let obj: [String: Any] = [
+    let obj: JSON = [
                                  "hello": "wor🇨🇿ld",
                                  "val": 1234,
                                  "many": [
                                              -12.32,
-                                             NSNull(),
+                                             nil,
                                              "yo",
-                                             inObj
-                                    ] as [Any],
-                                 "emptyDict": [String: Any](),
+                                             ["hola": 9.23, "nums": [1,2,3]]
+                                    ],
+                                 "emptyDict": [:],
                                  "dict": [
-                                             "arr": [Int]()
-                                    ] as [String: Any],
+                                             "arr": []
+                                    ],
                                  "name": true
     ]
     
     let output = ConsoleOutputStream()
     print("Dumping to console:")
-    try! Jay(formatting: .prettified).dataFromJson(anyDictionary: obj, output: output)
+    try! Jay(formatting: .prettified).dataFromJson(json: obj, output: output)
 }
 
 tryFormatting()

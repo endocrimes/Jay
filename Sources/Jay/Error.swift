@@ -25,5 +25,6 @@ enum JayError: Swift.Error {
     case unsupportedIntegerType(Any)
     case keyIsNotString(Any)
     case extraTokensFound(Reader)
+    case invalidUnicodeScalar(UInt16)
 }
 

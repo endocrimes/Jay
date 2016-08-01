@@ -1,5 +1,5 @@
 import XCTest
-@testable import JayTestSuite
+@testable import JayTests
 
 XCTMain([
 	testCase(ConstsTests.allTests),

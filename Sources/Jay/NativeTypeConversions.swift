@@ -163,7 +163,7 @@ struct NativeTypeConverter {
             return .boolean(bool)
             //number
         case let dbl as FloatingPoint:
-            guard let double = Double(String(dbl)) else {
+            guard let double = Double(String(describing: dbl)) else {
                 throw JayError.unsupportedFloatingPointType(dbl)
             }
             return .number(.double(double))

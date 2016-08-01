@@ -10,7 +10,10 @@ public protocol JsonOutputStream {
     func print(_ bytes: [UInt8])
 }
 
-infix operator <<< { associativity left }
+precedencegroup LeftAssociativity {
+    associativity: left
+}
+infix operator <<< : LeftAssociativity
 
 @discardableResult
 func <<<(stream: JsonOutputStream, value: UInt8) -> JsonOutputStream {

@@ -72,12 +72,12 @@ class FormattingTests: XCTestCase {
     }
     
     func testObject_Normal() {
-        let json: [String: Any] = [
+        let json: JSON = [
             "hello": "world",
             "name": true,
             "many": -12.43
         ]
-        let data = try! Jay().dataFromJson(anyDictionary: json)
+        let data = try! Jay().dataFromJson(json: json)
         XCTAssertEqual(data, "{\"hello\":\"world\",\"many\":-12.43,\"name\":true}".chars())
     }
 
@@ -133,13 +133,13 @@ class FormattingTests: XCTestCase {
     }
     
     func testArray_Nested() {
-        let json: [Any] = [
+        let json: JSON = [
             "hello",
             -0.34,
-            ["guten", true] as [Any],
+            ["guten", true],
             "a"
         ]
-        let data = try! Jay().dataFromJson(anyArray: json)
+        let data = try! Jay().dataFromJson(json: json)
         XCTAssertEqual(data, "[\"hello\",-0.34,[\"guten\",true],\"a\"]".chars())
     }
 
