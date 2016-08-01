@@ -36,7 +36,8 @@ public struct Jay {
     /// Parses the reader to `Any`.
     /// - Throws: A descriptive error in case of any problem.
     public func anyJsonFromReader<R: Reader>(_ reader: R) throws -> Any {
-        return try NativeParser().parse(reader)
+        let ref = Unmanaged.passUnretained(reader)
+        return try NativeParser().parse(ref)
     }
     
     /// Formats your JSON-compatible object into data.
@@ -155,7 +156,8 @@ extension Jay {
     /// - SeeAlso: If you just want Swift types with less
     /// type-information, use `jsonFromReader()` above.
     public func jsonFromReader<R: Reader>(_ reader: R) throws -> JSON {
-        return try Parser.parseJsonFromReader(reader)
+        let ref = Unmanaged.passUnretained(reader)
+        return try Parser.parseJsonFromReader(ref)
     }
 
     /// Formats your JSON-compatible object into data.

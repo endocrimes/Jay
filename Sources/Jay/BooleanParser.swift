@@ -8,27 +8,29 @@
 
 struct BooleanParser: JsonParser {
     
-    static func parse<R: Reader>(with reader: R) throws -> JSON {
-        
-        func parseTrue(_ rd: R) throws -> JSON {
+    static func parse<R: Reader>(with r: Unmanaged<R>) throws -> JSON {
+    
+        let reader = r.takeUnretainedValue()
+
+        func parseTrue(_ rd: Unmanaged<R>) throws -> JSON {
             //try to read the "true" literal, throw if anything goes wrong
-            try rd.stopAtFirstDifference(ByteReader(content: Const.True))
+            try rd.takeUnretainedValue().stopAtFirstDifference(ByteReader(content: Const.True))
             return .boolean(true)
         }
         
-        func parseFalse(_ rd: R) throws -> JSON {
+        func parseFalse(_ rd: Unmanaged<R>) throws -> JSON {
             //try to read the "false" literal, throw if anything goes wrong
-            try rd.stopAtFirstDifference(ByteReader(content: Const.False))
+            try rd.takeUnretainedValue().stopAtFirstDifference(ByteReader(content: Const.False))
             return .boolean(false)
         }
         
-        try self.prepareForReading(with: reader)
+        try self.prepareForReading(with: r)
         
         //find whether we're parsing "true" or "false"
         let char = reader.curr()
         switch char {
-        case Const.True[0]: return try parseTrue(reader)
-        case Const.False[0]: return try parseFalse(reader)
+        case Const.True[0]: return try parseTrue(r)
+        case Const.False[0]: return try parseFalse(r)
         default: throw JayError.unexpectedCharacter(reader)
         }
     }

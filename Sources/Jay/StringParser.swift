@@ -14,9 +14,11 @@
 
 struct StringParser: JsonParser {
     
-    static func parse<R: Reader>(with reader: R) throws -> JSON {
+    static func parse<R: Reader>(with r: Unmanaged<R>) throws -> JSON {
         
-        try self.prepareForReading(with: reader)
+        let reader = r.takeUnretainedValue()
+        
+        try self.prepareForReading(with: r)
         
         //ensure we're starting with a quote
         guard reader.curr() == Const.QuotationMark else {
@@ -30,11 +32,13 @@ struct StringParser: JsonParser {
             return .string("")
         }
         
-        let str = try self.parseString(reader)
+        let str = try self.parseString(r)
         return .string(str)
     }
     
-    static func parseString(_ reader: Reader) throws -> String {
+    static func parseString<R: Reader>(_ r: Unmanaged<R>) throws -> String {
+        
+        let reader = r.takeUnretainedValue()
         
         var str = ""
         while true {
@@ -53,19 +57,21 @@ struct StringParser: JsonParser {
             case Const.Escape:
                 //something that needs escaping, delegate
                 var char: UnicodeScalar
-                char = try self.unescapedCharacter(reader)
+                char = try self.unescapedCharacter(r)
                 str.append(String(char))
                 
             default:
                 //nothing special, just append a regular unicode character
                 var char: UnicodeScalar
-                char = try self.readUnicodeCharacter(reader)
+                char = try self.readUnicodeCharacter(r)
                 str.append(String(char))
             }
         }
     }
     
-    static func readUnicodeCharacter(_ reader: Reader) throws -> UnicodeScalar {
+    static func readUnicodeCharacter<R: Reader>(_ r: Unmanaged<R>) throws -> UnicodeScalar {
+        
+        let reader = r.takeUnretainedValue()
         
         //we need to keep reading from the reader until either
         //- result is returned, at which point we parsed a valid char
@@ -113,7 +119,9 @@ struct StringParser: JsonParser {
         return true
     }
     
-    static func unescapedCharacter(_ reader: Reader, expectingLowSurrogate: Bool = false) throws -> UnicodeScalar {
+    static func unescapedCharacter<R: Reader>(_ r: Unmanaged<R>, expectingLowSurrogate: Bool = false) throws -> UnicodeScalar {
+        
+        let reader = r.takeUnretainedValue()
         
         //this MUST start with escape
         guard reader.curr() == Const.Escape else {
@@ -153,7 +161,7 @@ struct StringParser: JsonParser {
         let value = self.fourBytesToUnicodeCode(last4)
         
         //check for high/low surrogate pairs
-        if let complexScalarRet = try self.parseSurrogate(reader, value: value) {
+        if let complexScalarRet = try self.parseSurrogate(r, value: value) {
             return complexScalarRet
         }
         
@@ -167,7 +175,9 @@ struct StringParser: JsonParser {
     }
     
     //nil means no surrogate found, parse normally
-    static func parseSurrogate(_ reader: Reader, value: UInt16) throws -> UnicodeScalar? {
+    static func parseSurrogate<R: Reader>(_ r: Unmanaged<R>, value: UInt16) throws -> UnicodeScalar? {
+        
+        let reader = r.takeUnretainedValue()
         
         //no surrogate starting
         guard UTF16.isLeadSurrogate(value) else { return nil }

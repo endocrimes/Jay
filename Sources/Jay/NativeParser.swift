@@ -14,8 +14,8 @@ struct NativeParser {
         return _postProcess(try Parser.parseJsonFromData(data))
     }
     
-    func parse<R: Reader>(_ reader: R) throws -> Any {
-        return _postProcess(try Parser.parseJsonFromReader(reader))
+    func parse<R: Reader>(_ r: Unmanaged<R>) throws -> Any {
+        return _postProcess(try Parser.parseJsonFromReader(r))
     }
     
     private func _postProcess(_ jsonValue: JSON) -> Any {

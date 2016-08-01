@@ -8,9 +8,11 @@
 
 struct ObjectParser: JsonParser {
     
-    static func parse<R: Reader>(with reader: R) throws -> JSON {
+    static func parse<R: Reader>(with r: Unmanaged<R>) throws -> JSON {
         
-        try self.prepareForReading(with: reader)
+        let reader = r.takeUnretainedValue()
+        
+        try self.prepareForReading(with: r)
         
         //detect opening brace
         guard reader.curr() == Const.BeginObject else {
@@ -19,7 +21,7 @@ struct ObjectParser: JsonParser {
         try reader.nextAndCheckNotDone()
         
         //move along, now start looking for name/value pairs
-        try self.prepareForReading(with: reader)
+        try self.prepareForReading(with: r)
 
         //check curr value for closing bracket, to handle empty object
         if reader.curr() == Const.EndObject {
@@ -33,7 +35,7 @@ struct ObjectParser: JsonParser {
         repeat {
             
             //scan for name
-            let nameRet = try StringParser.parse(with: reader)
+            let nameRet = try StringParser.parse(with: r)
             let name: String
             switch nameRet {
             case .string(let n): name = n; break
@@ -41,21 +43,21 @@ struct ObjectParser: JsonParser {
             }
             
             //scan for name separator :
-            try self.prepareForReading(with: reader)
+            try self.prepareForReading(with: r)
             guard reader.curr() == Const.NameSeparator else {
                 throw JayError.objectNameSeparatorMissing(reader)
             }
             try reader.nextAndCheckNotDone()
             
             //scan for value
-            let value = try ValueParser.parse(with: reader)
+            let value = try ValueParser.parse(with: r)
             
             //append name/value pair
             pairs.append((name, value))
             
             //scan for either a comma, in which case there must be another
             //value OR for a closing brace
-            try self.prepareForReading(with: reader)
+            try self.prepareForReading(with: r)
             switch reader.curr() {
             case Const.EndObject:
                 try reader.next()

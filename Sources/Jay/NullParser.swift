@@ -8,9 +8,10 @@
 
 struct NullParser: JsonParser {
     
-    static func parse<R: Reader>(with reader: R) throws -> JSON {
+    static func parse<R: Reader>(with r: Unmanaged<R>) throws -> JSON {
         
-        try self.prepareForReading(with: reader)
+        let reader = r.takeUnretainedValue()
+        try self.prepareForReading(with: r)
         
         //try to read the "null" literal, throw if anything goes wrong
         try reader.stopAtFirstDifference(ByteReader(content: Const.Null))
