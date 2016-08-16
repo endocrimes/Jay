@@ -46,7 +46,7 @@ extension Result: CustomStringConvertible {
 struct Benchmark {
     let name: String
     let block: () throws -> ()
-    init(_ name: String, _ block: () throws -> ()) {
+    init(_ name: String, _ block: @escaping () throws -> ()) {
         self.name = name
         self.block = block
     }
