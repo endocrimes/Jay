@@ -8,6 +8,10 @@
 
 private let objectParser = ObjectParser()
 private let stringParser = StringParser()
+private let arrayParser = ArrayParser()
+private let numberParser = NumberParser()
+private let booleanParser = BooleanParser()
+private let nullParser = NullParser()
 
 struct ValueParser: JsonParser {
     
@@ -19,15 +23,15 @@ struct ValueParser: JsonParser {
         case let x where StartChars.Object.contains(x):
             return try objectParser.parse(with: reader)
         case let x where StartChars.Array.contains(x):
-            return try ArrayParser().parse(with: reader)
+            return try arrayParser.parse(with: reader)
         case let x where StartChars.Number.contains(x):
-            return try NumberParser().parse(with: reader)
+            return try numberParser.parse(with: reader)
         case let x where StartChars.String.contains(x):
             return try stringParser.parse(with: reader)
         case let x where StartChars.Boolean.contains(x):
-            return try BooleanParser().parse(with: reader)
+            return try booleanParser.parse(with: reader)
         case let x where StartChars.Null.contains(x):
-            return try NullParser().parse(with: reader)
+            return try nullParser.parse(with: reader)
         default:
             throw JayError.unexpectedCharacter(reader)
         }
