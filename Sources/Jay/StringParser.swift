@@ -116,9 +116,7 @@ struct StringParser: JsonParser {
         return true
     }
     
-    func unescapedCharacter(_ r: Reader, expectingLowSurrogate: Bool = false) throws -> UnicodeScalar {
-        
-        var reader = r
+    func unescapedCharacter(_ reader: Reader, expectingLowSurrogate: Bool = false) throws -> UnicodeScalar {
         
         //this MUST start with escape
         guard reader.curr() == Const.Escape else {
@@ -174,9 +172,7 @@ struct StringParser: JsonParser {
     }
     
     //nil means no surrogate found, parse normally
-    func parseSurrogate(_ r: Reader, value: UInt16) throws -> UnicodeScalar? {
-        
-        var reader = r
+    func parseSurrogate(_ reader: Reader, value: UInt16) throws -> UnicodeScalar? {
         
         //no surrogate starting
         guard UTF16.isLeadSurrogate(value) else { return nil }

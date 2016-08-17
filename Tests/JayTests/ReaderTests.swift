@@ -27,7 +27,7 @@ class ReaderTests: XCTestCase {
 
     func testConsumingWhitespace_Normal() throws {
         
-        var reader = ByteReader(content: " \n  \t \r  lala ")
+        let reader = ByteReader(content: " \n  \t \r  lala ")
         let consumed = try reader.consumeWhitespace()
         XCTAssertEqual(consumed, 9)
         XCTAssert(reader.curr() == "l".char())
@@ -35,7 +35,7 @@ class ReaderTests: XCTestCase {
     
     func testConsumingWhitespace_NoWhitespace() throws {
         
-        var reader = ByteReader(content: "lala ")
+        let reader = ByteReader(content: "lala ")
         let consumed = try reader.consumeWhitespace()
         XCTAssertEqual(consumed, 0)
         XCTAssert(reader.curr() == "l".char())
@@ -43,7 +43,7 @@ class ReaderTests: XCTestCase {
     
     func testConsumingWhitespace_Empty() throws {
         
-        var reader = ByteReader(content: "")
+        let reader = ByteReader(content: "")
         let consumed = try reader.consumeWhitespace()
         XCTAssertEqual(consumed, 0)
         XCTAssertTrue(reader.isDone())
@@ -52,7 +52,7 @@ class ReaderTests: XCTestCase {
     func testStopAtFirstDifference_RegularMismatch() {
         
         //regular mismatch case
-        var mainReader = ByteReader(content: "hello")
+        let mainReader = ByteReader(content: "hello")
         let expectedReader = ByteReader(content: "hearing")
         do {
             try mainReader.stopAtFirstDifference(expectedReader)
@@ -71,7 +71,7 @@ class ReaderTests: XCTestCase {
     func testStopAtFirstDifference_EmptyMain() {
         
         //regular mismatch case
-        var mainReader = ByteReader(content: "")
+        let mainReader = ByteReader(content: "")
         let expectedReader = ByteReader(content: "hearing")
         do {
             try mainReader.stopAtFirstDifference(expectedReader)
@@ -88,7 +88,7 @@ class ReaderTests: XCTestCase {
     func testStopAtFirstDifference_EmptyExpected() {
         
         //regular mismatch case
-        var mainReader = ByteReader(content: "hello")
+        let mainReader = ByteReader(content: "hello")
         let expectedReader = ByteReader(content: "")
         do {
             try mainReader.stopAtFirstDifference(expectedReader)
@@ -100,7 +100,7 @@ class ReaderTests: XCTestCase {
     func testStopAtFirstDifference_Normal() {
         
         //regular mismatch case
-        var mainReader = ByteReader(content: "hello world")
+        let mainReader = ByteReader(content: "hello world")
         let expectedReader = ByteReader(content: "hello w")
         do {
             try mainReader.stopAtFirstDifference(expectedReader)
@@ -112,7 +112,7 @@ class ReaderTests: XCTestCase {
     }
     
     func testReadNext_EnoughAvailable() {
-        var mainReader = ByteReader(content: "hello world")
+        let mainReader = ByteReader(content: "hello world")
         _ = try! mainReader.readNext(2)
         let next = try! mainReader.readNext(5)
         XCTAssert(next == "llo w".chars())
@@ -120,7 +120,7 @@ class ReaderTests: XCTestCase {
     }
     
     func testReadNext_LessAvailable() {
-        var mainReader = ByteReader(content: "hello world")
+        let mainReader = ByteReader(content: "hello world")
         XCTAssertNil(try? mainReader.readNext(12))
     }
 
