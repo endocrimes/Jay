@@ -8,9 +8,9 @@
 
 struct ObjectParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JSON, Reader) {
+    func parse(with reader: Reader) throws -> JSON {
         
-        var reader = try self.prepareForReading(withReader: r)
+        try self.prepareForReading(with: reader)
         
         //detect opening brace
         guard reader.curr() == Const.BeginObject else {
@@ -19,13 +19,13 @@ struct ObjectParser: JsonParser {
         try reader.nextAndCheckNotDone()
         
         //move along, now start looking for name/value pairs
-        reader = try self.prepareForReading(withReader: reader)
+        try self.prepareForReading(with: reader)
 
         //check curr value for closing bracket, to handle empty object
         if reader.curr() == Const.EndObject {
             //empty object
             try reader.next()
-            return (JSON.object([:]), reader)
+            return .object([:])
         }
 
         //now start scanning for name/value pairs
@@ -33,37 +33,35 @@ struct ObjectParser: JsonParser {
         repeat {
             
             //scan for name
-            let nameRet = try StringParser().parse(withReader: reader)
-            reader = nameRet.1
+            let nameRet = try StringParser().parse(with: reader)
             let name: String
-            switch nameRet.0 {
+            switch nameRet {
             case .string(let n): name = n; break
             default: fatalError("Logic error: Should have returned a dictionary")
             }
             
             //scan for name separator :
-            reader = try self.prepareForReading(withReader: reader)
+            try self.prepareForReading(with: reader)
             guard reader.curr() == Const.NameSeparator else {
                 throw JayError.objectNameSeparatorMissing(reader)
             }
             try reader.nextAndCheckNotDone()
             
             //scan for value
-            let valRet = try ValueParser().parse(withReader: reader)
-            reader = valRet.1
-            let value = valRet.0
+            let valRet = try ValueParser().parse(with: reader)
+            let value = valRet
             
             //append name/value pair
             pairs.append((name, value))
             
             //scan for either a comma, in which case there must be another
             //value OR for a closing brace
-            reader = try self.prepareForReading(withReader: reader)
+            try self.prepareForReading(with: reader)
             switch reader.curr() {
             case Const.EndObject:
                 try reader.next()
                 let exported = self.exportArray(pairs)
-                return (JSON.object(exported), reader)
+                return .object(exported)
             case Const.ValueSeparator:
                 //comma, so another value must come. let the loop repeat.
                 try reader.next()

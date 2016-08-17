@@ -14,9 +14,9 @@
 
 struct StringParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JSON, Reader) {
+    func parse(with reader: Reader) throws -> JSON {
         
-        var reader = try self.prepareForReading(withReader: r)
+        try self.prepareForReading(with: reader)
         
         //ensure we're starting with a quote
         guard reader.curr() == Const.QuotationMark else {
@@ -27,48 +27,46 @@ struct StringParser: JsonParser {
         //if another quote, it's just an empty string
         if reader.curr() == Const.QuotationMark {
             try reader.nextAndCheckNotDone()
-            return (JSON.string(""), reader)
+            return .string("")
         }
         
-        let str: String
-        (str, reader) = try self.parseString(reader)
-        let obj = JSON.string(str)
-        return (obj, reader)
+        let str = try self.parseString(reader)
+        return .string(str)
     }
     
-    func parseString(_ r: Reader) throws -> (String, Reader) {
+    func parseString(_ r: Reader) throws -> String {
         
         var chars = String.UnicodeScalarView()
-        var reader = r
+        let rd = r as! ByteReader
+        //TODO: fix this force casting to a specific reader
+        let reader: Unmanaged<ByteReader> = Unmanaged.passUnretained(rd)
         while true {
             
-            switch reader.curr() {
+            switch reader.takeUnretainedValue().curr() {
                 
             case 0x00...0x1F:
                 //unescaped control chars, invalid
-                throw JayError.unescapedControlCharacterInString(reader)
+                throw JayError.unescapedControlCharacterInString(r)
                 
             case Const.QuotationMark:
                 //end of string, return what we have
-                try reader.nextAndCheckNotDone()
-                return (String(chars), reader)
+                try reader.takeUnretainedValue().nextAndCheckNotDone()
+                return String(chars)
                 
             case Const.Escape:
                 //something that needs escaping, delegate
-                var char: UnicodeScalar
-                (char, reader) = try self.unescapedCharacter(reader)
+                let char = try self.unescapedCharacter(r)
                 chars.append(char)
                 
             default:
                 //nothing special, just append a regular unicode character
-                var char: UnicodeScalar
-                (char, reader) = try self.readUnicodeCharacter(reader)
+                let char = try self.readUnicodeCharacter(r)
                 chars.append(char)
             }
         }
     }
     
-    func readUnicodeCharacter(_ r: Reader) throws -> (UnicodeScalar, Reader) {
+    func readUnicodeCharacter(_ r: Reader) throws -> UnicodeScalar {
         
         //we need to keep reading from the reader until either
         //- result is returned, at which point we parsed a valid char
@@ -81,27 +79,28 @@ struct StringParser: JsonParser {
         //up until we reach 32 bits. if we get an error even then, it's an
         //invalid character and throw.
         
-        var reader = r
+        let rd = r as! ByteReader
+        let reader: Unmanaged<ByteReader> = Unmanaged.passUnretained(rd)
         var buffer = [JChar]()
         
         while buffer.count < 4 {
             
-            buffer.append(reader.curr())
+            buffer.append(reader.takeUnretainedValue().curr())
             var gen = buffer.makeIterator()
             
             var utf = UTF8()
             switch utf.decode(&gen) {
             case .scalarValue(let unicodeScalar):
-                try reader.nextAndCheckNotDone()
-                return (unicodeScalar, reader)
+                try reader.takeUnretainedValue().nextAndCheckNotDone()
+                return unicodeScalar
             case .emptyInput, .error:
                 //continue because we might be reading a longer char
-                try reader.nextAndCheckNotDone()
+                try reader.takeUnretainedValue().nextAndCheckNotDone()
                 continue
             }
         }
         //we ran out of parsing attempts and we've read 4 8bit chars, error out
-        throw JayError.unicodeCharacterParsing(buffer, reader)
+        throw JayError.unicodeCharacterParsing(buffer, r)
     }
     
     func isValidUnicodeHexDigit(_ chars: [JChar]) -> Bool {
@@ -117,7 +116,7 @@ struct StringParser: JsonParser {
         return true
     }
     
-    func unescapedCharacter(_ r: Reader, expectingLowSurrogate: Bool = false) throws -> (UnicodeScalar, Reader) {
+    func unescapedCharacter(_ r: Reader, expectingLowSurrogate: Bool = false) throws -> UnicodeScalar {
         
         var reader = r
         
@@ -141,7 +140,7 @@ struct StringParser: JsonParser {
             
             let uniScalar = UnicodeScalar(char)
             try reader.nextAndCheckNotDone()
-            return (uniScalar, reader)
+            return uniScalar
         }
         
         //now the char must be 'u', otherwise this is invalid escaping
@@ -167,7 +166,7 @@ struct StringParser: JsonParser {
         guard let char = UnicodeScalar(value) else {
             throw JayError.invalidUnicodeScalar(value)
         }
-        return (char, reader)
+        return char
     }
     
     func fourBytesToUnicodeCode(_ last4: String) -> UInt16 {
@@ -175,7 +174,7 @@ struct StringParser: JsonParser {
     }
     
     //nil means no surrogate found, parse normally
-    func parseSurrogate(_ r: Reader, value: UInt16) throws -> (UnicodeScalar, Reader)? {
+    func parseSurrogate(_ r: Reader, value: UInt16) throws -> UnicodeScalar? {
         
         var reader = r
         
@@ -210,7 +209,7 @@ struct StringParser: JsonParser {
         var gen = data.makeIterator()
         switch utf.decode(&gen) {
         case .scalarValue(let char):
-            return (char, reader)
+            return char
         case .emptyInput, .error:
             throw JayError.invalidSurrogatePair(high, low, reader)
         }
