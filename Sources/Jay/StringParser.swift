@@ -77,11 +77,13 @@ struct StringParser: JsonParser {
         //up until we reach 32 bits. if we get an error even then, it's an
         //invalid character and throw.
         
-        var buffer = [JChar]()
+        var buffer: [JChar] = []
+        buffer.reserveCapacity(4)
         
         while buffer.count < 4 {
             
-            buffer.append(reader.curr())
+            let curr = reader.curr()
+            buffer.append(curr)
             var gen = buffer.makeIterator()
             
             var utf = UTF8()

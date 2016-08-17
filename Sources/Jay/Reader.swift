@@ -27,27 +27,55 @@ public protocol Reader: class {
     func finishParsingWhenValid() -> Bool
 }
 
+//@discardableResult
+//func consumeWhitespace<R: Reader>(_ reader: R) throws -> Int {
+//    var counter = 0
+//    while !reader.isDone() {
+//        let char = reader.curr()
+//        if Const.Whitespace.contains(char) {
+//            //consume
+//            counter += 1
+//            try reader.next()
+//        } else {
+//            //non-whitespace, return
+//            break
+//        }
+//    }
+//    return counter
+//}
+//
+//func ensureNotDone<R: Reader>(_ reader: R) throws {
+//    if reader.isDone() {
+//        throw JayError.unexpectedEnd(reader)
+//    }
+//}
+//
+//func nextAndCheckNotDone<R: Reader>(_ reader: R) throws {
+//    try reader.next()
+//    try reader.ensureNotDone()
+//}
+
 extension Reader {
     
     func readNext(_ next: Int) throws -> [JChar] {
-        try self.ensureNotDone()
+        try ensureNotDone()
         var buff = [JChar]()
         while buff.count < next {
             buff.append(self.curr())
-            try self.nextAndCheckNotDone()
+            try nextAndCheckNotDone()
         }
         return buff
     }
     
     func ensureNotDone() throws {
-        if self.isDone() {
+        if isDone() {
             throw JayError.unexpectedEnd(self)
         }
     }
     
     func nextAndCheckNotDone() throws {
-        try self.next()
-        try self.ensureNotDone()
+        try next()
+        try ensureNotDone()
     }
     
     // Consumes all contiguous whitespace and returns # of consumed chars
@@ -72,7 +100,7 @@ extension Reader {
     // a) expectedReader runs out of characters -> great! all match
     // b) self runs out of characters -> bad, no match!
     // c) we encounter a difference -> bad, no match!
-    func stopAtFirstDifference(_ other: Reader) throws {
+    func stopAtFirstDifference<R: Reader>(_ other: R) throws {
         
         while true {
             
@@ -81,19 +109,19 @@ extension Reader {
                 return
             }
             
-            if self.isDone() {
+            if isDone() {
                 //b) no match
                 throw JayError.mismatch(self, other)
             }
 
-            let charSelf = self.curr()
+            let charSelf = curr()
             let charOther = other.curr()
             guard charSelf == charOther else {
                 //c) no match
                 throw JayError.mismatch(self, other)
             }
             
-            try self.next()
+            try next()
             try other.next()
         }
     }
