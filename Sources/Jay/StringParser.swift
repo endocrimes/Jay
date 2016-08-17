@@ -34,39 +34,37 @@ struct StringParser: JsonParser {
         return .string(str)
     }
     
-    func parseString(_ r: Reader) throws -> String {
+    func parseString(_ reader: Reader) throws -> String {
         
         var chars = String.UnicodeScalarView()
-        let rd = r as! ByteReader
-        //TODO: fix this force casting to a specific reader
-        let reader: Unmanaged<ByteReader> = Unmanaged.passUnretained(rd)
         while true {
             
-            switch reader.takeUnretainedValue().curr() {
+            let curr = reader.curr()
+            switch curr {
                 
             case 0x00...0x1F:
                 //unescaped control chars, invalid
-                throw JayError.unescapedControlCharacterInString(r)
+                throw JayError.unescapedControlCharacterInString(reader)
                 
             case Const.QuotationMark:
                 //end of string, return what we have
-                try reader.takeUnretainedValue().nextAndCheckNotDone()
+                try reader.nextAndCheckNotDone()
                 return String(chars)
                 
             case Const.Escape:
                 //something that needs escaping, delegate
-                let char = try self.unescapedCharacter(r)
+                let char = try self.unescapedCharacter(reader)
                 chars.append(char)
                 
             default:
                 //nothing special, just append a regular unicode character
-                let char = try self.readUnicodeCharacter(r)
+                let char = try self.readUnicodeCharacter(reader)
                 chars.append(char)
             }
         }
     }
     
-    func readUnicodeCharacter(_ r: Reader) throws -> UnicodeScalar {
+    func readUnicodeCharacter(_ reader: Reader) throws -> UnicodeScalar {
         
         //we need to keep reading from the reader until either
         //- result is returned, at which point we parsed a valid char
@@ -79,28 +77,26 @@ struct StringParser: JsonParser {
         //up until we reach 32 bits. if we get an error even then, it's an
         //invalid character and throw.
         
-        let rd = r as! ByteReader
-        let reader: Unmanaged<ByteReader> = Unmanaged.passUnretained(rd)
         var buffer = [JChar]()
         
         while buffer.count < 4 {
             
-            buffer.append(reader.takeUnretainedValue().curr())
+            buffer.append(reader.curr())
             var gen = buffer.makeIterator()
             
             var utf = UTF8()
             switch utf.decode(&gen) {
             case .scalarValue(let unicodeScalar):
-                try reader.takeUnretainedValue().nextAndCheckNotDone()
+                try reader.nextAndCheckNotDone()
                 return unicodeScalar
             case .emptyInput, .error:
                 //continue because we might be reading a longer char
-                try reader.takeUnretainedValue().nextAndCheckNotDone()
+                try reader.nextAndCheckNotDone()
                 continue
             }
         }
         //we ran out of parsing attempts and we've read 4 8bit chars, error out
-        throw JayError.unicodeCharacterParsing(buffer, r)
+        throw JayError.unicodeCharacterParsing(buffer, reader)
     }
     
     func isValidUnicodeHexDigit(_ chars: [JChar]) -> Bool {

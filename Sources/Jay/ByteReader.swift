@@ -13,21 +13,21 @@ class ByteReader: Reader {
     
     init(content: [JChar]) {
         self.content = content
-        self.cursor = self.content.startIndex
+        self.cursor = content.startIndex
     }
     
     func next() {
         precondition(!self.isDone())
-        self.cursor = self.cursor.advanced(by: 1)
+        cursor = cursor.advanced(by: 1)
     }
     
     func curr() -> JChar {
         precondition(!self.isDone())
-        return self.content[self.cursor]
+        return content[cursor]
     }
     
     func isDone() -> Bool {
-        return self.cursor == self.content.endIndex
+        return cursor == content.endIndex
     }
     
     func finishParsingWhenValid() -> Bool {
