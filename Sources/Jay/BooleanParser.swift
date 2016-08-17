@@ -8,23 +8,21 @@
 
 struct BooleanParser: JsonParser {
     
-    func parse(withReader r: Reader) throws -> (JSON, Reader) {
+    func parse<R: Reader>(with reader: R) throws -> JSON {
         
-        func parseTrue(_ rr: Reader) throws -> (JSON, Reader) {
-            var rd = rr
+        func parseTrue<R: Reader>(_ reader: R) throws -> JSON {
             //try to read the "true" literal, throw if anything goes wrong
-            try rd.stopAtFirstDifference(ByteReader(content: Const.True))
-            return (.boolean(true), rd)
+            try reader.stopAtFirstDifference(ByteReader(content: Const.True))
+            return .boolean(true)
         }
         
-        func parseFalse(_ rr: Reader) throws -> (JSON, Reader) {
-            var rd = rr
+        func parseFalse<R: Reader>(_ reader: R) throws -> JSON {
             //try to read the "false" literal, throw if anything goes wrong
-            try rd.stopAtFirstDifference(ByteReader(content: Const.False))
-            return (.boolean(false), rd)
+            try reader.stopAtFirstDifference(ByteReader(content: Const.False))
+            return .boolean(false)
         }
         
-        let reader = try self.prepareForReading(withReader: r)
+        try self.prepareForReading(with: reader)
         
         //find whether we're parsing "true" or "false"
         let char = reader.curr()

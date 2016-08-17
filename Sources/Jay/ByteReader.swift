@@ -6,28 +6,28 @@
 //  Copyright © 2016 Honza Dvorsky. All rights reserved.
 //
 
-struct ByteReader: Reader {
+class ByteReader: Reader {
     
     private let content: [JChar]
     private var cursor: Array<JChar>.Index
     
     init(content: [JChar]) {
         self.content = content
-        self.cursor = self.content.startIndex
+        self.cursor = content.startIndex
     }
     
-    mutating func next() {
+    func next() {
         precondition(!self.isDone())
-        self.cursor = self.cursor.advanced(by: 1)
+        cursor = cursor.advanced(by: 1)
     }
     
     func curr() -> JChar {
         precondition(!self.isDone())
-        return self.content[self.cursor]
+        return content[cursor]
     }
     
     func isDone() -> Bool {
-        return self.cursor == self.content.endIndex
+        return cursor == content.endIndex
     }
     
     func finishParsingWhenValid() -> Bool {
@@ -35,7 +35,7 @@ struct ByteReader: Reader {
         return false
     }
     
-    init(content: String) {
+    convenience init(content: String) {
         self.init(content: content.chars())
     }
 }

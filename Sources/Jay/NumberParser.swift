@@ -20,13 +20,12 @@ struct NumberParser: JsonParser {
     //frac = decimal-point 1*DIGIT
     //int = zero / ( digit1-9 *DIGIT )
     
-    func parse(withReader r: Reader) throws -> (JSON, Reader) {
+    func parse<R: Reader>(with reader: R) throws -> JSON {
         
-        var reader = try self.prepareForReading(withReader: r)
+        try self.prepareForReading(with: reader)
         
         //1. Optional minus
-        let negative: Bool
-        (negative, reader) = try self.parseMinus(reader)
+        let negative = try self.parseMinus(reader)
         
         //2. Integer part & 3. Frac part
         //here we need to read the first digit 
@@ -44,30 +43,29 @@ struct NumberParser: JsonParser {
             
             //now if any number terminator is here, finish up with 0
             if Const.NumberTerminators.contains(reader.curr()) {
-                return (.number(.unsignedInteger(0)), reader)
+                return .number(.unsignedInteger(0))
             }
             
             //else there MUST be a frac part
-            (frac, reader) = try self.parseFrac(reader)
+            frac = try self.parseFrac(reader)
         } else {
             //parse int part
-            (integer, reader) = try self.parseInt(reader)
+            integer = try self.parseInt(reader)
             //check whether we have a frac part
             if reader.curr() == Const.DecimalPoint {
-                (frac, reader) = try self.parseFrac(reader)
+                frac = try self.parseFrac(reader)
             } else {
                 frac = 0
             }
         }
         
         //4. Exp part
-        let exp: Int?
-        (exp, reader) = try self.parseOptionalExp(reader)
+        let exp = try self.parseOptionalExp(reader)
         
         //Generate the final number
         let number = self.generateNumber(negative: negative, integer: integer, frac: frac, exp: exp)
         let value: JSON = .number(number)
-        return (value, reader)
+        return value
     }
     
     private func generateNumber(negative: Bool, integer: Int, frac: Int, exp: Int?) -> JSON.Number {
@@ -108,18 +106,16 @@ struct NumberParser: JsonParser {
         return .double(dbl)
     }
     
-    private func parseMinus(_ r: Reader) throws -> (Bool, Reader) {
-        var reader = r
+    private func parseMinus<R: Reader>(_ reader: R) throws -> Bool {
         if reader.curr() == Const.Minus {
             try reader.nextAndCheckNotDone()
-            return (true, reader)
+            return true
         }
-        return (false, reader)
+        return false
     }
     
-    private func parseInt(_ r: Reader) throws -> (Int, Reader) {
+    private func parseInt<R: Reader>(_ reader: R) throws -> Int {
         
-        var reader = r
         var digs = [JChar]()
         
         //take first digit, which can only be 1...9
@@ -156,7 +152,7 @@ struct NumberParser: JsonParser {
                 //gracefully end this section
                 let intString = try digs.string()
                 let int = Int(intString)!
-                return (int, reader)
+                return int
             }
             
             //okay, we encountered an illegal character, error out
@@ -164,9 +160,7 @@ struct NumberParser: JsonParser {
         }
     }
     
-    private func parseFrac(_ r: Reader) throws -> (Int, Reader) {
-        
-        var reader = r
+    private func parseFrac<R: Reader>(_ reader: R) throws -> Int {
         
         //frac part MUST start with decimal point!
         guard reader.curr() == Const.DecimalPoint else {
@@ -205,7 +199,7 @@ struct NumberParser: JsonParser {
                 //gracefully end this section
                 let fracString = try digs.string()
                 let frac = Int(fracString)!
-                return (frac, reader)
+                return frac
             }
             
             //okay, we encountered an illegal character, error out
@@ -213,14 +207,12 @@ struct NumberParser: JsonParser {
         }
     }
     
-    private func parseOptionalExp(_ r: Reader) throws -> (Int?, Reader) {
-        
-        var reader = r
+    private func parseOptionalExp<R: Reader>(_ reader: R) throws -> Int? {
         
         //exp part MUST start with e/E
         //otherwise it isn't there
         guard Const.Exponent.contains(reader.curr()) else {
-            return (nil, reader)
+            return nil
         }
         try reader.nextAndCheckNotDone()
         
@@ -265,7 +257,7 @@ struct NumberParser: JsonParser {
                 //gracefully end this section
                 let expString = try digs.string()
                 let exp = Int(expString)! * sign
-                return (exp, reader)
+                return exp
             }
             
             //okay, we encountered an illegal character, error out

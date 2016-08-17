@@ -9,18 +9,16 @@
 struct Parser {
     
     //give any Reader-conforming object
-    func parseJsonFromReader(_ reader: Reader) throws -> JSON {
+    func parseJsonFromReader<R: Reader>(_ reader: R) throws -> JSON {
         
         //delegate parsing
-        let result = try RootParser().parse(withReader: reader)
-        let json = result.0
-        var endReader = result.1
+        let json = try RootParser().parse(with: reader)
         
         if !reader.finishParsingWhenValid() {
             //skip whitespace and ensure no more tokens are present, otherwise throw
-            try endReader.consumeWhitespace()
-            guard endReader.isDone() else {
-                throw JayError.extraTokensFound(endReader)
+            try reader.consumeWhitespace()
+            guard reader.isDone() else {
+                throw JayError.extraTokensFound(reader)
             }
         }
         
@@ -32,30 +30,25 @@ extension Parser {
     
     //assuming data [Int8]
     func parseJsonFromData(_ data: [JChar]) throws -> JSON {
-        
         return try parseJsonFromReader(ByteReader(content: data))
     }
 }
 
 protocol JsonParser {
-    func parse(withReader r: Reader) throws -> (JSON, Reader)
+    func parse<R: Reader>(with reader: R) throws -> JSON
 }
 
 extension JsonParser {
 
     //MARK: Utils
     
-    func prepareForReading(withReader r: Reader) throws -> Reader {
-        
-        var reader = r
+    func prepareForReading(with reader: Reader) throws {
         
         //ensure no leading whitespace
         try reader.consumeWhitespace()
         
         //if no more chars, then we encountered an unexpected end
         try reader.ensureNotDone()
-        
-        return reader
     }
 }
 

@@ -35,7 +35,7 @@ public struct Jay {
   
     /// Parses the reader to `Any`.
     /// - Throws: A descriptive error in case of any problem.
-    public func anyJsonFromReader(_ reader: Reader) throws -> Any {
+    public func anyJsonFromReader<R: Reader>(_ reader: R) throws -> Any {
         return try NativeParser().parse(reader)
     }
     
@@ -154,7 +154,7 @@ extension Jay {
     /// manually unwrapping each value recursively.
     /// - SeeAlso: If you just want Swift types with less
     /// type-information, use `jsonFromReader()` above.
-    public func jsonFromReader(_ reader: Reader) throws -> JSON {
+    public func jsonFromReader<R: Reader>(_ reader: R) throws -> JSON {
         return try Parser().parseJsonFromReader(reader)
     }
 
