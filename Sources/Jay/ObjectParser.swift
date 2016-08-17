@@ -8,7 +8,7 @@
 
 struct ObjectParser: JsonParser {
     
-    func parse(with reader: Reader) throws -> JSON {
+    func parse<R: Reader>(with reader: R) throws -> JSON {
         
         try self.prepareForReading(with: reader)
         

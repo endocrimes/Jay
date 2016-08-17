@@ -8,29 +8,25 @@
 
 struct ValueParser: JsonParser {
     
-    func parse(with reader: Reader) throws -> JSON {
+    func parse<R: Reader>(with reader: R) throws -> JSON {
         
         try self.prepareForReading(with: reader)
         
-        let parser: JsonParser
         switch reader.curr() {
         case let x where StartChars.Object.contains(x):
-            parser = ObjectParser()
+            return try ObjectParser().parse(with: reader)
         case let x where StartChars.Array.contains(x):
-            parser = ArrayParser()
+            return try ArrayParser().parse(with: reader)
         case let x where StartChars.Number.contains(x):
-            parser = NumberParser()
+            return try NumberParser().parse(with: reader)
         case let x where StartChars.String.contains(x):
-            parser = StringParser()
+            return try StringParser().parse(with: reader)
         case let x where StartChars.Boolean.contains(x):
-            parser = BooleanParser()
+            return try BooleanParser().parse(with: reader)
         case let x where StartChars.Null.contains(x):
-            parser = NullParser()
+            return try NullParser().parse(with: reader)
         default:
             throw JayError.unexpectedCharacter(reader)
         }
-        
-        let val = try parser.parse(with: reader)
-        return val
     }
 }

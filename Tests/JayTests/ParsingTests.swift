@@ -289,7 +289,7 @@ class ParsingTests:XCTestCase {
 
     func testEscape_Unicode_Normal() {
         
-        let reader: Reader = ByteReader(content: "\\u0048 ")
+        let reader = ByteReader(content: "\\u0048 ")
         let char = try! StringParser().unescapedCharacter(reader)
         
         XCTAssert(String(char) == "H")
@@ -297,13 +297,13 @@ class ParsingTests:XCTestCase {
     
     func testEscape_Unicode_InvalidUnicode_MissingDigit() {
         
-        let reader: Reader = ByteReader(content: "\\u048 ")
+        let reader = ByteReader(content: "\\u048 ")
         XCTAssertNil(try? StringParser().unescapedCharacter(reader))
     }
     
     func testEscape_Unicode_InvalidUnicode_MissingAllDigits() {
         
-        let reader: Reader = ByteReader(content: "\\u ")
+        let reader = ByteReader(content: "\\u ")
         XCTAssertNil(try? StringParser().unescapedCharacter(reader))
     }
 
@@ -324,7 +324,7 @@ class ParsingTests:XCTestCase {
             Const.Space
         ]
         
-        let reader: Reader = ByteReader(content: chars)
+        let reader = ByteReader(content: chars)
         var char: UnicodeScalar
         
         //regular

@@ -9,7 +9,7 @@
 struct Parser {
     
     //give any Reader-conforming object
-    func parseJsonFromReader(_ reader: Reader) throws -> JSON {
+    func parseJsonFromReader<R: Reader>(_ reader: R) throws -> JSON {
         
         //delegate parsing
         let json = try RootParser().parse(with: reader)
@@ -30,13 +30,12 @@ extension Parser {
     
     //assuming data [Int8]
     func parseJsonFromData(_ data: [JChar]) throws -> JSON {
-        
         return try parseJsonFromReader(ByteReader(content: data))
     }
 }
 
 protocol JsonParser {
-    func parse(with reader: Reader) throws -> JSON
+    func parse<R: Reader>(with reader: R) throws -> JSON
 }
 
 extension JsonParser {
