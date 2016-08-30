@@ -30,10 +30,12 @@ struct ObjectParser: JsonParser {
 
         //now start scanning for name/value pairs
         var pairs = [(String, JSON)]()
+        let stringParser = StringParser()
+        let valueParser = ValueParser()
         repeat {
             
             //scan for name
-            let nameRet = try StringParser().parse(with: reader)
+            let nameRet = try stringParser.parse(with: reader)
             let name: String
             switch nameRet {
             case .string(let n): name = n; break
@@ -48,7 +50,7 @@ struct ObjectParser: JsonParser {
             try reader.nextAndCheckNotDone()
             
             //scan for value
-            let valRet = try ValueParser().parse(with: reader)
+            let valRet = try valueParser.parse(with: reader)
             let value = valRet
             
             //append name/value pair
