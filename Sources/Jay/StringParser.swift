@@ -14,6 +14,8 @@
 
 struct StringParser: JsonParser {
     
+    var parsing: Jay.ParsingOptions
+
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
         try prepareForReading(with: reader)

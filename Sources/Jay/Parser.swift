@@ -8,11 +8,13 @@
 
 struct Parser {
     
+    let parsing: Jay.ParsingOptions
+    
     //give any Reader-conforming object
     func parseJsonFromReader<R: Reader>(_ reader: R) throws -> JSON {
         
         //delegate parsing
-        let json = try RootParser().parse(with: reader)
+        let json = try RootParser(parsing: parsing).parse(with: reader)
         
         if !reader.finishParsingWhenValid() {
             //skip whitespace and ensure no more tokens are present, otherwise throw
@@ -34,36 +36,53 @@ extension Parser {
     }
 }
 
-protocol JsonParser {
+protocol JsonParser: ParsingOptionsHaving {
     func parse<R: Reader>(with reader: R) throws -> JSON
 }
 
 //MARK: Utils
 
-func prepareForReading<R: Reader>(with reader: R) throws {
-    
-    try reader.ensureNotDone()
+protocol ParsingOptionsHaving {
+    var parsing: Jay.ParsingOptions { get }
+}
 
-    var changed = false
-    let commentParser = CommentParser()
-    repeat {
+extension ParsingOptionsHaving {
+    
+    func prepareForReading<R: Reader>(with reader: R) throws {
         
-        //reset state
-        changed = false
-        
-        //ensure there are no comments
-        if reader.curr() == Const.Solidus {
-            let comments = try commentParser.parse(with: reader)
-            changed = changed || !comments.isEmpty
+        guard parsing.contains(.allowComments) else {
+            //just skip whitespace and ensure not done
+            try reader.consumeWhitespace()
+            try reader.ensureNotDone()
+            return
         }
         
-        //ensure no leading whitespace
-        let consumedWhitespaceCount = try reader.consumeWhitespace()
-        changed = changed || consumedWhitespaceCount > 0
+        // if we're allowing comments, more work needs to be done
         
-        //if no more chars, then we encountered an unexpected end
         try reader.ensureNotDone()
         
-    } while changed
+        var changed = false
+        let commentParser = CommentParser()
+        repeat {
+            
+            //reset state
+            changed = false
+            
+            //ensure there are no comments
+            if reader.curr() == Const.Solidus {
+                let comments = try commentParser.parse(with: reader)
+                changed = changed || !comments.isEmpty
+            }
+            
+            //ensure no leading whitespace
+            let consumedWhitespaceCount = try reader.consumeWhitespace()
+            changed = changed || consumedWhitespaceCount > 0
+            
+            //if no more chars, then we encountered an unexpected end
+            try reader.ensureNotDone()
+            
+        } while changed
+    }
 }
+
 

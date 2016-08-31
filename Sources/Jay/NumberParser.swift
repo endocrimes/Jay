@@ -14,6 +14,8 @@
 
 struct NumberParser: JsonParser {
     
+    var parsing: Jay.ParsingOptions
+
     //phase    1         2   3        4
     //number = [ minus ] int [ frac ] [ exp ]
     //exp = e [ minus / plus ] 1*DIGIT

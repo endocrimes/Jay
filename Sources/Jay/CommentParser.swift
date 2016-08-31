@@ -1,5 +1,5 @@
 struct CommentParser {
-    
+        
     func parse<R: Reader>(with reader: R) throws -> [JChar] {
         
         //ensure we're starting with a slash

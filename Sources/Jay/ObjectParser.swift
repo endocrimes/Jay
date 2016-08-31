@@ -8,6 +8,8 @@
 
 struct ObjectParser: JsonParser {
     
+    var parsing: Jay.ParsingOptions
+
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
         try prepareForReading(with: reader)
@@ -30,8 +32,8 @@ struct ObjectParser: JsonParser {
 
         //now start scanning for name/value pairs
         var pairs = [(String, JSON)]()
-        let stringParser = StringParser()
-        let valueParser = ValueParser()
+        let stringParser = StringParser(parsing: parsing)
+        let valueParser = ValueParser(parsing: parsing)
         repeat {
             
             //scan for name

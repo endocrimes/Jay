@@ -8,6 +8,8 @@
 
 struct BooleanParser: JsonParser {
     
+    var parsing: Jay.ParsingOptions
+
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
         func parseTrue<R: Reader>(_ reader: R) throws -> JSON {

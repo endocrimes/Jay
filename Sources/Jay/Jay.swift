@@ -15,14 +15,33 @@ public struct Jay {
         case minified
         case prettified
     }
+    
+    public struct ParsingOptions: OptionSet {
+        public let rawValue: Int
+        
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+        
+        static let none = ParsingOptions(rawValue: 0)
+        
+        /// Allows single line (starting //) or multi-line (/* ... */) comments,
+        /// strips them out during parsing.
+        static let allowComments = ParsingOptions(rawValue: 1 << 0)
+    }
   
     /// The formatting used.
     public let formatting: Formatting
+    
+    /// Parsing options
+    public let parsing: ParsingOptions
   
     /// Initializes and returns the `Jay` object.
     /// - Parameter formatting: The `Formatting` to use. Defaults to `.minified`.
-    public init(formatting: Formatting = .minified) {
+    /// - Parameter parsing: The `ParsingOptions` to use. Defaults to `.none`.
+    public init(formatting: Formatting = .minified, parsing: ParsingOptions = .none) {
         self.formatting = formatting
+        self.parsing = parsing
     }
     
     /// Parses data into a dictionary `[String: Any]` or array `[Any]`.
@@ -30,13 +49,13 @@ public struct Jay {
     /// casting whether you received what you expected.
     /// - Throws: A descriptive error in case of any problem.
     public func anyJsonFromData(_ data: [UInt8]) throws -> Any {
-        return try NativeParser().parse(data)
+        return try NativeParser(options: parsing).parse(data)
     }
   
     /// Parses the reader to `Any`.
     /// - Throws: A descriptive error in case of any problem.
     public func anyJsonFromReader<R: Reader>(_ reader: R) throws -> Any {
-        return try NativeParser().parse(reader)
+        return try NativeParser(options: parsing).parse(reader)
     }
     
     /// Formats your JSON-compatible object into data.
@@ -146,7 +165,7 @@ extension Jay {
     /// - SeeAlso: If you just want Swift types with less
     /// type-information, use `jsonFromData()` above.
     public func jsonFromData(_ data: [UInt8]) throws -> JSON {
-        return try Parser().parseJsonFromData(data)
+        return try Parser(parsing: parsing).parseJsonFromData(data)
     }
   
     /// Allows users to get the `JSON` representation in a typesafe matter.
@@ -155,7 +174,7 @@ extension Jay {
     /// - SeeAlso: If you just want Swift types with less
     /// type-information, use `jsonFromReader()` above.
     public func jsonFromReader<R: Reader>(_ reader: R) throws -> JSON {
-        return try Parser().parseJsonFromReader(reader)
+        return try Parser(parsing: parsing).parseJsonFromReader(reader)
     }
 
     /// Formats your JSON-compatible object into data.

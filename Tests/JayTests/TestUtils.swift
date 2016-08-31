@@ -69,6 +69,31 @@ func ensureObject(_ val: JSON, exp: [String: JSON], file: StaticString = #file, 
     XCTAssertEqual(val, JSON.object(exp))
 }
 
+extension StringParser {
+    init() {
+        self = StringParser(parsing: .none)
+    }
+}
+
+extension ValueParser {
+    init() {
+        self = ValueParser(parsing: .none)
+    }
+}
+
+extension RootParser {
+    init() {
+        self = RootParser(parsing: .none)
+    }
+}
+
+extension Parser {
+    init() {
+        self = Parser(parsing: .none)
+    }
+}
+
+
 //
 //  Conversions.swift
 //  Jay

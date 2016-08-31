@@ -8,6 +8,8 @@
 
 struct RootParser: JsonParser {
     
+    var parsing: Jay.ParsingOptions
+
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
         try prepareForReading(with: reader)
@@ -17,9 +19,9 @@ struct RootParser: JsonParser {
         let root: JSON
         switch reader.curr() {
         case Const.BeginObject:
-            root = try ObjectParser().parse(with: reader)
+            root = try ObjectParser(parsing: parsing).parse(with: reader)
         case Const.BeginArray:
-            root = try ArrayParser().parse(with: reader)
+            root = try ArrayParser(parsing: parsing).parse(with: reader)
         default:
             throw JayError.unimplemented("ParseRoot")
         }

@@ -8,6 +8,8 @@
 
 struct ArrayParser: JsonParser {
     
+    var parsing: Jay.ParsingOptions
+
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
         try prepareForReading(with: reader)
@@ -30,10 +32,11 @@ struct ArrayParser: JsonParser {
         
         //now start scanning for values
         var values = [JSON]()
+        let valueParser = ValueParser(parsing: parsing)
         repeat {
             
             //scan for value
-            let ret = try ValueParser().parse(with: reader)
+            let ret = try valueParser.parse(with: reader)
             values.append(ret)
             
             //scan for either a comma, in which case there must be another
