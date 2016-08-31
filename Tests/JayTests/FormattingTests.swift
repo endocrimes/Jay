@@ -57,7 +57,7 @@ class FormattingTests: XCTestCase {
     
     func testNSDictionary_Simple() {
     #if os(Linux)
-        let json = ["hello": "world"].bridge()
+        let json = ["hello": "world"]._bridgeToObjectiveC()
     #else
         let json = NSDictionary(dictionary: ["hello": "world"])
     #endif
@@ -145,7 +145,7 @@ class FormattingTests: XCTestCase {
 
     func testNSArray_Simple() {
         #if os(Linux)
-            let json = ["hello", "world"].bridge()
+            let json = ["hello", "world"]._bridgeToObjectiveC()
         #else
             let json = NSArray(array: ["hello", "world"])
         #endif
