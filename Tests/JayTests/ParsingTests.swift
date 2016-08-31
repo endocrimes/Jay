@@ -73,7 +73,7 @@ class ParsingTests:XCTestCase {
     
     func testPrepareForReading_FailOnEmpty() {
         let reader = ByteReader(content: "")
-        XCTAssertThrowsError(try ValueParser().prepareForReading(with: reader))
+        XCTAssertThrowsError(try prepareForReading(with: reader))
     }
     
     func testExtraTokensThrow() {
@@ -94,6 +94,48 @@ class ParsingTests:XCTestCase {
         let reader = ByteReader(content: "NAll")
         let ret = try? ValueParser().parse(with: reader)
         XCTAssertNil(ret)
+    }
+    
+    //TODO: add names to linux manifest
+    func testComment_SingleLine_EndedWithNewline() throws {
+        
+        let reader = ByteReader(content: "// hello world \n")
+        let ret = try! CommentParser().parse(with: reader)
+        try ensureComment(ret, exp: " hello world ")
+    }
+    
+    func testComment_SingleLine_EndedReader() throws {
+        
+        let reader = ByteReader(content: "// hello")
+        let ret = try! CommentParser().parse(with: reader)
+        try ensureComment(ret, exp: " hello")
+    }
+    
+    func testComment_MultiLine_ActuallySingleLine() throws {
+        
+        let reader = ByteReader(content: "/* hello world */")
+        let ret = try! CommentParser().parse(with: reader)
+        try ensureComment(ret, exp: " hello world ")
+    }
+    
+    func testComment_MultiLine_ThreeLines() throws {
+        
+        let reader = ByteReader(content: "/*\n hello world \n*/")
+        let ret = try! CommentParser().parse(with: reader)
+        try ensureComment(ret, exp: "\n hello world \n")
+    }
+    
+    func testAllIncludingComment_FromFile() throws {
+        let bytes = loadFixture("withcomments")
+        let reader = ByteReader(content: bytes)
+        let ret = try Jay().jsonFromReader(reader)
+        XCTAssertTrue(reader.isDone())
+        ensureObject(ret, exp: [
+                "message": .string("Hello world."),
+                "other": .string("/* don't strip this out */"),
+                "crazy": .string("\"/*wow escaped strings are*/ // annoying looking \""),
+                "number": .number(.unsignedInteger(3))
+            ])
     }
     
     func testBoolean_True_Normal() {

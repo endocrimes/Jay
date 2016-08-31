@@ -38,17 +38,32 @@ protocol JsonParser {
     func parse<R: Reader>(with reader: R) throws -> JSON
 }
 
-extension JsonParser {
+//MARK: Utils
 
-    //MARK: Utils
+func prepareForReading<R: Reader>(with reader: R) throws {
     
-    func prepareForReading(with reader: Reader) throws {
+    try reader.ensureNotDone()
+
+    var changed = false
+    let commentParser = CommentParser()
+    repeat {
+        
+        //reset state
+        changed = false
+        
+        //ensure there are no comments
+        if reader.curr() == Const.Solidus {
+            let comments = try commentParser.parse(with: reader)
+            changed = changed || !comments.isEmpty
+        }
         
         //ensure no leading whitespace
-        try reader.consumeWhitespace()
+        let consumedWhitespaceCount = try reader.consumeWhitespace()
+        changed = changed || consumedWhitespaceCount > 0
         
         //if no more chars, then we encountered an unexpected end
         try reader.ensureNotDone()
-    }
+        
+    } while changed
 }
 

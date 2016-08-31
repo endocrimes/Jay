@@ -1,0 +1,12 @@
+{
+    "message": "Hello world.", // single line comments work
+    "other": "/* don't strip this out */",
+    /* 
+
+    but do strip this out!
+    yeah all of this
+
+    */
+    "crazy": "\"/*wow escaped strings are*/ // annoying looking \"",
+    "number": 3
+}

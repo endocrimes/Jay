@@ -22,7 +22,7 @@ struct NumberParser: JsonParser {
     
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
-        try self.prepareForReading(with: reader)
+        try prepareForReading(with: reader)
         
         //1. Optional minus
         let negative = try self.parseMinus(reader)

@@ -22,7 +22,7 @@ struct BooleanParser: JsonParser {
             return .boolean(false)
         }
         
-        try self.prepareForReading(with: reader)
+        try prepareForReading(with: reader)
         
         //find whether we're parsing "true" or "false"
         let char = reader.curr()

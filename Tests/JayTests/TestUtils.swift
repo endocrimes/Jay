@@ -32,6 +32,10 @@ func ensureNull(_ val: JSON) {
     XCTAssertEqual(val, JSON.null)
 }
 
+func ensureComment(_ val: [JChar], exp: String, file: StaticString = #file, line: UInt = #line) throws {
+    XCTAssertEqual(try val.string(), exp)
+}
+
 func ensureBool(_ val: JSON, exp: Bool, file: StaticString = #file, line: UInt = #line) {
     XCTAssertEqual(val, JSON.boolean(exp))
 }

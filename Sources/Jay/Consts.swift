@@ -56,6 +56,7 @@ struct Const {
     static let QuotationMark: JChar         = 0x22 // """
     static let ReverseSolidus: JChar        = 0x5c // "\"
     static let Solidus: JChar               = 0x2f // "/"
+    static let Star: JChar                  = 0x2a // "*"
 
     static let BackspaceChar: JChar         = 0x62 // "b"
     static let HorizontalTabChar: JChar     = 0x74 // "t"
@@ -111,6 +112,7 @@ struct StartChars {
     static let String: Set<JChar>   = [Const.QuotationMark]
     static let Boolean: Set<JChar>  = [Const.False[0], Const.True[0]]
     static let Null: Set<JChar>     = [Const.Null[0]]
+    static let Comment: Set<JChar>  = [Const.Solidus]
 }
 
 

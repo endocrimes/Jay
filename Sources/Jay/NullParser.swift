@@ -10,7 +10,7 @@ struct NullParser: JsonParser {
     
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
-        try self.prepareForReading(with: reader)
+        try prepareForReading(with: reader)
         
         //try to read the "null" literal, throw if anything goes wrong
         try reader.stopAtFirstDifference(ByteReader(content: Const.Null))

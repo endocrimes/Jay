@@ -16,7 +16,7 @@ struct StringParser: JsonParser {
     
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
-        try self.prepareForReading(with: reader)
+        try prepareForReading(with: reader)
         
         //ensure we're starting with a quote
         guard reader.curr() == Const.QuotationMark else {

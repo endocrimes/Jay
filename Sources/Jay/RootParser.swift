@@ -10,7 +10,7 @@ struct RootParser: JsonParser {
     
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
-        try self.prepareForReading(with: reader)
+        try prepareForReading(with: reader)
         
         //the standard doesn't require handling of fragments, so here
         //we'll assume we're only parsing valid structured types (object/array)

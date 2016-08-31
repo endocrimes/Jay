@@ -17,30 +17,31 @@ extension PerformanceTests {
     ]
 }
 
+func urlForFixture(_ name: String) -> URL {
+    
+    let parent = (#file).components(separatedBy: "/").dropLast().joined(separator: "/")
+    let url = URL(string: "file://\(parent)/Fixtures/\(name).json")!
+    print("Loading fixture from url \(url)")
+    return url
+}
+
+func loadFixture(_ name: String) -> [UInt8] {
+    let data = Array(try! loadFixtureData(name))
+    return data
+}
+
+func loadFixtureData(_ name: String) throws -> Data {
+    let url = urlForFixture(name)
+    let data = try Data(contentsOf: url)
+    return data
+}
+
 class PerformanceTests: XCTestCase {
 
-    func urlForFixture(_ name: String) -> URL {
-        
-        let parent = (#file).components(separatedBy: "/").dropLast().joined(separator: "/")
-        let url = URL(string: "file://\(parent)/Fixtures/\(name).json")!
-        print("Loading fixture from url \(url)")
-        return url
-    }
     
-    func loadFixture(_ name: String) -> [UInt8] {
-        let data = Array(try! loadFixtureData(name))
-        return data
-    }
-    
-    func loadFixtureData(_ name: String) throws -> Data {
-        let url = self.urlForFixture(name)
-        let data = try Data(contentsOf: url)
-        return data
-    }
-
     func testPerf_ParseLargeJson() {
         
-        let data = self.loadFixture("large")
+        let data = loadFixture("large")
         let jay = Jay()
         measure {
             do {

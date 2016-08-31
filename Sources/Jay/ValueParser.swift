@@ -17,7 +17,7 @@ struct ValueParser: JsonParser {
     
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
-        try self.prepareForReading(with: reader)
+        try prepareForReading(with: reader)
         
         switch reader.curr() {
         case let x where StartChars.Object.contains(x):
