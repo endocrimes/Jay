@@ -20,6 +20,11 @@ extension ParsingTests {
         ("testBoolean_True_Mismatch", testBoolean_True_Mismatch),
         ("testBoolean_False_Normal", testBoolean_False_Normal),
         ("testBoolean_False_Mismatch", testBoolean_False_Mismatch),
+        ("testComment_SingleLine_EndedWithNewline", testComment_SingleLine_EndedWithNewline),
+        ("testComment_SingleLine_EndedReader", testComment_SingleLine_EndedReader),
+        ("testComment_MultiLine_ActuallySingleLine", testComment_MultiLine_ActuallySingleLine),
+        ("testComment_MultiLine_ThreeLines", testComment_MultiLine_ThreeLines),
+        ("testAllIncludingComment_FromFile", testAllIncludingComment_FromFile),
         ("testArray_NullsBoolsNums_Normal_Minimal_RootParser", testArray_NullsBoolsNums_Normal_Minimal_RootParser),
         ("testArray_NullsBoolsNums_Normal_MuchWhitespace", testArray_NullsBoolsNums_Normal_MuchWhitespace),
         ("testArray_NullsAndBooleans_Bad_MissingEnd", testArray_NullsAndBooleans_Bad_MissingEnd),
@@ -96,7 +101,6 @@ class ParsingTests:XCTestCase {
         XCTAssertNil(ret)
     }
     
-    //TODO: add names to linux manifest
     func testComment_SingleLine_EndedWithNewline() throws {
         
         let reader = ByteReader(content: "// hello world \n")
