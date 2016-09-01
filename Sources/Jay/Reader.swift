@@ -96,6 +96,26 @@ extension Reader {
         return counter
     }
     
+    // Gathers all bytes until `terminator` is found, returns everything except the terminator
+    // the cursor is right after the terminator
+    // If the end of `self` is encountered without finding `terminator`, `foundTerminator` is false
+    func collectUntil(terminator: [JChar]) throws -> (collected: [JChar], foundTerminator: Bool) {
+        var collected: [UInt8] = []
+        var nextBuffer = CircularBuffer<UInt8>(size: terminator.count, defaultValue: 0)
+        while !isDone() {
+            let char = curr()
+            nextBuffer.append(char)
+            collected.append(char)
+            if nextBuffer == terminator {
+                //remove the terminator from collected
+                try next()
+                return (Array(collected.dropLast(terminator.count)), true)
+            }
+            try next()
+        }
+        return (collected, false)
+    }
+    
     // Iterates both readers and checks that characters match until
     // a) expectedReader runs out of characters -> great! all match
     // b) self runs out of characters -> bad, no match!
@@ -127,4 +147,30 @@ extension Reader {
     }
 }
 
+struct CircularBuffer<T: Equatable> {
+    
+    let size: Int
+    private var _cursor: Int = 0
+    private var _storage: [T]
+    
+    init(size: Int, defaultValue: T) {
+        self.size = size
+        self._storage = Array(repeating: defaultValue, count: size)
+    }
+    
+    mutating func append(_ element: T) {
+        _storage[_cursor] = element
+        _cursor = (_cursor + 1) % size
+    }
+    
+    static func ==(lhs: CircularBuffer<T>, rhs: [T]) -> Bool {
+        let size = lhs.size
+        guard lhs.size == rhs.count else { return false }
+        let offset = lhs._cursor
+        for i in 0..<size {
+            guard lhs._storage[(i + offset) % size] == rhs[i] else { return false }
+        }
+        return true
+    }
+}
 

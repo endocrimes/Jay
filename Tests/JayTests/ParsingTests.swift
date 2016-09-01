@@ -20,6 +20,12 @@ extension ParsingTests {
         ("testBoolean_True_Mismatch", testBoolean_True_Mismatch),
         ("testBoolean_False_Normal", testBoolean_False_Normal),
         ("testBoolean_False_Mismatch", testBoolean_False_Mismatch),
+        ("testComment_SingleLine_EndedWithNewline", testComment_SingleLine_EndedWithNewline),
+        ("testComment_SingleLine_EndedReader", testComment_SingleLine_EndedReader),
+        ("testComment_MultiLine_ActuallySingleLine", testComment_MultiLine_ActuallySingleLine),
+        ("testComment_MultiLine_ThreeLines", testComment_MultiLine_ThreeLines),
+        ("testAllIncludingComment_FromFile_allowed", testAllIncludingComment_FromFile_allowed),
+        ("testAllIncludingComment_FromFile_disallowed", testAllIncludingComment_FromFile_disallowed),
         ("testArray_NullsBoolsNums_Normal_Minimal_RootParser", testArray_NullsBoolsNums_Normal_Minimal_RootParser),
         ("testArray_NullsBoolsNums_Normal_MuchWhitespace", testArray_NullsBoolsNums_Normal_MuchWhitespace),
         ("testArray_NullsAndBooleans_Bad_MissingEnd", testArray_NullsAndBooleans_Bad_MissingEnd),
@@ -69,11 +75,15 @@ extension ParsingTests {
     ]
 }
 
+struct TestParser: ParsingOptionsHaving {
+    let parsing: Jay.ParsingOptions = .none
+}
+
 class ParsingTests:XCTestCase {
     
     func testPrepareForReading_FailOnEmpty() {
         let reader = ByteReader(content: "")
-        XCTAssertThrowsError(try ValueParser().prepareForReading(with: reader))
+        XCTAssertThrowsError(try TestParser().prepareForReading(with: reader))
     }
     
     func testExtraTokensThrow() {
@@ -94,6 +104,53 @@ class ParsingTests:XCTestCase {
         let reader = ByteReader(content: "NAll")
         let ret = try? ValueParser().parse(with: reader)
         XCTAssertNil(ret)
+    }
+    
+    func testComment_SingleLine_EndedWithNewline() throws {
+        
+        let reader = ByteReader(content: "// hello world \n")
+        let ret = try! CommentParser().parse(with: reader)
+        try ensureComment(ret, exp: " hello world ")
+    }
+    
+    func testComment_SingleLine_EndedReader() throws {
+        
+        let reader = ByteReader(content: "// hello")
+        let ret = try! CommentParser().parse(with: reader)
+        try ensureComment(ret, exp: " hello")
+    }
+    
+    func testComment_MultiLine_ActuallySingleLine() throws {
+        
+        let reader = ByteReader(content: "/* hello world */")
+        let ret = try! CommentParser().parse(with: reader)
+        try ensureComment(ret, exp: " hello world ")
+    }
+    
+    func testComment_MultiLine_ThreeLines() throws {
+        
+        let reader = ByteReader(content: "/*\n hello world \n*/")
+        let ret = try! CommentParser().parse(with: reader)
+        try ensureComment(ret, exp: "\n hello world \n")
+    }
+    
+    func testAllIncludingComment_FromFile_allowed() throws {
+        let bytes = loadFixture("withcomments")
+        let reader = ByteReader(content: bytes)
+        let ret = try Jay(parsing: .allowComments).jsonFromReader(reader)
+        XCTAssertTrue(reader.isDone())
+        ensureObject(ret, exp: [
+                "message": .string("Hello world."),
+                "other": .string("/* don't strip this out */"),
+                "crazy": .string("\"/*wow escaped strings are*/ // annoying looking \""),
+                "number": .number(.unsignedInteger(3))
+            ])
+    }
+    
+    func testAllIncludingComment_FromFile_disallowed() throws {
+        let bytes = loadFixture("withcomments")
+        let reader = ByteReader(content: bytes)
+        XCTAssertThrowsError(try Jay().jsonFromReader(reader))
     }
     
     func testBoolean_True_Normal() {

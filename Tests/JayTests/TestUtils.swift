@@ -32,6 +32,10 @@ func ensureNull(_ val: JSON) {
     XCTAssertEqual(val, JSON.null)
 }
 
+func ensureComment(_ val: [JChar], exp: String, file: StaticString = #file, line: UInt = #line) throws {
+    XCTAssertEqual(try val.string(), exp)
+}
+
 func ensureBool(_ val: JSON, exp: Bool, file: StaticString = #file, line: UInt = #line) {
     XCTAssertEqual(val, JSON.boolean(exp))
 }
@@ -64,6 +68,31 @@ func ensureString(_ val: JSON, exp: String, file: StaticString = #file, line: UI
 func ensureObject(_ val: JSON, exp: [String: JSON], file: StaticString = #file, line: UInt = #line) {
     XCTAssertEqual(val, JSON.object(exp))
 }
+
+extension StringParser {
+    init() {
+        self = StringParser(parsing: .none)
+    }
+}
+
+extension ValueParser {
+    init() {
+        self = ValueParser(parsing: .none)
+    }
+}
+
+extension RootParser {
+    init() {
+        self = RootParser(parsing: .none)
+    }
+}
+
+extension Parser {
+    init() {
+        self = Parser(parsing: .none)
+    }
+}
+
 
 //
 //  Conversions.swift

@@ -8,6 +8,8 @@
 
 struct BooleanParser: JsonParser {
     
+    var parsing: Jay.ParsingOptions
+
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
         func parseTrue<R: Reader>(_ reader: R) throws -> JSON {
@@ -22,7 +24,7 @@ struct BooleanParser: JsonParser {
             return .boolean(false)
         }
         
-        try self.prepareForReading(with: reader)
+        try prepareForReading(with: reader)
         
         //find whether we're parsing "true" or "false"
         let char = reader.curr()

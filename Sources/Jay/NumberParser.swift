@@ -14,6 +14,8 @@
 
 struct NumberParser: JsonParser {
     
+    var parsing: Jay.ParsingOptions
+
     //phase    1         2   3        4
     //number = [ minus ] int [ frac ] [ exp ]
     //exp = e [ minus / plus ] 1*DIGIT
@@ -22,7 +24,7 @@ struct NumberParser: JsonParser {
     
     func parse<R: Reader>(with reader: R) throws -> JSON {
         
-        try self.prepareForReading(with: reader)
+        try prepareForReading(with: reader)
         
         //1. Optional minus
         let negative = try self.parseMinus(reader)

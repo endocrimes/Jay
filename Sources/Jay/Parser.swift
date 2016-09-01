@@ -8,11 +8,13 @@
 
 struct Parser {
     
+    let parsing: Jay.ParsingOptions
+    
     //give any Reader-conforming object
     func parseJsonFromReader<R: Reader>(_ reader: R) throws -> JSON {
         
         //delegate parsing
-        let json = try RootParser().parse(with: reader)
+        let json = try RootParser(parsing: parsing).parse(with: reader)
         
         if !reader.finishParsingWhenValid() {
             //skip whitespace and ensure no more tokens are present, otherwise throw
@@ -34,21 +36,53 @@ extension Parser {
     }
 }
 
-protocol JsonParser {
+protocol JsonParser: ParsingOptionsHaving {
     func parse<R: Reader>(with reader: R) throws -> JSON
 }
 
-extension JsonParser {
+//MARK: Utils
 
-    //MARK: Utils
+protocol ParsingOptionsHaving {
+    var parsing: Jay.ParsingOptions { get }
+}
+
+extension ParsingOptionsHaving {
     
-    func prepareForReading(with reader: Reader) throws {
+    func prepareForReading<R: Reader>(with reader: R) throws {
         
-        //ensure no leading whitespace
-        try reader.consumeWhitespace()
+        guard parsing.contains(.allowComments) else {
+            //just skip whitespace and ensure not done
+            try reader.consumeWhitespace()
+            try reader.ensureNotDone()
+            return
+        }
         
-        //if no more chars, then we encountered an unexpected end
+        // if we're allowing comments, more work needs to be done
+        
         try reader.ensureNotDone()
+        
+        var changed = false
+        let commentParser = CommentParser()
+        repeat {
+            
+            //reset state
+            changed = false
+            
+            //ensure there are no comments
+            if reader.curr() == Const.Solidus {
+                let comments = try commentParser.parse(with: reader)
+                changed = changed || !comments.isEmpty
+            }
+            
+            //ensure no leading whitespace
+            let consumedWhitespaceCount = try reader.consumeWhitespace()
+            changed = changed || consumedWhitespaceCount > 0
+            
+            //if no more chars, then we encountered an unexpected end
+            try reader.ensureNotDone()
+            
+        } while changed
     }
 }
+
 
