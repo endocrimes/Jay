@@ -23,11 +23,11 @@ public struct Jay {
             self.rawValue = rawValue
         }
         
-        static let none = ParsingOptions(rawValue: 0)
+        public static let none = ParsingOptions(rawValue: 0)
         
         /// Allows single line (starting //) or multi-line (/* ... */) comments,
         /// strips them out during parsing.
-        static let allowComments = ParsingOptions(rawValue: 1 << 0)
+        public static let allowComments = ParsingOptions(rawValue: 1 << 0)
     }
   
     /// The formatting used.
