@@ -24,6 +24,8 @@ extension ParsingTests {
         ("testComment_SingleLine_EndedReader", testComment_SingleLine_EndedReader),
         ("testComment_MultiLine_ActuallySingleLine", testComment_MultiLine_ActuallySingleLine),
         ("testComment_MultiLine_ThreeLines", testComment_MultiLine_ThreeLines),
+        ("testComment_SingleLine_StartOfFile", testComment_SingleLine_StartOfFile),
+        ("testComment_MultiLine_StartOfFile", testComment_MultiLine_StartOfFile),
         ("testAllIncludingComment_FromFile_allowed", testAllIncludingComment_FromFile_allowed),
         ("testAllIncludingComment_FromFile_disallowed", testAllIncludingComment_FromFile_disallowed),
         ("testArray_NullsBoolsNums_Normal_Minimal_RootParser", testArray_NullsBoolsNums_Normal_Minimal_RootParser),
@@ -132,6 +134,18 @@ class ParsingTests:XCTestCase {
         let reader = ByteReader(content: "/*\n hello world \n*/")
         let ret = try! CommentParser().parse(with: reader)
         try ensureComment(ret, exp: "\n hello world \n")
+    }
+
+    func testComment_SingleLine_StartOfFile() throws {
+        let reader = ByteReader(content: "  // hello world\n{\"hi\":\"Earth\"}")
+        let ret = try Jay(parsing: .allowComments).jsonFromReader(reader)
+        ensureObject(ret, exp: ["hi":.string("Earth")])
+    }
+
+    func testComment_MultiLine_StartOfFile() throws {
+        let reader = ByteReader(content: "  /*\n hello world \n*/\n{\"hi\":\"Earth\"}")
+        let ret = try Jay(parsing: .allowComments).jsonFromReader(reader)
+        ensureObject(ret, exp: ["hi":.string("Earth")])
     }
     
     func testAllIncludingComment_FromFile_allowed() throws {
