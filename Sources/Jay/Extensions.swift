@@ -21,6 +21,22 @@ extension JChar {
     }
 }
 
+extension JChar {
+    
+    func controlCharacterHexString() -> [JChar] {
+        var hex = String(self, radix: 16, uppercase: false).chars()
+        
+        //control chars are always only two hex characters, so we either got 1 or 2 chars,
+        //pad to two
+        if hex.count == 1 {
+            hex = [Const.Zero] + hex
+        }
+        
+        //and prepend with \u00, which is followed by our two hex bytes
+        return [Const.Escape, Const.UnicodeStart, Const.Zero, Const.Zero] + hex
+    }
+}
+
 extension String {
     
     func chars() -> [JChar] {

@@ -55,6 +55,7 @@ extension ParsingTests {
         ("testEscape_Unicode_InvalidUnicode_MissingDigit", testEscape_Unicode_InvalidUnicode_MissingDigit),
         ("testEscape_Unicode_InvalidUnicode_MissingAllDigits", testEscape_Unicode_InvalidUnicode_MissingAllDigits),
         ("testEscape_SpecialChars", testEscape_SpecialChars),
+        ("testString_Escaping", testString_Escaping),
         ("testString_Empty", testString_Empty),
         ("testString_Normal", testString_Normal),
         ("testString_Normal_WhitespaceInside", testString_Normal_WhitespaceInside),
@@ -378,7 +379,7 @@ class ParsingTests:XCTestCase {
         XCTAssertNil(try? StringParser().unescapedCharacter(reader))
     }
 
-    func testEscape_SpecialChars() {
+    func testEscape_SpecialChars() throws {
         
         let chars: [JChar] = [
             //regular translation
@@ -392,7 +393,12 @@ class ParsingTests:XCTestCase {
             Const.Escape, Const.NewLineChar,
             Const.Escape, Const.CarriageReturnChar,
             Const.Escape, Const.HorizontalTabChar,
-            Const.Space
+            
+            //basic control chars
+            Const.Escape, Const.UnicodeStart, Const.Zero, Const.Zero, Const.Zero, 0x36 /* ACK */,
+            Const.Escape, Const.UnicodeStart, Const.Zero, Const.Zero, 0x32, 0x31 /* NACK */,
+            
+            Const.Space,
         ]
         
         let reader = ByteReader(content: chars)
@@ -400,32 +406,45 @@ class ParsingTests:XCTestCase {
         
         //regular
         
-        char = try! StringParser().unescapedCharacter(reader)
+        char = try StringParser().unescapedCharacter(reader)
         XCTAssert(try! Const.QuotationMark.string() == String(char))
 
-        char = try! StringParser().unescapedCharacter(reader)
+        char = try StringParser().unescapedCharacter(reader)
         XCTAssert(try! Const.ReverseSolidus.string() == String(char))
 
-        char = try! StringParser().unescapedCharacter(reader)
+        char = try StringParser().unescapedCharacter(reader)
         XCTAssert(try! Const.Solidus.string() == String(char))
 
-        
         //rule-based
         
-        char = try! StringParser().unescapedCharacter(reader)
+        char = try StringParser().unescapedCharacter(reader)
         XCTAssert(try! Const.Backspace.string() == String(char))
 
-        char = try! StringParser().unescapedCharacter(reader)
+        char = try StringParser().unescapedCharacter(reader)
         XCTAssert(try! Const.FormFeed.string() == String(char))
 
-        char = try! StringParser().unescapedCharacter(reader)
+        char = try StringParser().unescapedCharacter(reader)
         XCTAssertEqual(try! Const.NewLine.string(), String(char))
 
-        char = try! StringParser().unescapedCharacter(reader)
+        char = try StringParser().unescapedCharacter(reader)
         XCTAssertEqual(try! Const.CarriageReturn.string(), String(char))
 
-        char = try! StringParser().unescapedCharacter(reader)
+        char = try StringParser().unescapedCharacter(reader)
         XCTAssertEqual(try! Const.HorizontalTab.string(), String(char))
+        
+        //basic control
+        char = try StringParser().unescapedCharacter(reader)
+        XCTAssert("\u{0006}" == String(char))
+
+        char = try StringParser().unescapedCharacter(reader)
+        XCTAssert("\u{0021}" == String(char))
+    }
+    
+    func testString_Escaping() {
+        let reader = ByteReader(content: "[\"he \\r\\n l \\u0006 \\t l \\n o w\\\"o\\rrld \\u0015 \"]")
+        let json: [JSON] = [.string("he \r\n l \u{0006} \t l \n o w\"o\rrld \u{0015} ")]
+        let ret = try! Jay().jsonFromReader(reader)
+        ensureArray(ret, exp: json)
     }
     
     func testString_Empty() {
