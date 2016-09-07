@@ -155,9 +155,10 @@ class FormattingTests: XCTestCase {
     }
 
     func testString_Escaping() {
-        let json = ["he \r\n l \t l \n o w\"o\rrld "]
+        let json = ["he \r\n l \u{0006} \t l \n o w\"o\rrld \u{0015} "]
         let data = try! Jay().dataFromJson(any: json)
-        XCTAssertEqual(data, "[\"he \\r\\n l \\t l \\n o w\\\"o\\rrld \"]".chars())
+        let res = "[\"he \\r\\n l \\u0006 \\t l \\n o w\\\"o\\rrld \\u0015 \"]".chars()
+        XCTAssertEqual(data, res)
     }
     
     func testVaporExample_Dict() {

@@ -50,7 +50,7 @@ extension JSON: JsonFormattable {
     
     func format(to stream: JsonOutputStream, string: String) throws {
         
-        var contents = [JChar]()
+        var contents: [JChar] = []
         for c in string.utf8 {
             
             //if this is an escapable character, escape it
@@ -63,6 +63,13 @@ extension JSON: JsonFormattable {
             //simple escape, just prepend with the escape char
             if Const.SimpleEscaped.contains(c) {
                 contents.append(contentsOf: [Const.Escape, c])
+                continue
+            }
+            
+            //control character that wasn't escaped above, just convert to 
+            //an escaped unicode sequence, i.e. "\u0006" for "ACK"
+            if Const.ControlCharacters.contains(c) {
+                contents.append(contentsOf: c.controlCharacterHexString())
                 continue
             }
             

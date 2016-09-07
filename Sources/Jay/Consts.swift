@@ -51,7 +51,9 @@ struct Const {
         Const.FormFeed: Const.FormFeedChar,
         Const.CarriageReturn: Const.CarriageReturnChar
     ]
-
+    
+    static let ControlCharacters: Set<JChar> = Set(0x00...0x1f)
+    
     // Strings
     static let QuotationMark: JChar         = 0x22 // """
     static let ReverseSolidus: JChar        = 0x5c // "\"
@@ -66,7 +68,7 @@ struct Const {
     
     static let UnicodeStart: JChar          = 0x75 // "u"
 
-    static let Escape: JChar            = Const.ReverseSolidus
+    static let Escape: JChar                = Const.ReverseSolidus
 
     static let SimpleEscaped: Set<JChar> = [
         Const.QuotationMark,
