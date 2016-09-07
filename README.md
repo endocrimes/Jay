@@ -5,9 +5,6 @@
 ![Platforms](https://img.shields.io/badge/platforms-Linux%20%7C%20OS%20X-blue.svg)
 ![Package Managers](https://img.shields.io/badge/package%20managers-SwiftPM-yellow.svg)
 
-[![Blog](https://img.shields.io/badge/blog-honzadvorsky.com-green.svg)](http://honzadvorsky.com)
-[![Twitter Czechboy0](https://img.shields.io/badge/twitter-czechboy0-green.svg)](http://twitter.com/czechboy0)
-
 > Pure-Swift JSON parser & formatter. Fully streamable input and output. Linux &amp; OS X ready. Replacement for NSJSONSerialization.
 
 Jay conforms to the following specifications:
