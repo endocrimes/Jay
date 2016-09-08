@@ -11,7 +11,6 @@ script:
   - swift build
   - swift build -c release
   - swift test
-  - ./.build/release/JayPerformance
 notifications:
   email:
     on_success: never
