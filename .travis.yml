@@ -7,5 +7,5 @@ sudo: required
 dist: trusty
 osx_image: xcode8
 script:
-  - eval "$(curl -sL swift.vapor.sh/ci)"
-  - eval "$(curl -sL swift.vapor.sh/codecov)"
+  - bash ./.travis/ci
+  - bash ./.travis/codecov
