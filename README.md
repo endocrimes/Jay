@@ -70,7 +70,7 @@ do {
 ## Swift Package Manager
 
 ```swift
-.Package(url: "https://github.com/czechboy0/Jay.git", majorVersion: 0, minor: 21)
+.Package(url: "https://github.com/czechboy0/Jay.git", majorVersion: 1)
 ```
 
 :blue_heart: Code of Conduct
