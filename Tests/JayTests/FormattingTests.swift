@@ -17,6 +17,7 @@ extension FormattingTests {
         ("testNSDictionary_Empty", testNSDictionary_Empty),
         ("testNSDictionary_Simple", testNSDictionary_Simple),
         ("testObject_Simple", testObject_Simple),
+        ("testObject_StringInt", testObject_StringInt),
         ("testObject_Normal", testObject_Normal),
         ("testObject_Nested", testObject_Nested),
         ("testObject_AllTypes", testObject_AllTypes),
@@ -69,6 +70,12 @@ class FormattingTests: XCTestCase {
         let json = ["hello": "world"]
         let data = try! Jay().dataFromJson(any: json)
         XCTAssertEqual(data, "{\"hello\":\"world\"}".chars())
+    }
+
+    func testObject_StringInt() {
+        let json = ["hello": 42]
+        let data = try! Jay().dataFromJson(any: json)
+        XCTAssertEqual(String(bytes: data, encoding: String.Encoding.utf8)!, "{\"hello\":42}")
     }
     
     func testObject_Normal() {
