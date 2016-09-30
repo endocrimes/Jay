@@ -75,6 +75,10 @@ struct NativeTypeConverter {
     func parseNSArray(_ array: NSArray) throws -> JSON? {
         return try self.convertArray(array.map { $0 as Any })
     }
+
+    func parseArray(_ array: [Any]) throws -> JSON? {
+        return try self.convertArray(array)
+    }
     
     func parseNSDictionary(_ dict: NSDictionary) throws -> JSON? {
         var dOut = [String: Any]()
@@ -87,6 +91,10 @@ struct NativeTypeConverter {
             dOut[key.description] = value
         }
         return try self.dictionaryToJayType(dOut)
+    }
+
+    func parseDictionary(_ dict: [String: Any]) throws -> JSON? {
+        return try self.dictionaryToJayType(dict)
     }
     
     func arrayToJayType(_ maybeArray: Any) throws -> JSON? {
@@ -126,13 +134,31 @@ struct NativeTypeConverter {
         guard let json = js else { return .null }
         if json is NSNull { return .null }
 
+        if let nativeDict = json as? [String: Any] {
+            guard let dict = try self.parseDictionary(nativeDict) else {
+                throw JayError.unsupportedType(nativeDict)
+            }
+            return dict
+        }
+
+        // On OS X, this check also succeeds for [:] dicts, so this check needs
+        // to come after the previous one.
         if let nsdict = json as? NSDictionary {
             guard let dict = try self.parseNSDictionary(nsdict) else {
                 throw JayError.unsupportedType(nsdict)
             }
             return dict
         }
+
+        if let nativeArray = json as? [Any] {
+            guard let array = try self.parseArray(nativeArray) else {
+                throw JayError.unsupportedType(nativeArray)
+            }
+            return array
+        }
         
+        // On OS X, this check also succeeds for [] arrays, so this check needs
+        // to come after the previous one.
         if let nsarray = json as? NSArray {
             guard let array = try self.parseNSArray(nsarray) else {
                 throw JayError.unsupportedType(nsarray)
