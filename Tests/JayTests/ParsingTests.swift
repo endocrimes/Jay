@@ -40,6 +40,7 @@ extension ParsingTests {
         ("testNumber_Int_Negative", testNumber_Int_Negative),
         ("testNumber_Dbl_Basic", testNumber_Dbl_Basic),
         ("testNumber_Dbl_ZeroSomething", testNumber_Dbl_ZeroSomething),
+        ("testNumber_Dbl_ZeroZeroSomething", testNumber_Dbl_ZeroZeroSomething),
         ("testNumber_Dbl_MinusZeroSomething", testNumber_Dbl_MinusZeroSomething),
         ("testNumber_Dbl_Incomplete", testNumber_Dbl_Incomplete),
         ("testNumber_Dbl_Negative", testNumber_Dbl_Negative),
@@ -327,6 +328,12 @@ class ParsingTests:XCTestCase {
         let reader = ByteReader(content: "--24.34]")
         let ret = try? ValueParser().parse(with: reader)
         XCTAssertNil(ret)
+    }
+
+    func testNumber_Dbl_ZeroZeroSomething() {
+        let reader = ByteReader(content: "0.00034]")
+        let ret = try! ValueParser().parse(with: reader)
+        ensureNumber(ret, exp: JSON.Number.double(0.00034))
     }
 
     func testNumber_Double_Exp_Normal() {
