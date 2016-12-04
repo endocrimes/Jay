@@ -36,7 +36,7 @@ struct NumberParser: JsonParser {
         //      - continue to the frac part right away
         // - if it's 1...9, continue to parsing integer part first
         let integer: Int
-        let frac: Int
+        let frac: String
         if reader.curr() == Const.Zero {
             try reader.nextAndCheckNotDone()
             
@@ -57,7 +57,7 @@ struct NumberParser: JsonParser {
             if reader.curr() == Const.DecimalPoint {
                 frac = try self.parseFrac(reader)
             } else {
-                frac = 0
+                frac = ""
             }
         }
         
@@ -70,7 +70,7 @@ struct NumberParser: JsonParser {
         return value
     }
     
-    private func generateNumber(negative: Bool, integer: Int, frac: Int, exp: Int?) -> JSON.Number {
+    private func generateNumber(negative: Bool, integer: Int, frac: String, exp: Int?) -> JSON.Number {
         
         //form the int section
         var int = integer
@@ -78,7 +78,7 @@ struct NumberParser: JsonParser {
         int *= sign
         
         //if that's it, let's call it an integer
-        if frac == 0 && exp == nil {
+        if frac.isEmpty && exp == nil {
             if negative {
                 //if it's negative, make it a signed integer
                 return .integer(int)
@@ -92,7 +92,7 @@ struct NumberParser: JsonParser {
         var dbl = Double(int)
         
         //if it's a frac, append the fraction section
-        if frac > 0 {
+        if !frac.isEmpty {
             //double
             let fracAdd = Double("0.\(frac)")! * Double(sign)
             dbl += fracAdd
@@ -162,7 +162,7 @@ struct NumberParser: JsonParser {
         }
     }
     
-    private func parseFrac<R: Reader>(_ reader: R) throws -> Int {
+    private func parseFrac<R: Reader>(_ reader: R) throws -> String {
         
         //frac part MUST start with decimal point!
         guard reader.curr() == Const.DecimalPoint else {
@@ -200,8 +200,7 @@ struct NumberParser: JsonParser {
             if fracTerm.contains(reader.curr()) {
                 //gracefully end this section
                 let fracString = try digs.string()
-                let frac = Int(fracString)!
-                return frac
+                return fracString
             }
             
             //okay, we encountered an illegal character, error out
