@@ -52,6 +52,7 @@ extension ParsingTests {
         ("testNumber_Double_Exp_Negative", testNumber_Double_Exp_Negative),
         ("testNumber_Double_Exp_NoFrac", testNumber_Double_Exp_NoFrac),
         ("testNumber_Double_Exp_TwoEs", testNumber_Double_Exp_TwoEs),
+        ("testNumber_Double_Exp_StartWithZero", testNumber_Double_Exp_StartWithZero),
         ("testEscape_Unicode_Normal", testEscape_Unicode_Normal),
         ("testEscape_Unicode_InvalidUnicode_MissingDigit", testEscape_Unicode_InvalidUnicode_MissingDigit),
         ("testEscape_Unicode_InvalidUnicode_MissingAllDigits", testEscape_Unicode_InvalidUnicode_MissingAllDigits),
