@@ -353,7 +353,13 @@ class ParsingTests:XCTestCase {
         let ret = try! ValueParser().parse(with: reader)
         ensureNumber(ret, exp: JSON.Number.double(-0.243245))
     }
-    
+
+    func testNumber_Double_Exp_StartWithZero() {
+        let reader = ByteReader(content: "6.8e-05, ")
+        let ret = try! ValueParser().parse(with: reader)
+        ensureNumber(ret, exp: JSON.Number.double(0.000068))
+    }
+
     func testNumber_Double_Exp_NoFrac() {
         let reader = ByteReader(content: "24E2, ")
         let ret = try! ValueParser().parse(with: reader)

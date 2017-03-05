@@ -230,8 +230,8 @@ struct NumberParser: JsonParser {
         
         var digs = [JChar]()
         
-        //at least one digit 1...9 must follow
-        guard Const.Digits1to9.contains(reader.curr()) else {
+        //at least one digit 0...9 must follow
+        guard Const.Digits0to9.contains(reader.curr()) else {
             throw JayError.numberParsingFailed(reader)
         }
         digs.append(reader.curr())
